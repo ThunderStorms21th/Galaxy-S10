@@ -59,6 +59,8 @@ extern unsigned int get_cpu_mips(unsigned int cpu, int sse);
 extern unsigned int get_cpu_max_capacity(unsigned int cpu, int sse);
 extern unsigned long get_freq_cap(unsigned int cpu, unsigned long freq, int sse);
 
+extern unsigned long cpu_util(int cpu);
+
 extern unsigned long boosted_task_util(struct task_struct *p);
 extern unsigned long capacity_orig_of_sse(int cpu, int sse);
 extern unsigned long capacity_ratio(int cpu, int sse);
