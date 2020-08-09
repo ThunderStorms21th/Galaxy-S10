@@ -114,11 +114,11 @@ def parse_stage():
 
 def find_configs():
     configs = { 'kernel': {}, 'order': [] }
-    prefix_len = len('cruel')
+    prefix_len = len('ts')
     suffix_len = len('.conf')
-    files = [f for f in os.listdir('kernel/configs/') if re.match('^cruel[+-]?.*\.conf$', f)]
+    files = [f for f in os.listdir('kernel/configs/') if re.match('^ts[+-]?.*\.conf$', f)]
     for f in files:
-        if f == 'cruel.conf':
+        if f == 'ts_config.conf':
             continue
         name = f[prefix_len+1:]
         name = name[:-suffix_len]
@@ -204,7 +204,7 @@ def config_info(configs):
     if 'name' in configs:
         print('Name: ' + configs['name'])
     else:
-        print('Name: CRUEL')
+        print('Name: THUNDERSTORMS')
 
     print('Model: ' + configs['model'])
 
@@ -242,7 +242,7 @@ def config_model(model):
 def make_config(configs):
     list = ['scripts/kconfig/merge_config.sh',
         'arch/arm64/configs/' + models[configs['model']]['config'],
-        'kernel/configs/cruel.conf']
+        'kernel/configs/ts_config.conf']
 
     kernel_configs = configs['kernel']
     for key in configs['order']:

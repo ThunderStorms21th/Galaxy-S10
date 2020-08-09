@@ -38,6 +38,7 @@ jobs:
                 +ntfs                    \
                 +morosound               \
                 +boeffla_wl_blocker      \
+                +ts_config               \
         2>&1 | tee config.info
     - name: Kernel Build
       run: ./build :build
@@ -46,7 +47,7 @@ jobs:
     - name: Upload Kernel
       uses: actions/upload-artifact@v2
       with:
-        name: CruelKernel-${{ matrix.model }}
+        name: ThunderStormsKernel-${{ matrix.model }}
         path: boot.img
     - name: Upload Kernel Info
       uses: actions/upload-artifact@v2
