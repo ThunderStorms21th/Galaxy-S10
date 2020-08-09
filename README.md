@@ -1,13 +1,19 @@
-# Cruel Kernel Tree for Samsung S10, Note10 devices
+# ThunderStormS Kernel for Samsung Galaxy :
+# S10 & Note10 devices
 
-![CI](https://github.com/CruelKernel/samsung-exynos9820/workflows/CI/badge.svg)
+Kernel Project by Team ThunderStorms
+
+ThunderStorms kernel is based on Cruel Kernel - big thanks and credits to
+Cruel Kernel Team.
 
 Based on samsung sources and android common tree.
 Supported devices: G970F, G970N, G973F, G975F, G977B, N970F, N975F,
 N971N, N976B, N976N.
 
-## Contributors
+## Credits
 
+- CruelKernel
+- @evdenis - for kernel source and updates from Samsung source
 - NZNewbie - for adding fiops scheduler
 - ExtremeGrief - for overall improvements, porting maple scheduler
 - thehacker911 - overall improvements and advices
@@ -38,9 +44,9 @@ Flash boot.img with FK Manager.
 ## Pin problem (Can't login)
 
 The problem is not in sources. It's due to os_patch_level mismatch with you current
-kernel (and/or twrp). CruelKernel uses common security patch date to be in sync with
-the official twrp and samsung firmware. You can check the default os_patch_level in
-build.mkbootimg.* files. However, this date can be lower than other kernels use. When
+kernel (and/or twrp). CruelKernel/ThunderStorms uses common security patch date to be
+in sync with the official twrp and samsung firmware. You can check the default os_patch_level
+in build.mkbootimg.* files. However, this date can be lower than other kernels use. When
 you flash a kernel with an earlier patch date on top of the previous one with a higher
 date, android activates rollback protection mechanism and you face the pin problem. It's
 impossible to use a "universal" os_patch_level because different users use different
@@ -64,149 +70,9 @@ How can you solve the problem? 6 different ways:
   See the next section if you want to rebuild the kernel.
 - You can do the full wipe during cruel kernel flashing
 
-## How to customize the kernel
-
-It's possible to customize the kernel and build it from a web browser.
-First of all, you need to create an account on GitHub. Next, **fork**
-this repository. **Switch** to the "Actions" tab and activate GitHub Actions.
-At this step you've got your copy of the sources and you can build it with
-GitHub Actions. You need to open github actions [configuration file](.github/workflows/main.yml)
-and **edit** it from the browser.
-
-First of all, you need to edit model argument (by default it's G973F) to the model
-of your phone. You can multiple models. Supported models are: G970F, G970N, G973F, G975F,
-G977B, N970F, N971N, N975F, N976B, N976N.
-
-Edit model:
-```YAML
-    strategy:
-      matrix:
-        model: [ "G973F" ]
-```
-
-For example, you can add two models:
-```YAML
-    strategy:
-      matrix:
-        model: [ "G973F", "G975F" ]
-```
-
-
-To alter the kernel configuration you need to edit lines:
-```YAML
-    - name: Kernel Configure
-      run: |
-        ./build config                    \
-                model=${{ matrix.model }} \
-                name="CRUEL-V3.4"         \
-                +magisk                   \
-                +nohardening              \
-                +ttl                      \
-                +wireguard                \
-                +cifs                     \
-                +sdfat                    \
-                +ntfs                     \
-                +morosound                \
-                +boeffla_wl_blocker
-```
-
-You can change the name of the kernel by replacing ```name="CRUEL-V3"``` with,
-for example, ```name="my_own_kernel"```. You can remove wireguard from the kernel
-if you don't need it by changing "+" to "-" or by removing the "+wireguard" line
-and "\\" on the previous line. OS patch date can be changed with
-```os_patch_level=2020-02``` argument, the default current date is in
-build.mkbootimg.G973F file.
-
-Available configuration presets can be found at [configs](kernel/configs/) folder.
-Only the *.conf files prefixed with "cruel" are meaningful.
-For example:
-* +magisk - integrates magisk into the kernel. This allows to have root without
-  booting from recovery. Enabled by default.
-* magisk+canary - integrates canary magisk into the kernel.
-* always_permit - pin SELinux to always use permissive mode. Required on LOS rom.
-* always_enforce - pin SELinux to always use enforcing mode.
-* 300hz - increase interrupt clock freq from 250hz to 300hz.
-* 1000hz - increase interrupt clock freq from 250hz to 1000hz. Don't use it if you
-  play games. You could benefit from this setting only if you use light/middle-weight
-  apps. Look here for more info: https://source.android.com/devices/tech/debug/jank_jitter
-* noatime - mount fs with noatime by default.
-* io_bfq - enable BFQ MQ I/O scheduler in the kernel. BFQ is multi-queue scheduler, enabling
-  it requires switching SCSI subsystem to MQ mode. This means you will loose the ability
-  to use cfq and other single-queue schedulers after enabling +bfq.
-* io_maple - enable MAPLE I/O scheduler in the kernel.
-* io_fiops - enable FIOPS I/O scheduler in the kernel.
-* io_sio - enable SIO I/O scheduler in the kernel.
-* io_zen - enable ZEN I/O scheduler in the kernel.
-* io_anxiety - enable Anxiety I/O scheduler in the kernel.
-* io_noop - use no-op I/O scheduler by default (it's included in kernel in all cases).
-* io_cfq - make CFQ I/O scheduler default one. CFQ is enabled by default if you are not
-  enabling other schedulers. This switch is relevant only in case you enable multiple
-  schedulers and want cfq to be default one, for example: +maple +fiops will make fiops
-  default scheduler and give you the ability to switch to maple at runtime. Thus: +maple
-  +fiops +zen +cfq will add to the kernel maple, fiops, zen and make cfq scheduler default.
-* sdfat - use sdfat for exFAT and VFAT filesystems.
-* ntfs - enable ntfs filesystem support (read only).
-* cifs - adds CIFS fs support.
-* tcp_cubic - enable CUBIC TCP congestion control.
-* tcp_westwood - enable WestWood TCP congestion control.
-* tcp_htcp - enable HTCP congestion control.
-* tcp_bbr - enable BBR congestion control.
-* tcp_bic - make BIC TCP congestion control default one. BIC is enabled by default
-  if you are not enabling other engines. This options work as +cfq but for TCP
-  congestion control modules.
-* sched_... - enable various (performance, conservative, ondemand, powersave,
-  userspace) CPU schedulers in the kernel.
-* ttl - adds iptables filters for altering ttl values of network packets. This
-  helps to bypass tethering blocking in mobile networks.
-* mass_storage - enable usb mass storage drivers for drivedroid.
-* wireguard - adds wireguard module to the kernel.
-* morosound - enable moro sound control module.
-* boeffla_wl_blocker - enable boeffla wakelock blocker module.
-* +nohardening - removes Samsung kernel self-protection mechanisms. Potentially
-  can increase the kernel performance. Enabled by default. Disable this if you
-  want to make your system more secure.
-* nohardening2 - removes Android kernel self-protection mechanisms. Potentially
-  can increase the kernel performance. Don't use it if you don't know what you are
-  doing. Almost completely disables kernel self-protection. Very insecure. (fake_config
-  to shut-up android warning)
-* size - optimize kernel for size.
-* nodebug - remove debugging information from the kernel.
-* noksm - disable Kernel Samepage Merging (KSM).
-* nomodules - disable loadable modules support (fake_config to shut-up android warning).
-* noaudit - disable kernel auditing subsystem (fake_config to shut-up android warning).
-* noswap - disable swapping (fake_config to shut-up android warning).
-* nozram - disable nozram.
-* fake_config - Use defconfig for /proc/config.gz Some of the config presets, for
-  example nomodules, noaudit are safe but Android system checks kernel configuration
-  for these options to be enabled and issues the warning "There's an internal problem
-  with your device. Contact your manufacturer for details." in case they are not. This
-  config preset forces default configuration to be in /proc/config.gz This trick allows
-  to pass Android system check and shut up the warning. However, the kernel will use
-  other configuration during build.
-
-For example, you can alter default configuration to something like:
-```YAML
-    - name: Kernel Configure
-      run: |
-        ./build config                    \
-                os_patch_level=2020-12    \
-                model=${{ matrix.model }} \
-                name="OwnKernel"          \
-                +magisk+canary            \
-                +wireguard                \
-                +nohardening              \
-                +1000hz
-```
-
-After editing the configuration in the browser, save it and **commit**.
-Next, you need to **switch** to the "Actions" tab. At this step you will find that
-GitHub starts to build the kernel. You need to **wait** about 25-30 mins while github builds
-the kernel. If the build is successfully finished, you will find your boot.img in the Artifacts
-section. Download it, unzip and flash.
-
-To keep your version of the sources in sync with main tree, please look at one of these tutorials:
-- [How can I keep my fork in sync without adding a separate remote?](https://stackoverflow.com/a/21131381)
-- [How do I update a GitHub forked repository?](https://stackoverflow.com/a/23853061)
+----------------------------------------------------------------------------------------
+## DESCRIPTION FROM CRUEL KERNEL - thx to the Cruel Kernel Team
+----------------------------------------------------------------------------------------
 
 ## How to build the kernel locally on your PC
 
@@ -228,17 +94,17 @@ $ chmod +x mkbootimg.py
 $ sudo mv mkbootimg.py /usr/local/bin/mkbootimg
 
 # Get the sources
-$ git clone https://github.com/CruelKernel/samsung-exynos9820
-$ cd samsung-exynos9820
+$ git clone https://github.com/ThunderStorms21th/Galaxy-S10
+$ cd Galaxy-S10
 # List available branches
-$ git branch -a | grep remotes | grep cruel | cut -d '/' -f 3
+$ git branch -a | grep remotes | grep ts | cut -d '/' -f 3
 # Switch to the branch you need
-$ git checkout cruel-v3
+$ git checkout master
 # Install compilers
 $ git submodule update --init --recursive
 # Compile
-$ ./build mkimg name="CustomCruel" model=G973F +magisk+canary +wireguard +ttl +cifs +nohardening
-# You will find your kernel in boot.img file after compilation.
+$ ./build mkimg name="ThunderStorms" model=G973F
+# You will find your kernel in boot.img file after compilation inside the prime folder.
 $ ls -lah ./boot.img
 
 # You can automatically flash the kernel with heimdall
@@ -246,11 +112,393 @@ $ ls -lah ./boot.img
 $ ./build :flash
 
 # Or in a single command (compilation with flashing)
-# ./build flash name="CustomCruel" model=G973F +magisk+canary +wireguard +ttl +cifs +nohardening
+# ./build flash name="ThunderStorms" model=G973F
 ```
 
 ## Support
 
 - [Telegram](https://t.me/joinchat/GsJfBBaxozXvVkSJhm0IOQ)
 - [XDA Thread](https://forum.xda-developers.com/galaxy-s10/samsung-galaxy-s10--s10--s10-5g-cross-device-development-exynos/kernel-cruel-kernel-s10-note10-v3-t4063495)
+
+----------------------------------------------------------------------------------------
+# WHAT IS LINUX KERNEL:
+
+Best Overview can be found interviewing the chef who cooked the dish!
+Linux kernel release notes are linked for refernce <http://kernel.org/>
+
+# WHAT HARDWARE SUPPORTS LINUX:
+
+  Although originally developed first for 32-bit x86-based PCs (386 or higher),
+  today Linux also runs on devices with very least of hardware
+
+  Linux is easily portable to most general-purpose 32- or 64-bit architectures
+  as long as they have a paged memory management unit (PMMU) and a port of the
+  GNU C compiler (gcc) (part of The GNU Compiler Collection, GCC)
+
+# DOCUMENTATION:
+
+ - There is a lot of documentation available both in electronic form on
+   the Internet and in books, both Linux-specific and pertaining to
+   general UNIX questions.  I'd recommend looking into the documentation
+   subdirectories on any Linux FTP site for the LDP (Linux Documentation
+   Project) books.  This README is not meant to be documentation on the
+   system: there are much better sources available.
+
+ - There are various README files in the Documentation/ subdirectory:
+   these typically contain kernel-specific installation notes for some 
+   drivers for example. See Documentation/00-INDEX for a list of what
+   is contained in each file.  Please read the Changes file, as it
+   contains information about the problems, which may result by upgrading
+   your kernel.
+
+ - The Documentation/DocBook/ subdirectory contains several guides for
+   kernel developers and users.  These guides can be rendered in a
+   number of formats:  PostScript (.ps), PDF, HTML, & man-pages, among others.
+   After installation, "make psdocs", "make pdfdocs", "make htmldocs",
+   or "make mandocs" will render the documentation in the requested format.
+
+# INSTALLING SOURCES:
+
+ - If you install the full sources, put the kernel tarball in a
+   directory where you have permissions (eg. your home directory) and
+   unpack it:
+
+     gzip -cd linux-4.X.tar.gz | tar xvf -
+
+   or
+
+     bzip2 -dc linux-4.X.tar.bz2 | tar xvf -
+
+   Replace "X" with the version number of the latest kernel.
+
+   Do NOT use the /usr/src/linux area! This area has a (usually
+   incomplete) set of kernel headers that are used by the library header
+   files.  They should match the library, and not get messed up by
+   whatever the kernel-du-jour happens to be.
+
+ - You can also upgrade between 4.x releases by patching.  Patches are
+   distributed in the traditional gzip and the newer bzip2 format.  To
+   install by patching, get all the newer patch files, enter the
+   top level directory of the kernel source (linux-4.X) and execute:
+
+     gzip -cd ../patch-4.x.gz | patch -p1
+
+   or
+
+     bzip2 -dc ../patch-4.x.bz2 | patch -p1
+
+   Replace "x" for all versions bigger than the version "X" of your current
+   source tree, _in_order_, and you should be ok.  You may want to remove
+   the backup files (some-file-name~ or some-file-name.orig), and make sure
+   that there are no failed patches (some-file-name# or some-file-name.rej).
+   If there are, either you or I have made a mistake.
+
+   Unlike patches for the 4.x kernels, patches for the 4.x.y kernels
+   (also known as the -stable kernels) are not incremental but instead apply
+   directly to the base 4.x kernel.  For example, if your base kernel is 4.0
+   and you want to apply the 4.0.3 patch, you must not first apply the 4.0.1
+   and 4.0.2 patches. Similarly, if you are running kernel version 4.0.2 and
+   want to jump to 4.0.3, you must first reverse the 4.0.2 patch (that is,
+   patch -R) _before_ applying the 4.0.3 patch. You can read more on this in
+   Documentation/applying-patches.txt
+
+   Alternatively, the script patch-kernel can be used to automate this
+   process.  It determines the current kernel version and applies any
+   patches found.
+
+     linux/scripts/patch-kernel linux
+
+   The first argument in the command above is the location of the
+   kernel source.  Patches are applied from the current directory, but
+   an alternative directory can be specified as the second argument.
+
+ - Make sure you have no stale .o files and dependencies lying around:
+
+     cd linux
+     make mrproper
+
+   You should now have the sources correctly installed.
+
+# SOFT REQUIREMENTS:
+
+   Compiling and running the 4.x kernels requires up-to-date
+   versions of various software packages.Beware that using
+   excessively old versions of these packages can cause indirect
+   errors that are very difficult to track down, so don't assume that
+   you can just update packages when obvious problems arise during
+   build or operation.
+
+# SET UP LOCALS:
+
+   When compiling the kernel, all output files will per default be
+   stored together with the kernel source code.
+   Using the option "make O=output/dir" allow you to specify an alternate
+   place for the output files (including .config).
+   Example:
+
+     kernel source code: /usr/src/linux-4.X
+     build directory:    /home/name/build/kernel
+
+   To configure and build the kernel, use:
+
+     cd /usr/src/linux-4.X
+     make O=/home/name/build/kernel menuconfig
+     make O=/home/name/build/kernel
+     sudo make O=/home/name/build/kernel modules_install install
+
+   Please note: If the 'O=output/dir' option is used, then it must be
+   used for all invocations of make.
+
+# CONFIGURING THE KERNEL:
+
+   Do not skip this step even if you are only upgrading one minor
+   version.  New configuration options are added in each release, and
+   odd problems will turn up if the configuration files are not set up
+   as expected.  If you want to carry your existing configuration to a
+   new version with minimal work, use "make oldconfig", which will
+   only ask you for the answers to new questions.
+
+ # CONFIGURATION COMMANDS:
+
+     make config :     Plain text interface.
+
+     make menuconfig :  Text based color menus, radiolists & dialogs.
+
+     make nconfig :     Enhanced text based color menus.
+
+     make xconfig :     X windows (Qt) based configuration tool.
+
+     make gconfig :     X windows (Gtk) based configuration tool.
+
+     make oldconfig :   Default all questions based on the contents of
+                        your existing ./.config file and asking about
+                        new config symbols.
+
+     make silentoldconfig : Like above, but avoids cluttering the screen
+                            with questions already answered. Additionally updates the dependencies.
+
+     make olddefconfig : Like above, but sets new symbols to their default
+                         values without prompting.
+
+     make defconfig :   Create a ./.config file by using the default
+                        symbol values from either arch/$ARCH/defconfig
+                        or arch/$ARCH/configs/${PLATFORM}_defconfig,
+                        depending on the architecture.
+
+     make ${PLATFORM}_defconfig : Create a ./.config file by using the default
+                        symbol values from arch/$ARCH/configs/${PLATFORM}_defconfig.
+                        symbol values from Use "make help" to get a list of all available platforms of your architecture.
+
+     make allyesconfig : Create a ./.config file by setting symbol
+                         values to 'y' as much as possible.
+
+     make allmodconfig : Create a ./.config file by setting symbol
+                         values to 'm' as much as possible.
+
+     make allnoconfig : Create a ./.config file by setting symbol
+                        values to 'n' as much as possible.
+
+     make randconfig :  Create a ./.config file by setting symbol
+                        values to random values.
+
+     make localmodconfig : Create a config based on current config and
+                           loaded modules (lsmod). Disables any module
+                           option that is not needed for the loaded modules.
+
+                           To create a localmodconfig for another machine,
+                           store the lsmod of that machine into a file
+                           and pass it in as a LSMOD parameter.
+
+                           target$ lsmod > /tmp/mylsmod
+                           target$ scp /tmp/mylsmod host:/tmp
+
+                           host$ make LSMOD=/tmp/mylsmod localmodconfig
+
+                           The above also works when cross compiling.
+
+     make localyesconfig : Similar to localmodconfig, except it will convert
+                           all module options to built in (=y) options.
+
+   You can find more information on using the Linux kernel config tools
+   in Documentation/kbuild/kconfig.txt.
+
+# CAUTIOUS CONFIGURATION:
+
+    - Having unnecessary drivers will make the kernel bigger, and can
+      under some circumstances lead to problems: probing for a
+      nonexistent controller card may confuse your other controllers
+
+    - Compiling the kernel with "Processor type" set higher than 386
+      will result in a kernel that does NOT work on a 386.  The
+      kernel will detect this on bootup, and give up.
+
+    - A kernel with math-emulation compiled in will still use the
+      coprocessor if one is present: the math emulation will just
+      never get used in that case.  The kernel will be slightly larger,
+      but will work on different machines regardless of whether they
+      have a math coprocessor or not.
+
+    - The "kernel hacking" configuration details usually result in a
+      bigger or slower kernel (or both), and can even make the kernel
+      less stable by configuring some routines to actively try to
+      break bad code to find kernel problems (kmalloc()).  Thus you
+      should probably answer 'n' to the questions for "development",
+      "experimental", or "debugging" features.
+
+# COMPILING THE KERNEL:
+
+ - Make sure you have at least gcc available.
+   For more information, refer to Documentation/Changes.
+
+   Please note that you can still run a.out user programs with this kernel.
+
+ - Do a "make" to create a compressed kernel image. It is also
+   possible to do "make install" if you have lilo installed to suit the
+   kernel makefiles, but you may want to check your particular lilo setup first.
+
+   To do the actual install, you have to be root, but none of the normal
+   build should require that. Don't take the name of root in vain.
+
+ - If you configured any of the parts of the kernel as `modules', you
+   will also have to do "make modules_install".
+
+ - Verbose kernel compile/build output:
+
+   Normally, the kernel build system runs in a fairly quiet mode (but not
+   totally silent).  However, sometimes you or other kernel developers need
+   to see compile, link, or other commands exactly as they are executed.
+   For this, use "verbose" build mode.  This is done by inserting
+   "V=1" in the "make" command.  E.g.:
+
+     make V=1 all
+
+   To have the build system also tell the reason for the rebuild of each
+   target, use "V=2".  The default is "V=0".
+
+ - Keep a backup kernel handy in case something goes wrong.  This is 
+   especially true for the development releases, since each new release
+   contains new code which has not been debugged.  Make sure you keep a
+   backup of the modules corresponding to that kernel, as well.  If you
+   are installing a new kernel with the same version number as your
+   working kernel, make a backup of your modules directory before you
+   do a "make modules_install".
+
+   Alternatively, before compiling, use the kernel config option
+   "LOCALVERSION" to append a unique suffix to the regular kernel version.
+   LOCALVERSION can be set in the "General Setup" menu.
+
+ - In order to boot your new kernel, you'll need to copy the kernel
+   image (e.g. .../linux/arch/i386/boot/bzImage after compilation)
+   to the place where your regular bootable kernel is found. 
+
+ - Booting a kernel directly from a floppy without the assistance of a
+   bootloader such as LILO, is no longer supported.
+
+   If you boot Linux from the hard drive, chances are you use LILO, which
+   uses the kernel image as specified in the file /etc/lilo.conf.  The
+   kernel image file is usually /vmlinuz, /boot/vmlinuz, /bzImage or
+   /boot/bzImage.  To use the new kernel, save a copy of the old image
+   and copy the new image over the old one.  Then, you MUST RERUN LILO
+   to update the loading map!! If you don't, you won't be able to boot
+   the new kernel image.
+
+   Reinstalling LILO is usually a matter of running /sbin/lilo. 
+   You may wish to edit /etc/lilo.conf to specify an entry for your
+   old kernel image (say, /vmlinux.old) in case the new one does not
+   work.  See the LILO docs for more information. 
+
+   After reinstalling LILO, you should be all set.  Shutdown the system,
+   reboot, and enjoy!
+
+   If you ever need to change the default root device, video mode,
+   ramdisk size, etc.  in the kernel image, use the 'rdev' program (or
+   alternatively the LILO boot options when appropriate).  No need to
+   recompile the kernel to change these parameters. 
+
+ - Reboot with the new kernel and enjoy. 
+
+# TROUBLESHOOTING THE BUILD PROCESS:
+
+ - If you have problems that seem to be due to kernel bugs, please check
+   the file MAINTAINERS to see if there is a particular person associated
+   with the part of the kernel that you are having trouble with. If there
+   isn't anyone listed there, then the second best thing is to mail
+   them to me (torvalds@linux-foundation.org), and possibly to any other
+   relevant mailing-list or to the newsgroup.
+
+ - In all bug-reports, *please* tell what kernel you are talking about,
+   how to duplicate the problem, and what your setup is (use your common
+   sense).  If the problem is new, tell me so, and if the problem is
+   old, please try to tell me when you first noticed it.
+
+ - If the bug results in a message like
+
+     unable to handle kernel paging request at address C0000010
+     Oops: 0002
+     EIP:   0010:XXXXXXXX
+     eax: xxxxxxxx   ebx: xxxxxxxx   ecx: xxxxxxxx   edx: xxxxxxxx
+     esi: xxxxxxxx   edi: xxxxxxxx   ebp: xxxxxxxx
+     ds: xxxx  es: xxxx  fs: xxxx  gs: xxxx
+     Pid: xx, process nr: xx
+     xx xx xx xx xx xx xx xx xx xx
+
+   or similar kernel debugging information on your screen or in your
+   system log, please duplicate it *exactly*.  The dump may look
+   incomprehensible to you, but it does contain information that may
+   help debugging the problem.  The text above the dump is also
+   important: it tells something about why the kernel dumped code (in
+   the above example, it's due to a bad kernel pointer). More information
+   on making sense of the dump is in Documentation/oops-tracing.txt
+
+ - If you compiled the kernel with CONFIG_KALLSYMS you can send the dump
+   as is, otherwise you will have to use the "ksymoops" program to make
+   sense of the dump (but compiling with CONFIG_KALLSYMS is usually preferred).
+   This utility can be downloaded from
+   ftp://ftp.<country>.kernel.org/pub/linux/utils/kernel/ksymoops/ .
+   Alternatively, you can do the dump lookup by hand:
+
+ - In debugging dumps like the above, it helps enormously if you can
+   look up what the EIP value means.  The hex value as such doesn't help
+   me or anybody else very much: it will depend on your particular
+   kernel setup.  What you should do is take the hex value from the EIP
+   line (ignore the "0010:"), and look it up in the kernel namelist to
+   see which kernel function contains the offending address.
+
+   To find out the kernel function name, you'll need to find the system
+   binary associated with the kernel that exhibited the symptom.  This is
+   the file 'linux/vmlinux'.  To extract the namelist and match it against
+   the EIP from the kernel crash, do:
+
+     nm vmlinux | sort | less
+
+   This will give you a list of kernel addresses sorted in ascending
+   order, from which it is simple to find the function that contains the
+   offending address.  Note that the address given by the kernel
+   debugging messages will not necessarily match exactly with the
+   function addresses (in fact, that is very unlikely), so you can't
+   just 'grep' the list: the list will, however, give you the starting
+   point of each kernel function, so by looking for the function that
+   has a starting address lower than the one you are searching for but
+   is followed by a function with a higher address you will find the one
+   you want.  In fact, it may be a good idea to include a bit of
+   "context" in your problem report, giving a few lines around the
+   interesting one. 
+
+   If you for some reason cannot do the above (you have a pre-compiled
+   kernel image or similar), telling me as much about your setup as
+   possible will help.  Please read the REPORTING-BUGS document for details.
+
+ - Alternatively, you can use gdb on a running kernel. (read-only; i.e. you
+   cannot change values or set break points.) To do this, first compile the
+   kernel with -g; edit arch/i386/Makefile appropriately, then do a "make
+   clean". You'll also need to enable CONFIG_PROC_FS (via "make config").
+
+   After you've rebooted with the new kernel, do "gdb vmlinux /proc/kcore".
+   You can now use all the usual gdb commands. The command to look up the
+   point where your system crashed is "l *0xXXXXXXXX". (Replace the XXXes
+   with the EIP value.)
+
+   gdb'ing a non-running kernel currently fails because gdb (wrongly)
+   disregards the starting offset for which the kernel is compiled.
+   
 
