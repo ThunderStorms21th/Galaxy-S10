@@ -1,0 +1,54 @@
+ifelse(is_mounted("/system_root"), unmount("/system_root"));
+ifelse(is_mounted("/data"), unmount("/data"));
+
+# assert(is_substring("G970", getprop("ro.boot.bootloader")) || is_substring("G973", getprop("ro.boot.bootloader")) || is_substring("G975", getprop("ro.boot.bootloader")) || is_substring("N970", getprop("ro.boot.bootloader")) || is_substring("N975", getprop("ro.boot.bootloader"))  || is_substring("N971", getprop("ro.boot.bootloader"))  || is_substring("N976", getprop("ro.boot.bootloader")) || abort("Error: This package is only for G97x/N97x devices, aborting..."););
+
+ui_print(" ");
+ui_print("*******************************************************************");
+ui_print("                     ThunderStorm Kernel OneUI-Q                   ");
+ui_print("                     For Samsung Galaxy S10 & N10                  ");
+ui_print("                Developed by ThundeRStormS Team                    ");
+ui_print("            G970, G973, G975, N970, N971, N975, N976               ");
+ui_print("*******************************************************************");
+ui_print(" ");
+set_progress(0.01);
+
+# Copy scripts
+package_extract_dir("ts", "/tmp/ts");
+set_perm_recursive(0, 0, 0777, 0777, "/tmp/ts");
+
+ui_print(" ");
+ui_print("@Mounting partitions...");
+ifelse(is_mounted("/system_root"), "", mount("ext4", "EMMC", "/dev/block/platform/13d60000.ufs/by-name/system", "/system_root"));
+# run_program("/sbin/mount", "-t", "/system_root");
+
+ui_print(" ");
+ui_print("@ThundeRStormS - System Patching...");
+package_extract_dir("/tmp/ts/system", "/system_root");
+package_extract_dir("/tmp/ts/system1/init.ts.rc", "/system_root");
+package_extract_dir("/tmp/ts/system1/init.custom.rc", "/system_root");
+package_extract_dir("/tmp/ts/system1/ts-kernel.sh", "/system_root/sbin");
+
+set_perm_recursive(0, 0, 0755, 0755, "/system_root/sbin/ts-kernel.sh");
+set_perm_recursive(0, 0, 0755, 0755, "/system_root/init.ts.rc");
+set_perm_recursive(0, 0, 0755, 0755, "/system_root/init.custom.rc");
+
+# Run install script
+run_program("/sbin/sh", "/tmp/ts/install_script.sh");
+
+#####################################################
+
+# ui_print(" ");
+# ui_print("-- Unmounting Partition...");
+delete_recursive("/tmp");
+ifelse(is_mounted("/system_root"), unmount("/system_root"));
+ifelse(is_mounted("/data"), unmount("/data"));
+
+set_progress(1.00);
+show_progress(1.00, "-1000");
+ui_print(" ");
+ui_print("*******************************************************************");
+ui_print("***  The ThundeRStormS kernel and mods are installed  ***");
+ui_print("*******************************************************************");
+ui_print(" ");
+
