@@ -25,7 +25,7 @@ anisplash(
     2,
   
   #-- Frame [ Image, duration in millisecond ]
-    	"splash/1", 200,
+    "splash/1", 200,
 	"splash/3", 50,
 	"splash/2", 50,
 	"splash/3", 50,
@@ -94,19 +94,9 @@ form(
 	"menu.prop",
 
 	"group1",     "<b><~menu.group1></b>",  "",                     	"group",
-	  "opt1",     "<b><~menu.1></b>",       "<~menu.1desc>",         	"select",
-#	  "opt2",     "<b><~menu.2></b>",       "<~menu.2desc>",         	"select.selected",
-#	  "opt3",     "<b><~menu.5></b>",       "<~menu.5desc>",         	"select",
+	  "opt1",     "<b><~menu.1></b>",       "<~menu.1desc>",         	"select.selected",
 	"group2",     "<b><~menu.group2></b>",  "",                     	"group",
-	  "chk3",     "<b><~menu.3></b>",       "<~menu.3desc>",		"check.checked",
-#	  "chk6",     "<b><~menu.6></b>",       "<~menu.6desc>",		"check.checked",
-#	  "chk8",     "<b><~menu.8></b>",       "<~menu.8desc>",		"check",
-#	  "chk5",     "<b><~menu.5></b>",       "<~menu.5desc>",		"check",
-#	  "chk9",     "<b><~menu.9></b>",       "<~menu.9desc>",		"check",
-#	  "chk11",    "<b><~menu.11></b>",      "<~menu.11desc>",		"check",
-#	  "chk4",     "<b><~menu.4></b>",       "<~menu.4desc>",		"check",
-#	  "chk10",    "<b><~menu.10></b>",      "<~menu.10desc>",		"check",
-#	  "chk7",     "<b><~menu.7></b>",       "<~menu.7desc>",		"check"
+	  "chk3",     "<b><~menu.3></b>",       "<~menu.3desc>",		"check.checked"
 );
 
 

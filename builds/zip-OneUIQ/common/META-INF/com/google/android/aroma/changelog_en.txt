@@ -6,7 +6,7 @@
 	DATE	: <b><#selectbg_g>20/08/2020</#></b>
 	AUTHOR	: <b><#selectbg_g>ThundeRStormS Team</#></b>
 
-<#53a6f4><b> Only For Galaxy S10/N10 | OneUI Q Roms |</b></#>
+<#53a6f4><b>       Only For Galaxy S10/N10 | OneUI Q Roms |</b></#>
 
 
 <b>CHANGELOG:</b>

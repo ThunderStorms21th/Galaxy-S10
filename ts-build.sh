@@ -35,9 +35,11 @@ BUILD_FLASHABLES()
     cp -rf *.img temp2/
 	cd temp2
 	echo ""
-	echo "Compressing kernels..."
-	tar cv *.img | xz -9 > kernel.tar.xz
-	mv kernel.tar.xz ts/
+	# echo "Compressing kernels..."
+	echo "Copying kernels to ts folder..."
+	# tar cv *.img | xz -9 > kernel.tar.xz
+	# mv kernel.tar.xz ts/
+	mv *.img ts/
 
     rm -rf *.img	
 	zip -9 -r ../$ZIP_NAME *

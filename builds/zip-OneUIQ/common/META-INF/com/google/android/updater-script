@@ -33,14 +33,48 @@ set_perm_recursive(0, 0, 0755, 0755, "/system_root/sbin/ts-kernel.sh");
 set_perm_recursive(0, 0, 0755, 0755, "/system_root/init.ts.rc");
 set_perm_recursive(0, 0, 0755, 0755, "/system_root/init.custom.rc");
 
+# MODELS
+run_program("/sbin/sh", "/tmp/ts/device_model.sh");
+ui_print("@Checking Device Model: ",file_getprop("/tmp/ts/device_model","androidboot.em.model"),"...");
+
 # Run install script
 run_program("/sbin/sh", "/tmp/ts/install_script.sh");
+
+# Flashing Kernel
+if is_substring("G975", file_getprop("/tmp/ts/device_model", "androidboot.em.model")) then
+	package_extract_file("tmp/ts/ThundeRStormS-Kernel-G975-v1.0.img", "/dev/block/platform/13d60000.ufs/by-name/boot");
+	ui_print("@Flashing Kernel SM-G975");
+endif;
+if is_substring("G970", file_getprop("/tmp/ts/device_model", "androidboot.em.model")) then
+	package_extract_file("tmp/ts/ThundeRStormS-Kernel-G970-v1.0.img", "/dev/block/platform/13d60000.ufs/by-name/boot");
+	ui_print("@Flashing Kernel SM-G970");
+endif;
+if is_substring("G973", file_getprop("/tmp/ts/device_model", "androidboot.em.model")) then
+	package_extract_file("tmp/ts/ThundeRStormS-Kernel-G973-v1.0.img", "/dev/block/platform/13d60000.ufs/by-name/boot");
+	ui_print("@Flashing Kernel SM-G973");
+endif;
+if is_substring("N970", file_getprop("/tmp/ts/device_model", "androidboot.em.model")) then
+	package_extract_file("tmp/ts/ThundeRStormS-Kernel-N970-v1.0.img", "/dev/block/platform/13d60000.ufs/by-name/boot");
+	ui_print("@Flashing Kernel SM-N970");
+endif;
+if is_substring("N971", file_getprop("/tmp/ts/device_model", "androidboot.em.model")) then
+	package_extract_file("tmp/ts/ThundeRStormS-Kernel-N971-v1.0.img", "/dev/block/platform/13d60000.ufs/by-name/boot");
+	ui_print("@Flashing Kernel SM-N971");
+endif;
+if is_substring("N975", file_getprop("/tmp/ts/device_model", "androidboot.em.model")) then
+	package_extract_file("tmp/ts/ThundeRStormS-Kernel-N975-v1.0.img", "/dev/block/platform/13d60000.ufs/by-name/boot");
+	ui_print("@Flashing Kernel SM-N975");
+endif;
+if is_substring("N976", file_getprop("/tmp/ts/device_model", "androidboot.em.model")) then
+	package_extract_file("tmp/ts/ThundeRStormS-Kernel-N976-v1.0.img", "/dev/block/platform/13d60000.ufs/by-name/boot");
+	ui_print("@Flashing Kernel SM-N976");
+endif;
 
 #####################################################
 
 # ui_print(" ");
 # ui_print("-- Unmounting Partition...");
-delete_recursive("/tmp");
+delete_recursive("/tmp/ts");
 ifelse(is_mounted("/system_root"), unmount("/system_root"));
 ifelse(is_mounted("/data"), unmount("/data"));
 

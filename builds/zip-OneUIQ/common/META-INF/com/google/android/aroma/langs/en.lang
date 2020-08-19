@@ -80,51 +80,12 @@ changelog.desc=Installation of <b>ThundeRStormS Kernel</b> for Galaxy S10/N10.
 menu.title=ThundeRStormS Kernel Installation
 menu.desc=Along with the installation of the kernel choose the desired options, type of root, app, etc.\
 The marked options are recommended.
-menu.group1=Root Options
+menu.group1=Kernel Options
 menu.1=Install Kernel
 menu.1desc=Recommended - You have to do this.
-# menu.2=Magisk 20.4 Offcial
-# menu.2desc=Magisk Manager with Root integrated.
-#menu.5=Install GPU libs for Nougat - r12p0
-#menu.5desc=Install Nougat libs into the system.
-# menu.12=Kernel for ported or deodexed rom
-# menu.12desc=Select this if You have ported or deodexed rom
 menu.group2=Other options
 menu.3=ThunderTweaks
 menu.3desc=Application for kernel management modified by XDA@nalas. Copy this app to Your Internal SDcard/ThunderTweaks folder. You can manually install it.
-# menu.4=VNSWAP OFF
-# menu.4desc=Copy ts_swapoff script to init.d folder for turn it OFF. Default VNSWAP is ON - so use it only for desable it.
-Necessary. Uncheck only if you have a higher version.
-# menu.6=Spectrum (TS) Profiles
-# menu.6desc=Simple way for the management predefined profiles copied to sdcard/Spectrum/profiles.
-# menu.7=Delete root data
-# menu.7desc=Data and app will be deleted from the previous root. Recommended for clean installation.
-# menu.8=Recovery TWRP 3.3.0-0 Fixed by AJ's
-# menu.8desc=Updated by AJ's. Necessary for the kernel.
-# menu.9=Install GPU libs for PIE - r28p0
-# menu.9desc=Install Pie libs into the system
-# menu.10=Patch for deodexed PIE roms
-# menu.10desc=This will patch deodexed PIE roms
-# menu.11=Install GPU libs for OREO - r22p0
-# menu.11desc=Install Oreo libs into the system
-
-# Root
-stock.title=Without root
-stock.desc=Do you want to clean the remains of the previous root?
-stock.group=Clean Root
-stock.1=No
-stock.1desc=Apps and root data will not be deleted.
-stock.2=Yess
-stock.2desc=The apps of Magisk and Supersu, and any Root rest will be deleted.
-
-# Magisk App
-magisk.title=Magisk
-magisk.desc=Do you want to delete data from Magisk?
-magisk.group=Magisk
-magisk.1=No
-magisk.1desc=Leave the current configuration of Magisk.
-magisk.2=Yes
-magisk.2desc=Erase data from Magisk and do clean installation.
 
 # Confirm
 confirm.1=CONFIRM
@@ -139,7 +100,7 @@ inst.4=PRESS <b>Next</b> TO CONTINUE
 
 # Final
 final.1=INSTALLATION COMPLETED
-final.2=<b>ThundeRStormS KERNEL FOR S7 FLAT/EDGE</b> HAS BEEN SUCCESFULLY INSTALLED IN YOUR PHONE
+final.2=<b>ThundeRStormS KERNEL FOR S10/N10</b> HAS BEEN SUCCESFULLY INSTALLED IN YOUR PHONE
 final.3=REBOOT DEVICE
 final.4=PRESS FINISH, AND REBOOT YOUR DEVICE.\
 \

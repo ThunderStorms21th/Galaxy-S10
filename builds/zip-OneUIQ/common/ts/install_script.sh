@@ -120,7 +120,8 @@ ui_print "@Flashing ThundeRStormS kernel..."
 
 cd /tmp/ts
 ui_print "-- Extracting"
-$BB tar -Jxf kernel.tar.xz ThundeRStormS-Kernel-$MODEL-v1.0.img
+# tar -Jxvf kernel.tar.xz ThundeRStormS-Kernel-$MODEL-v1.0.img
+tar -xf kernel.tar.xz ThundeRStormS-Kernel-$MODEL-v1.0.img
 ui_print "-- Flashing ThundeRStormS-Kernel-$MODEL-v1.0.img"
 dd of=/dev/block/platform/13d60000.ufs/by-name/boot if=/tmp/ts/ThundeRStormS-Kernel-$MODEL-v1.0.img
 ui_print "-- Done"
