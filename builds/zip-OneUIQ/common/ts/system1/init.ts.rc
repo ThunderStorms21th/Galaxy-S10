@@ -57,7 +57,7 @@ on boot
    
    # GPU set at max/min freq
    chmod 0644 /sys/kernel/gpu/gpu_max_clock
-   write /sys/kernel/gpu/max_clock 702000
+   write /sys/kernel/gpu/gpu_max_clock 702000
    chmod 0644 /sys/kernel/gpu/gpu_min_clock
    write /sys/kernel/gpu/gpu_min_clock 156000
    chmod 0644 /sys/devices/platform/18500000.mali/power_policy
