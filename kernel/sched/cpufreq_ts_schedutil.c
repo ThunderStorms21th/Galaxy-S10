@@ -699,7 +699,6 @@ struct cpufreq_policy *sugov_get_attr_policy(struct gov_attr_set *attr_set)
 						typeof(*sg_policy), tunables_hook);
 	return sg_policy->policy;
 }
-
 /************************** sysfs interface ************************/
 
 static struct sugov_tunables *global_tunables;
@@ -840,7 +839,7 @@ static struct kobj_type sugov_tunables_ktype = {
 
 /********************** cpufreq governor interface *********************/
 
-static struct cpufreq_governor ts-schedutil_gov;
+static struct cpufreq_governor ts_schedutil_gov;
 
 static struct sugov_policy *sugov_policy_alloc(struct cpufreq_policy *policy)
 {
@@ -1052,7 +1051,7 @@ tunables_init:
 
 	ret = kobject_init_and_add(&tunables->attr_set.kobj, &sugov_tunables_ktype,
 				   get_governor_parent_kobj(policy), "%s",
-				   ts-schedutil_gov.name);
+				   ts_schedutil_gov.name);
 	if (ret)
 		goto fail;
 
@@ -1249,8 +1248,8 @@ static void sugov_limits(struct cpufreq_policy *policy)
 	mutex_unlock(&global_tunables_lock);
 }
 
-static struct cpufreq_governor ts-schedutil_gov = {
-	.name = "ts-schedutil",
+static struct cpufreq_governor ts_schedutil_gov = {
+	.name = "ts_schedutil",
 	.owner = THIS_MODULE,
 	.dynamic_switching = true,
 	.init = sugov_init,
@@ -1260,10 +1259,10 @@ static struct cpufreq_governor ts-schedutil_gov = {
 	.limits = sugov_limits,
 };
 
-#ifdef CONFIG_CPU_FREQ_DEFAULT_GOV_SCHEDUTIL
+#ifdef CONFIG_CPU_FREQ_DEFAULT_GOV_TS_SCHEDUTIL
 struct cpufreq_governor *cpufreq_default_governor(void)
 {
-	return &ts-schedutil_gov;
+	return &ts_schedutil_gov;
 }
 #endif
 static void sugov_update_min(struct cpufreq_policy *policy)
@@ -1499,6 +1498,6 @@ static int __init sugov_register(void)
 {
 	sugov_exynos_init();
 
-	return cpufreq_register_governor(&ts-schedutil_gov);
+	return cpufreq_register_governor(&ts_schedutil_gov);
 }
 fs_initcall(sugov_register);
