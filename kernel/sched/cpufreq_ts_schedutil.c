@@ -12,7 +12,6 @@
 #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
 
 #include <linux/cpufreq.h>
-#include <linux/fb.h>
 #include <linux/kthread.h>
 #include <uapi/linux/sched/types.h>
 #include <linux/slab.h>
@@ -76,11 +75,6 @@ struct sugov_policy {
 	bool work_in_progress;
 
 	bool need_freq_update;
-
-	/* Framebuffer callbacks */
-	struct notifier_block fb_notif;
-	bool is_panel_blank;
-
 #ifdef CONFIG_SCHED_KAIR_GLUE
 	bool be_stochastic;
 #endif
@@ -481,8 +475,7 @@ static void sugov_set_iowait_boost(struct sugov_cpu *sg_cpu, u64 time,
 {
 	struct sugov_policy *sg_policy = sg_cpu->sg_policy;
 
-	if (!sg_policy->tunables->iowait_boost_enable ||
-	     sg_policy->is_panel_blank)
+	if (!sg_policy->tunables->iowait_boost_enable)
 		return;
 
 	if (sg_cpu->iowait_boost) {
@@ -970,23 +963,6 @@ static void sugov_tunables_restore(struct cpufreq_policy *policy)
 					   sg_policy->down_rate_delay_ns);
 }
 
-static int fb_notifier_cb(struct notifier_block *nb, unsigned long action,
-			  void *data)
-{
-	struct sugov_policy *sg_policy = container_of(nb, struct sugov_policy, fb_notif);
-	int *blank = ((struct fb_event *)data)->data;
-
-	if (action != FB_EARLY_EVENT_BLANK)
-		return NOTIFY_OK;
-
-	if (*blank == FB_BLANK_UNBLANK)
-		sg_policy->is_panel_blank = false;
-	else
-		sg_policy->is_panel_blank = true;
-
-	return NOTIFY_OK;
-}
-
 static int sugov_init(struct cpufreq_policy *policy)
 {
 	struct sugov_policy *sg_policy;
@@ -1045,7 +1021,6 @@ tunables_init:
 
 	policy->governor_data = sg_policy;
 	sg_policy->tunables = tunables;
-	sg_policy->is_panel_blank = false;
 
 	sugov_tunables_restore(policy);
 
@@ -1057,15 +1032,6 @@ tunables_init:
 
 out:
 	mutex_unlock(&global_tunables_lock);
-
-	sg_policy->fb_notif.notifier_call = fb_notifier_cb;
-	sg_policy->fb_notif.priority = INT_MAX;
-	ret = fb_register_client(&sg_policy->fb_notif);
-	if (ret) {
-		pr_err("Failed to register fb notifier, err: %d\n", ret);
-		goto fail;
-	}
-
 	return 0;
 
 fail:
@@ -1116,7 +1082,6 @@ static void sugov_exit(struct cpufreq_policy *policy)
 	if (sugov_save_policy(sg_policy))
 		goto out;
 
-	fb_unregister_client(&sg_policy->fb_notif);
 	sugov_kthread_stop(sg_policy);
 	sugov_policy_free(sg_policy);
 
