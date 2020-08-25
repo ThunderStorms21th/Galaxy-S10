@@ -131,6 +131,18 @@ fi
    # echo "1" > /sys/kernel/power_suspend/power_suspend_mode
    # echo "1" > /sys/kernel/power_suspend/power_suspend_state
 
+   # I/O sched settings
+   echo "cfq" > /sys/block/sda/queue/scheduler
+   echo "64" > /sys/block/sda/queue/read_ahead_kb
+   echo "cfq" > /sys/block/mmcblk0/queue/scheduler
+   echo "64" > /sys/block/mmcblk0/queue/read_ahead_kb
+   echo "0" > /sys/block/sda/queue/iostats
+   echo "0" > /sys/block/mmcblk0/queue/iostats
+   echo "1" > /sys/block/sda/queue/rq_affinity
+   echo "1" > /sys/block/mmcblk0/queue/rq_affinity
+   echo "64" > /sys/block/sda/queue/nr_requests
+   echo "64" > /sys/block/mmcblk0/queue/nr_requests
+
 
 	# Init.d support
 	echo "## -- Start Init.d support" >> $LOG;
