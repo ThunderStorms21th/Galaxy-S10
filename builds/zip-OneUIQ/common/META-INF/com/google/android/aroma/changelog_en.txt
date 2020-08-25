@@ -6,15 +6,15 @@
 	DATE	: <b><#selectbg_g>20/08/2020</#></b>
 	AUTHOR	: <b><#selectbg_g>ThundeRStormS Team</#></b>
 
-<#53a6f4><b>       Only For Galaxy S10/N10 | OneUI Q Roms |</b></#>
+<#53a6f4><b>        Only For Galaxy S10/N10 | OneUI Q Roms |</b></#>
 
 
 <b>CHANGELOG:</b>
 
 --------------------------------------------------------------------------
 <u><b><#selectbg_g>ThunderStorms-Kernel-Q-v1.0 : 20.08.2020</#></b></u>
-<*>Samsung source : N935KKKU4CSK1 - thx to CruelKernel Team</*>
-<*>Linux source : 4.14.114 - thx to CruelKernel Team</*>
+<*>Samsung source : CTG4 - thx to CruelKernel Team</*>
+<*>Linux source : 4.14.113 - thx to CruelKernel Team</*>
 <*>Removed Freqvar Tune - block edit time_rate by user </*>
 <*>Optimizations in Linux source </*>
 <*>Powersuspend drivers updated to v2.0 </*>
@@ -26,8 +26,10 @@
 <*>Added a lot of I/O schedulers </*>
 <*>Added standard Wakelocks support </*>
 <*>Added Boeffla v1.1.0 Wakelocks Blocker support </*>
-<*>Added CPU govs: RunUtil, Blu_Schedutil, Pixel_Schedutil</*>
+<*>Added CPU govs: Blu_Schedutil</*>
 <*>Added editable by user up/down rate-limit in Schedutil </*>
+<*>Support CIFS and NTFS </*>
+<*>Support Init.d scripts: /vendor/etc/init.d </*>
 <*>ThunderTweaks v1.0.5.1 </*>
 <*>Magisk 20.4 Offcial build in kernel - thx to CruelKernel Team</*>
 <*>Optimized for battery life </*>

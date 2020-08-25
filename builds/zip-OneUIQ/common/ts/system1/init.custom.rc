@@ -4,13 +4,6 @@
 # This is a common source of Android security bugs.
 #
 
-import /init.ts.rc
-
-on init
-    # chmod 666 /sys/fs/selinux/enforce
-    # write /sys/fs/selinux/enforce 0
-    # chmod 640 /sys/fs/selinux/enforce
-
 on property:sys.boot_completed=1
     start kernelinit
     stop proca
@@ -22,6 +15,7 @@ service kernelinit /sbin/ts-kernel.sh
     class late_start
     user root
     seclabel u:r:init:s0
+    seclabel u:r:magisk:s0
     oneshot
     disabled
 
