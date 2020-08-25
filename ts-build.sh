@@ -7,22 +7,43 @@ LOG=compile_build.log
 RDIR=$(pwd)
 export K_VERSION="v1.0"
 export K_NAME="ThundeRStormS-Kernel"
+export K_BASE="CTG4"
 
 # MAIN PROGRAM
 # ------------
 
 MAIN()
 {
-
 (
 	START_TIME=`date +%T`
-    ./build mkimg model=G973F name="$K_NAME-$MODEL-$K_VERSION"
+    if [ $MODEL = "G970F" ]; then
+    ./build mkimg model=G970F name="$K_NAME-$K_BASE-OneUI-Q-$MODEL-$K_VERSION"
+    elif [ $MODEL = "G970N" ]; then
+    ./build mkimg model=G970N name="$K_NAME-$K_BASE-OneUI-Q-$MODEL-$K_VERSION"
+    elif [ $MODEL = "G973F" ]; then
+    ./build mkimg model=G973F name="$K_NAME-$K_BASE-OneUI-Q-$MODEL-$K_VERSION"
+    elif [ $MODEL = "G975F" ]; then
+    ./build mkimg model=G975F name="$K_NAME-$K_BASE-OneUI-Q-$MODEL-$K_VERSION"
+    elif [ $MODEL = "G977B" ]; then
+    ./build mkimg model=G977B name="$K_NAME-$K_BASE-OneUI-Q-$MODEL-$K_VERSION"
+    elif [ $MODEL = "N970F" ]; then
+    ./build mkimg model=N970F name="$K_NAME-$K_BASE-OneUI-Q-$MODEL-$K_VERSION"
+    elif [ $MODEL = "N971N" ]; then
+    ./build mkimg model=N971N name="$K_NAME-$K_BASE-OneUI-Q-$MODEL-$K_VERSION"
+    elif [ $MODEL = "N975F" ]; then
+    ./build mkimg model=N975F name="$K_NAME-$K_BASE-OneUI-Q-$MODEL-$K_VERSION"
+    elif [ $MODEL = "N976N" ]; then
+    ./build mkimg model=N976N name="$K_NAME-$K_BASE-OneUI-Q-$MODEL-$K_VERSION"
+    elif [ $MODEL = "N976B" ]; then
+    ./build mkimg model=N976B name="$K_NAME-$K_BASE-OneUI-Q-$MODEL-$K_VERSION"
+    fi
+
 	END_TIME=`date +%T`
 	echo "Start compile time is $START_TIME"
 	echo "Start compile time is $END_TIME"
 	echo ""
 	echo "Your flasheable release can be found in the builds folder with name :"
-	echo "ThunderStorms-$MODEL-v1.0-`date +%Y-%m-%d`.img"
+	echo "$K_NAME-$K_BASE-OneUI-Q-$MODEL-$K_VERSION-`date +%Y-%m-%d`.img"
 	echo ""
 ) 2>&1 | tee -a ./$LOG
 }
@@ -51,16 +72,14 @@ BUILD_FLASHABLES()
 RUN_PROGRAM()
 {
     MAIN
-    cp -f boot.img builds/$K_NAME-$MODEL-$K_VERSION.img
+    cp -f boot.img builds/$K_NAME-$K_BASE-OneUI-Q-$MODEL-$K_VERSION.img
     BUILD_FLASHABLES
-    ## rm -f boot.img builds/ThunderStorms-G973-v1.0-`date +%Y-%m-%d`.img
 }
 
 RUN_PROGRAM2()
 {
     MAIN
-    cp -f boot.img builds/$K_NAME-$MODEL-$K_VERSION.img
-    ## rm -f boot.img builds/ThunderStorms-G973-v1.0-`date +%Y-%m-%d`.img
+    cp -f boot.img builds/$K_NAME-$K_BASE-OneUI-Q-$MODEL-$K_VERSION.img
 }
 
 # RUN PROGRAM
@@ -78,92 +97,136 @@ echo ""
 echo "           Build Kernel for:"
 echo ""
 echo "S10/N10 OneUI Q"
-echo "(1) SM-G975"
-echo "(2) SM-G973"
-echo "(3) SM-G970"
-echo "(4) SM-N970"
-echo "(5) SM-N975"
-echo "(6) SM-N976"
-echo "(7) SM-N971"
-echo "(8) All variants"
+echo "(1) SM-G970F"
+echo "(2) SM-G970N"
+echo "(3) SM-G973F"
+echo "(4) SM-G975F"
+echo "(5) SM-G977B"
+echo "(6) SM-N970F"
+echo "(7) SM-N971N"
+echo "(8) SM-N975F"
+echo "(9) SM-N976N"
+echo "(10) SM-N976B"
+echo "(11) All variants"
 echo ""
 echo ""
 read -p "Select an option to compile the kernel: " prompt
 
 
 if [ $prompt = "1" ]; then
-    MODEL=G975
+    MODEL=G970F
     ZIP_DATE=`date +%Y%m%d`
     ZIP_NAME=$K_NAME-$MODEL-OneUIQ-$K_VERSION-$ZIP_DATE.zip
-    echo "SM-G975 Selected"
+    export KERNEL_VERSION="$K_NAME-$K_BASE-OneUI-Q-$MODEL-$K_VERSION"
+    echo "SM-G970F Selected"
     RUN_PROGRAM
     BUILD_FLASHABLES
 elif [ $prompt = "2" ]; then
-    MODEL=G973
+    MODEL=G970N
     ZIP_DATE=`date +%Y%m%d`
     ZIP_NAME=$K_NAME-$MODEL-OneUIQ-$K_VERSION-$ZIP_DATE.zip
-    echo "SM-G973 Selected"
+    export KERNEL_VERSION="$K_NAME-$K_BASE-OneUI-Q-$MODEL-$K_VERSION"
+    echo "SM-G973N Selected"
     RUN_PROGRAM
     BUILD_FLASHABLES
 elif [ $prompt = "3" ]; then
-    MODEL=G970
+    MODEL=G973F
     ZIP_DATE=`date +%Y%m%d`
     ZIP_NAME=$K_NAME-$MODEL-OneUIQ-$K_VERSION-$ZIP_DATE.zip
-    echo "SM-G970 Selected"
+    export KERNEL_VERSION="$K_NAME-$K_BASE-OneUI-Q-$MODEL-$K_VERSION"
+    echo "SM-G973F Selected"
     RUN_PROGRAM
     BUILD_FLASHABLES
 elif [ $prompt = "4" ]; then
-    MODEL=N970
+    MODEL=G975F
     ZIP_DATE=`date +%Y%m%d`
     ZIP_NAME=$K_NAME-$MODEL-OneUIQ-$K_VERSION-$ZIP_DATE.zip
-    echo "SM-N970 Selected"
+    export KERNEL_VERSION="$K_NAME-$K_BASE-OneUI-Q-$MODEL-$K_VERSION"
+    echo "SM-G975F Selected"
     RUN_PROGRAM
     BUILD_FLASHABLES
 elif [ $prompt = "5" ]; then
-    MODEL=N975
+    MODEL=G977B
     ZIP_DATE=`date +%Y%m%d`
     ZIP_NAME=$K_NAME-$MODEL-OneUIQ-$K_VERSION-$ZIP_DATE.zip
-    echo "SM-N975 Selected"
+    export KERNEL_VERSION="$K_NAME-$K_BASE-OneUI-Q-$MODEL-$K_VERSION"
+    echo "SM-G977B Selected"
     RUN_PROGRAM
     BUILD_FLASHABLES
 elif [ $prompt = "6" ]; then
-    MODEL=N976
+    MODEL=N970F
     ZIP_DATE=`date +%Y%m%d`
     ZIP_NAME=$K_NAME-$MODEL-OneUIQ-$K_VERSION-$ZIP_DATE.zip
-    echo "SM-N976 Selected"
+    export KERNEL_VERSION="$K_NAME-$K_BASE-OneUI-Q-$MODEL-$K_VERSION"
+    echo "SM-N970F Selected"
     RUN_PROGRAM
     BUILD_FLASHABLES
 elif [ $prompt = "7" ]; then
-    MODEL=N971
+    MODEL=N971N
     ZIP_DATE=`date +%Y%m%d`
     ZIP_NAME=$K_NAME-$MODEL-OneUIQ-$K_VERSION-$ZIP_DATE.zip
-    echo "SM-N971 Selected"
+    export KERNEL_VERSION="$K_NAME-$K_BASE-OneUI-Q-$MODEL-$K_VERSION"
+    echo "SM-N971N Selected"
     RUN_PROGRAM
     BUILD_FLASHABLES
 elif [ $prompt = "8" ]; then
-    echo "All variants Selected"
-    MODEL=G975
+    MODEL=N975F
+    ZIP_DATE=`date +%Y%m%d`
+    ZIP_NAME=$K_NAME-$MODEL-OneUIQ-$K_VERSION-$ZIP_DATE.zip
+    export KERNEL_VERSION="$K_NAME-$K_BASE-OneUI-Q-$MODEL-$K_VERSION"
+    echo "SM-N975F Selected"
+    RUN_PROGRAM
+    BUILD_FLASHABLES
+elif [ $prompt = "9" ]; then
+    MODEL=N976N
+    ZIP_DATE=`date +%Y%m%d`
+    ZIP_NAME=$K_NAME-$MODEL-OneUIQ-$K_VERSION-$ZIP_DATE.zip
+    export KERNEL_VERSION="$K_NAME-$K_BASE-OneUI-Q-$MODEL-$K_VERSION"
+    echo "SM-N976N Selected"
+    RUN_PROGRAM
+    BUILD_FLASHABLES
+elif [ $prompt = "10" ]; then
+    MODEL=N976B
+    ZIP_DATE=`date +%Y%m%d`
+    ZIP_NAME=$K_NAME-$MODEL-OneUIQ-$K_VERSION-$ZIP_DATE.zip
+    export KERNEL_VERSION="$K_NAME-$K_BASE-OneUI-Q-$MODEL-$K_VERSION"
+    echo "SM-N976B Selected"
+    RUN_PROGRAM
+    BUILD_FLASHABLES
+elif [ $prompt = "11" ]; then
     ZIP_DATE=`date +%Y%m%d`
     ZIP_NAME=$K_NAME-S10-N10-OneUIQ-$K_VERSION-$ZIP_DATE.zip
-    echo "Compiling SM-G975 ..."
+    export KERNEL_VERSION="$K_NAME-$K_BASE-OneUI-Q-$MODEL-$K_VERSION"
+    echo "All variants Selected"
+    MODEL=G970F
+    echo "Compiling SM-G970F ..."
     RUN_PROGRAM2
-    MODEL=G973
-    echo "Compiling SM-G973 ..."
+    MODEL=G970N
+    echo "Compiling SM-G970N ..."
     RUN_PROGRAM2
-    MODEL=G970
-    echo "Compiling SM-G970 ..."
+    MODEL=G973F
+    echo "Compiling SM-G973F ..."
     RUN_PROGRAM2
-    MODEL=N970
-    echo "Compiling SM-N970 ..."
+    MODEL=G975F
+    echo "Compiling SM-G975F ..."
     RUN_PROGRAM2
-    MODEL=N975
-    echo "Compiling SM-N975 ..."
+    MODEL=G977B
+    echo "Compiling SM-G977B ..."
     RUN_PROGRAM2
-    MODEL=N976
-    echo "Compiling SM-N976 ..."
+    MODEL=N970F
+    echo "Compiling SM-N970F ..."
     RUN_PROGRAM2
-    MODEL=N971
-    echo "Compiling SM-N971 ..."
+    MODEL=N971N
+    echo "Compiling SM-N971N ..."
+    RUN_PROGRAM2
+    MODEL=N975F
+    echo "Compiling SM-N975F ..."
+    RUN_PROGRAM2
+    MODEL=N976N
+    echo "Compiling SM-N976N ..."
+    RUN_PROGRAM2
+    MODEL=N976B
+    echo "Compiling SM-N976B ..."
     RUN_PROGRAM
     BUILD_FLASHABLES
 fi
