@@ -3,7 +3,7 @@
 
 	NAME	: <b><#selectbg_g>ThundeRStormS-Kernel-OneUI Q</#></b>	
 	VERSION	: <b><#selectbg_g>v1.0</#></b>
-	DATE	: <b><#selectbg_g>20/08/2020</#></b>
+	DATE	: <b><#selectbg_g>28/08/2020</#></b>
 	AUTHOR	: <b><#selectbg_g>ThundeRStormS Team</#></b>
 
 <#53a6f4><b>        Only For Galaxy S10/N10 | OneUI Q Roms |</b></#>
@@ -12,7 +12,7 @@
 <b>CHANGELOG:</b>
 
 --------------------------------------------------------------------------
-<u><b><#selectbg_g>ThunderStorms-Kernel-Q-v1.0 : 20.08.2020</#></b></u>
+<u><b><#selectbg_g>ThunderStorms-Kernel-Q-v1.0 : 28.08.2020</#></b></u>
 <*>Samsung source : CTG4 - thx to CruelKernel Team</*>
 <*>Linux source : 4.14.113 - thx to CruelKernel Team</*>
 <*>Removed Freqvar Tune - block edit time_rate by user </*>
@@ -30,7 +30,7 @@
 <*>Added editable by user up/down rate-limit in Schedutil </*>
 <*>Support CIFS and NTFS </*>
 <*>Support Init.d scripts: /vendor/etc/init.d </*>
-<*>ThunderTweaks v1.0.5.1 </*>
+<*>ThunderTweaks v1.0.6.0 </*>
 <*>Magisk 20.4 Offcial build in kernel - thx to CruelKernel Team</*>
 <*>Optimized for battery life </*>
 <*>Initial Release</*>
