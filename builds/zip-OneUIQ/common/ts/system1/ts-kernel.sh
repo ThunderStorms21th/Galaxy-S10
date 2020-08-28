@@ -74,7 +74,7 @@ fi
     echo "ts_schedutil" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor
     echo "442000" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq
     echo "1950000" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq
-    echo "3000" > /sys/devices/system/cpu/cpu0/cpufreq/ts_schedutil/down_rate_limit_us
+    echo "4000" > /sys/devices/system/cpu/cpu0/cpufreq/ts_schedutil/down_rate_limit_us
     echo "4000" > /sys/devices/system/cpu/cpu0/cpufreq/ts_schedutil/up_rate_limit_us
 
     # Midle CPU
@@ -88,7 +88,7 @@ fi
     echo "ts_schedutil" > /sys/devices/system/cpu/cpu6/cpufreq/scaling_governor
     echo "52000" > /sys/devices/system/cpu/cpu6/cpufreq/scaling_min_freq
     echo "2730000" > /sys/devices/system/cpu/cpu6/cpufreq/scaling_max_freq
-    echo "4000" > /sys/devices/system/cpu/cpu6/cpufreq/ts_schedutil/down_rate_limit_us
+    echo "3000" > /sys/devices/system/cpu/cpu6/cpufreq/ts_schedutil/down_rate_limit_us
     echo "6000" > /sys/devices/system/cpu/cpu6/cpufreq/ts_schedutil/up_rate_limit_us
 
 
@@ -118,8 +118,8 @@ fi
     echo "156000" > /sys/kernel/gpu/gpu_min_clock
     echo "coarse_demand" > /sys/devices/platform/18500000.mali/power_policy
     echo "1" > /sys/devices/platform/18500000.mali/dvfs_governor
-    echo "325000" > /sys/devices/platform/18500000.mali/highspeed_clock
-    echo "97" > /sys/devices/platform/18500000.mali/highspeed_load
+    echo "433000" > /sys/devices/platform/18500000.mali/highspeed_clock
+    echo "94" > /sys/devices/platform/18500000.mali/highspeed_load
     echo "1" > /sys/devices/platform/18500000.mali/highspeed_delay
 
    # Misc settings

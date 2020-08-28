@@ -5,10 +5,12 @@
 # Credit also goes to @djb77
 # @lyapota, @Tkkg1994, @osm0sis
 # @dwander for bits of code
-# @MoRo
+# @MoRoGoKu
 
 
 # Functions
+BB=/data/tmp/ts/busybox
+
 ui_print() { echo -n -e "ui_print $1\n"; }
 
 file_getprop() { grep "^$2" "$1" | cut -d= -f2; }
@@ -71,33 +73,6 @@ fi
 # Initialice TSkernel folder
 mkdir -p -m 777 /data/.tskernel 2>/dev/null
 
-# Variables
-BB=/sbin/busybox
-SDK="$(file_getprop /system/build.prop ro.build.version.sdk)"
-BL=`getprop ro.bootloader`
-MODEL=${BL:0:4}
-MODEL1=G975
-MODEL1_DESC="G975"
-MODEL2=G973
-MODEL2_DESC="G973"
-MODEL3=G970
-MODEL3_DESC="G970"
-MODEL4=N970
-MODEL4_DESC="N970"
-MODEL5=N975
-MODEL5_DESC="N975"
-MODEL6=N976
-MODEL6_DESC="N976"
-MODEL7=N971
-MODEL7_DESC="G971"
-if [ $MODEL == $MODEL1 ]; then MODEL_DESC=$MODEL1_DESC; fi
-if [ $MODEL == $MODEL2 ]; then MODEL_DESC=$MODEL2_DESC; fi
-if [ $MODEL == $MODEL3 ]; then MODEL_DESC=$MODEL3_DESC; fi
-if [ $MODEL == $MODEL4 ]; then MODEL_DESC=$MODEL4_DESC; fi
-if [ $MODEL == $MODEL5 ]; then MODEL_DESC=$MODEL5_DESC; fi
-if [ $MODEL == $MODEL6 ]; then MODEL_DESC=$MODEL6_DESC; fi
-if [ $MODEL == $MODEL7 ]; then MODEL_DESC=$MODEL7_DESC; fi
-
 #======================================
 # AROMA INIT
 #======================================
@@ -114,23 +89,55 @@ fi
 set_progress 0.10
 show_progress 0.49 -4000
 
+## VARIABLES
+SDK="$(file_getprop /system/build.prop ro.build.version.sdk)"
+BL=`getprop ro.bootloader`
+MODEL=${BL:0:5}
+MODEL1=G975F
+MODEL1_DESC="G975F"
+MODEL2=G973F
+MODEL2_DESC="G973F"
+MODEL3=G970F
+MODEL3_DESC="G970F"
+MODEL4=G970N
+MODEL4_DESC="G970N"
+MODEL5=G977B
+MODEL5_DESC="G977B"
+MODEL6=N970F
+MODEL6_DESC="N970F"
+MODEL7=N975N
+MODEL7_DESC="N975N"
+MODEL8=N976N
+MODEL8_DESC="N976N"
+MODEL9=N971N
+MODEL9_DESC="G971N"
+MODEL10=N976B
+MODEL10_DESC="G976B"
+if [ $MODEL == $MODEL1 ]; then MODEL_DESC=$MODEL1_DESC; fi
+if [ $MODEL == $MODEL2 ]; then MODEL_DESC=$MODEL2_DESC; fi
+if [ $MODEL == $MODEL3 ]; then MODEL_DESC=$MODEL3_DESC; fi
+if [ $MODEL == $MODEL4 ]; then MODEL_DESC=$MODEL4_DESC; fi
+if [ $MODEL == $MODEL5 ]; then MODEL_DESC=$MODEL5_DESC; fi
+if [ $MODEL == $MODEL6 ]; then MODEL_DESC=$MODEL6_DESC; fi
+if [ $MODEL == $MODEL7 ]; then MODEL_DESC=$MODEL7_DESC; fi
+if [ $MODEL == $MODEL8 ]; then MODEL_DESC=$MODEL8_DESC; fi
+if [ $MODEL == $MODEL9 ]; then MODEL_DESC=$MODEL9_DESC; fi
+if [ $MODEL == $MODEL10 ]; then MODEL_DESC=$MODEL10_DESC; fi
+BASE="CTG4"
+VERSION="v1.0"
+
 ## FLASH KERNEL
 ui_print " "
-ui_print "@Flashing ThundeRStormS kernel..."
-
-cd /tmp/ts
-ui_print "-- Extracting"
-# tar -Jxvf kernel.tar.xz ThundeRStormS-Kernel-$MODEL-v1.0.img
-tar -xf kernel.tar.xz ThundeRStormS-Kernel-$MODEL-v1.0.img
-ui_print "-- Flashing ThundeRStormS-Kernel-$MODEL-v1.0.img"
-dd of=/dev/block/platform/13d60000.ufs/by-name/boot if=/tmp/ts/ThundeRStormS-Kernel-$MODEL-v1.0.img
-ui_print "-- Done"
+ui_print "-- Extracting ThundeRStormS kernel"
+cd /data/tmp/ts
+$BB tar -Jxf kernel.tar.xz ThundeRStormS-Kernel-$BASE-OneUI-Q-$MODEL_DESC-$VERSION.img
+# $BB tar -xvf kernel.tar.xz ThundeRStormS-Kernel-$BASE-OneUI-Q-$MODEL_DESC-$VERSION.img
+dd of=/dev/block/platform/13d60000.ufs/by-name/boot if=/data/tmp/ts/ThundeRStormS-Kernel-$BASE-OneUI-Q-$MODEL_DESC-$VERSION.img
 
 ## RUN INITIAL SCRIPT IMPLEMENTATOR
-sh /tmp/ts/initial_settings.sh
+sh /data/tmp/ts/initial_settings.sh
 	
 set_progress 0.49
-
 
 #======================================
 # OPTIONS
@@ -141,9 +148,9 @@ set_progress 0.49
 if [ "$(file_getprop /tmp/aroma/menu.prop chk3)" == 1 ]; then
 	ui_print " "
 	ui_print "@Installing ThunderTweaks App..."
-	sh /tmp/ts/ts_clean.sh com.moro.mtweaks -as
-    sh /tmp/ts/ts_clean.sh com.thunder.thundertweaks -as
-    sh /tmp/ts/ts_clean.sh com.hades.hKtweaks -as
+	sh /data/tmp/ts/ts_clean.sh com.moro.mtweaks -as
+    sh /data/tmp/ts/ts_clean.sh com.thunder.thundertweaks -as
+    sh /data/tmp/ts/ts_clean.sh com.hades.hKtweaks -as
 
 	mkdir -p /data/media/0/ThunderTweaks
 	mkdir -p /sdcard/ThunderTweaks
@@ -153,8 +160,8 @@ if [ "$(file_getprop /tmp/aroma/menu.prop chk3)" == 1 ]; then
 ##	rm -rf /sdcard/ThunderTweaks/*.*
 
 # COPY NEW APP
-	cp -rf /tmp/ts/ttweaks/*.apk /data/media/0/ThunderTweaks
-	cp -rf /tmp/ts/ttweaks/*.apk /sdcard/ThunderTweaks
+	cp -rf /data/tmp/ts/ttweaks/*.apk /data/media/0/ThunderTweaks
+	cp -rf /data/tmp/ts/ttweaks/*.apk /sdcard/ThunderTweaks
 fi
 
 set_progress 0.50
