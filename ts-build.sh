@@ -56,11 +56,11 @@ BUILD_FLASHABLES()
     cp -rf *.img temp2/
 	cd temp2
 	echo ""
-	# echo "Compressing kernels..."
+	echo "Compressing kernels..."
+	tar cv *.img | xz -9 > kernel.tar.xz
 	echo "Copying kernels to ts folder..."
-	# tar cv *.img | xz -9 > kernel.tar.xz
-	# mv kernel.tar.xz ts/
-	mv *.img ts/
+	mv kernel.tar.xz ts/
+	# mv *.img ts/
 
     rm -rf *.img	
 	zip -9 -r ../$ZIP_NAME *
@@ -94,9 +94,10 @@ echo "*****************************************"
 echo ""
 echo "    CUSTOMIZABLE STOCK SAMSUNG KERNEL"
 echo ""
-echo "           Build Kernel for:"
-echo ""
-echo "S10/N10 OneUI Q"
+echo "            Build Kernel for"
+echo "-----------------------------------------"
+echo "|   S10 / N10 family for OneUI Q ROMs   |"
+echo "-----------------------------------------"
 echo "(1) SM-G970F"
 echo "(2) SM-G970N"
 echo "(3) SM-G973F"
@@ -108,7 +109,6 @@ echo "(8) SM-N975F"
 echo "(9) SM-N976N"
 echo "(10) SM-N976B"
 echo "(11) All variants"
-echo ""
 echo ""
 read -p "Select an option to compile the kernel: " prompt
 
@@ -201,29 +201,29 @@ elif [ $prompt = "11" ]; then
     MODEL=G970F
     echo "Compiling SM-G970F ..."
     RUN_PROGRAM2
-    MODEL=G970N
-    echo "Compiling SM-G970N ..."
-    RUN_PROGRAM2
     MODEL=G973F
     echo "Compiling SM-G973F ..."
     RUN_PROGRAM2
     MODEL=G975F
     echo "Compiling SM-G975F ..."
     RUN_PROGRAM2
-    MODEL=G977B
-    echo "Compiling SM-G977B ..."
-    RUN_PROGRAM2
     MODEL=N970F
     echo "Compiling SM-N970F ..."
-    RUN_PROGRAM2
-    MODEL=N971N
-    echo "Compiling SM-N971N ..."
     RUN_PROGRAM2
     MODEL=N975F
     echo "Compiling SM-N975F ..."
     RUN_PROGRAM2
+    MODEL=G970N
+    echo "Compiling SM-G970N ..."
+    RUN_PROGRAM2
+    MODEL=N971N
+    echo "Compiling SM-N971N ..."
+    RUN_PROGRAM2
     MODEL=N976N
     echo "Compiling SM-N976N ..."
+    RUN_PROGRAM2
+    MODEL=G977B
+    echo "Compiling SM-G977B ..."
     RUN_PROGRAM2
     MODEL=N976B
     echo "Compiling SM-N976B ..."
