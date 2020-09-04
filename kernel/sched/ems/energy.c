@@ -210,7 +210,7 @@ static int find_min_util_cpu(const struct cpumask *mask, struct task_struct *p)
 	for_each_cpu_and(cpu, mask, cpu_active_mask) {
 		unsigned long capacity_orig = capacity_orig_of(cpu);
 		unsigned long util = ml_task_attached_cpu_util(cpu, p);
-		unsigned long new_util = cpu_util_wake(cpu, p) + task_util_est(p);
+		unsigned long new_util = ml_cpu_util_wake(cpu, p) + task_util(p);
 
 		/* Skip over-capacity cpu */
 		if (util >= capacity_orig)

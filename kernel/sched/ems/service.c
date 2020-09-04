@@ -129,11 +129,11 @@ select_prefer_cpu(struct task_struct *p, int coregroup_count, struct cpumask *pr
 			continue;
 
 		for_each_cpu_and(cpu, &p->cpus_allowed, &mask) {
-			unsigned long capacity_orig;
+			// unsigned long capacity_orig;
 			unsigned long wake_util_with;
 			unsigned long wake_util_without;
 			unsigned long capacity_orig = capacity_orig_of(cpu);
-			unsigned long new_util = cpu_util_wake(cpu, p) + task_util_est(p);
+			unsigned long new_util = ml_cpu_util_wake(cpu, p) + task_util(p);
 
 			if (cpu >= nr_cpu_ids)
 				break;
