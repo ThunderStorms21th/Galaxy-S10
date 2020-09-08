@@ -37,46 +37,20 @@ enum cm_table_size {
     SZ_CM_SC   = 2,
     SZ_CM_TM   = 25
 };
-
-enum gamma_type_index {
+enum gamma_type_index {
     INDEX_TYPE_SDR = 0,
     INDEX_TYPE_PQ = 1,
     INDEX_TYPE_HLG = 2,
     INDEX_TYPE_MAX,
 };
 
-enum pq_index {
-    INDEX_PQ0200 = 0,
-    INDEX_PQ0250,
-    INDEX_PQ0300,
-    INDEX_PQ0350,
-    INDEX_PQ0400,
-    INDEX_PQ0450,
-    INDEX_PQ0500,
-    INDEX_PQ0550,
-    INDEX_PQ0600,
-    INDEX_PQ0650,
-    INDEX_PQ0700,
-    INDEX_PQ0750,
-    INDEX_PQ0800,
-    INDEX_PQ0850,
-    INDEX_PQ0900,
-    INDEX_PQ0950,
-    INDEX_PQ1000,
-    INDEX_PQ2000,
-    INDEX_PQ3000,
-    INDEX_PQ4000,
-    INDEX_PQ_MAX,
-};
-
-enum target_nit_index {
+enum pq_index {    INDEX_PQ0200 = 0,    INDEX_PQ0250,    INDEX_PQ0300,    INDEX_PQ0350,    INDEX_PQ0400,    INDEX_PQ0450,    INDEX_PQ0500,    INDEX_PQ0550,    INDEX_PQ0600,    INDEX_PQ0650,    INDEX_PQ0700,    INDEX_PQ0750,    INDEX_PQ0800,    INDEX_PQ0850,    INDEX_PQ0900,    INDEX_PQ0950,    INDEX_PQ1000,    INDEX_PQ2000,    INDEX_PQ3000,    INDEX_PQ4000,    INDEX_PQ_MAX,};enum target_nit_index {
     INDEX_T0200 = 0,
     INDEX_T0250 = 1,
     INDEX_T0300 = 2,
     INDEX_T0350 = 3,
     INDEX_T0400 = 4,
-    INDEX_T0450 = 5,
-    INDEX_T0500 = 6,
+    INDEX_T0450 = 5,    INDEX_T0500 = 6,
     INDEX_T0550 = 7,
     INDEX_T0600 = 8,
     INDEX_T0650 = 9,

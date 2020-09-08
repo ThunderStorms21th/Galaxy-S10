@@ -1,15 +1,5 @@
-/* linux/drivers/video/fbdev/exynos/mcd_hdr/mcd_cm_def.h
- *
- * Copyright (c) 2016 Samsung Electronics Co., Ltd.
- *
- * header file for Samsung EXYNOS SoC HDR driver
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License version 2 as
- * published by the Free Software Foundation.
- */
-#ifndef __MCD_CM_DEF_H__
-#define __MCD_CM_DEF_H__
+/* linux/drivers/video/fbdev/exynos/mcd_hdr/mcd_cm_def.h * * Copyright (c) 2016 Samsung Electronics Co., Ltd. * * header file for Samsung EXYNOS SoC HDR driver * * This program is free software; you can redistribute it and/or modify * it under the terms of the GNU General Public License version 2 as * published by the Free Software Foundation. */
+#ifndef __MCD_CM_DEF_H__#define __MCD_CM_DEF_H__
 enum gamut_index {
     INDEX_GAMUT_UNSPECIFIED = 0,    // HAL_DATASPACE_STANDARD_UNSPECIFIED
     INDEX_GAMUT_BT709          ,    // HAL_DATASPACE_STANDARD_BT709
@@ -21,9 +11,7 @@ enum gamut_index {
     INDEX_GAMUT_DCI_P3         ,    // HAL_DATASPACE_STANDARD_DCI_P3
     INDEX_GAMUT_ADOBE_RGB      ,    // HAL_DATASPACE_STANDARD_ADOBE_RGB
     INDEX_GAMUT_NUM            ,
-};
-
-enum gamma_index {
+};enum gamma_index {
     INDEX_GAMMA_UNSPECIFIED = 0,    // HAL_DATASPACE_TRANSFER_UNSPECIFIED
     INDEX_GAMMA_LINEAR         ,    // HAL_DATASPACE_TRANSFER_LINEAR
     INDEX_GAMMA_SRGB           ,    // HAL_DATASPACE_TRANSFER_SRGB
@@ -34,9 +22,4 @@ enum gamma_index {
     INDEX_GAMMA_ST2084         ,    // HAL_DATASPACE_TRANSFER_ST2084
     INDEX_GAMMA_HLG            ,    // HAL_DATASPACE_TRANSFER_HLG
     INDEX_GAMMA_NUM            ,
-};
-
-#define ASSUME_SMPTE170M_IS_SRGB
-#define ASSUME_SRGB_IS_GAMMA22_FOR_HDR
-
-#endif //__MCD_CM_DEF_H__
+};#define ASSUME_SMPTE170M_IS_SRGB#define ASSUME_SRGB_IS_GAMMA22_FOR_HDR#endif //__MCD_CM_DEF_H__
