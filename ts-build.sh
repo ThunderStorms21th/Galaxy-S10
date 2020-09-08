@@ -9,6 +9,17 @@ export K_VERSION="v1.0"
 export K_NAME="ThundeRStormS-Kernel"
 export K_BASE="CTG4"
 
+export BUILD_CROSS_COMPILE=/home/nalas/kernel/AiO-S10-TS/toolchain/gcc-cfp/gcc-cfp-jopp-only/aarch64-linux-android-4.9/bin/aarch64-linux-android-
+export CROSS_COMPILE=$BUILD_CROSS_COMPILE
+OUTDIR=$RDIR/arch/arm64/boot
+DTSDIR=$RDIR/arch/arm64/boot/dts/exynos
+DTBDIR=$OUTDIR/dtb
+DTBTOOL=$RDIR/tools/dtb
+DTCTOOL=$RDIR/scripts/dtc/dtc
+INCDIR=$RDIR/include
+PAGE_SIZE=4096
+DTB_PADDING=0
+
 # MAIN PROGRAM
 # ------------
 
@@ -72,15 +83,56 @@ BUILD_FLASHABLES()
 RUN_PROGRAM()
 {
     MAIN
+    BUILD_DTBO
+    BUILD_DTB
     cp -f boot.img builds/$K_NAME-$K_BASE-OneUI-Q-$MODEL-$K_VERSION.img
+    cp -f /home/nalas/kernel/AiO-S10-TS/arch/arm64/boot/dts/samsung/dtbo.img builds/dtbo.img
+    cp -f /home/nalas/kernel/AiO-S10-TS/arch/arm64/boot/dts/exynos/dtb.img builds/dtb.img
     BUILD_FLASHABLES
 }
 
 RUN_PROGRAM2()
 {
     MAIN
+    BUILD_DTBO
+    BUILD_DTB
     cp -f boot.img builds/$K_NAME-$K_BASE-OneUI-Q-$MODEL-$K_VERSION.img
+    cp -f /home/nalas/kernel/AiO-S10-TS/arch/arm64/boot/dts/samsung/dtbo.img builds/dtbo.img
+    cp -f /home/nalas/kernel/AiO-S10-TS/arch/arm64/boot/dts/exynos/dtb.img builds/dtb.img
 }
+
+BUILD_DTBO()
+{
+python tools/dtbo/mkdtboimg.py create /home/nalas/kernel/AiO-S10-TS/arch/arm64/boot/dts/samsung/dtbo.img /home/nalas/kernel/AiO-S10-TS/arch/arm64/boot/dts/samsung/*.dtbo
+}
+
+BUILD_DTB()
+{
+	echo "Processing dts files."
+	echo "Generating dtb.img."
+    # cd /home/nalas/kernel/AiO-S10-TS/tools/dtb/
+    # python tools/dtb/dtbTool -s 4096 -o "$OUTDIR/dtb.img" -p "$DTCTOOL" "$DTSDIR"
+    # python tools/dtb/dtbTool -s 4096 -o "$OUTDIR/dtb.img" -d "$DTCTOOL" "$DTSDIR"
+
+    make $RDIR/arch/arm64/boot/dts/exynos/exynos9820.dtb
+
+    # python tools/dtb/mkdtimg -s 2048 -o "$OUTDIR/dtb.img" -d "$DTCTOOL" "$DTSDIR"
+    # python $RDIR/tools/dtb/mkdtimg create "$OUTDIR/dt.img" --page_size=$PAGE_SIZE "$DTSDIR/*dtb"
+
+    # python tools/dtbo/mkdtimg -d "$DTSDIR/*.dtb" -s 4096 -c -o "$OUTDIR/dt.img"
+
+    # python tools/dtbo/mkdtimg.py -c -d /home/nalas/kernel/AiO-S10-TS/arch/arm64/boot/dts/exynos/dtb.img -s 4096 -o /home/nalas/kernel/AiO-S10-TS/arch/arm64/boot/dts/exynos/*.dtb
+    # $RDIR/tools/dtbtool -s 4096 -o "$OUTDIR/dtb.img" -p "$DTCTOOL" "$DTSDIR"
+    # $RDIR/tools/dtbtool2 -s 4096 -o "$OUTDIR/dtb.img" -p "$DTCTOOL" "$DTSDIR"
+
+    python tools/dtbo/mkdtboimg.py create /home/nalas/kernel/AiO-S10-TS/arch/arm64/boot/dts/exynos/dtb.img /home/nalas/kernel/AiO-S10-TS/arch/arm64/boot/dts/exynos/*.dtb
+
+	#echo "Generating dtb.img."
+	# $RDIR/tools/dtbtool2 -o "$OUTDIR/dtb.img" -p "$DTCTOOL" "$DTSDIR/" -s $PAGE_SIZE
+	# $RDIR/tools/dtbtool2 -o "$OUTDIR/dtb.img" -d "$DTSBDIR/" -s $PAGE_SIZE
+	echo "Done."
+}
+
 
 # RUN PROGRAM
 # -----------
@@ -230,6 +282,3 @@ elif [ $prompt = "11" ]; then
     RUN_PROGRAM
     BUILD_FLASHABLES
 fi
-    
-
-
