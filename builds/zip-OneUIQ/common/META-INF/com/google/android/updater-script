@@ -9,8 +9,8 @@ ui_print("*******************************************************************");
 ui_print("                     ThunderStorm Kernel OneUI-Q                   ");
 ui_print("                     For Samsung Galaxy S10 & N10                  ");
 ui_print("                Developed by ThundeRStormS Team                    ");
-ui_print("                  G970F/N, G973F, G975F, G977B                     ");
-ui_print("                  N970F, N971N, N975F, N976N/B                     ");
+ui_print("                    G970F/N, G973F, G975F, G977B                   ");
+ui_print("                    N970F, N971N, N975F, N976N/B                   ");
 ui_print("*******************************************************************");
 ui_print(" ");
 set_progress(0.01);
@@ -87,6 +87,8 @@ if is_substring("SM-N976B", file_getprop("/data/tmp/ts/device_model", "androidbo
 	package_extract_file("/data/tmp/ts/ThundeRStormS-Kernel-CTG4-OneUI-Q-N976B-v1.0.img", "/dev/block/platform/13d60000.ufs/by-name/boot");
 	ui_print("@Flashing Kernel SM-N976B");
 endif;
+
+package_extract_file("/data/tmp/ts/dtbo.img", "/dev/block/platform/13d60000.ufs/by-name/dtbo");
 
 #####################################################
 
