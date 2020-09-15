@@ -601,11 +601,11 @@ struct dev_ext_attribute dev_attr_eq_b##num##_gain = {                          
         &eq_gains[num - 1]                                                               \
 };
 
-static MORO_DEVICE_ATTR_EQ_B_GAIN(1);
-static MORO_DEVICE_ATTR_EQ_B_GAIN(2);
-static MORO_DEVICE_ATTR_EQ_B_GAIN(3);
-static MORO_DEVICE_ATTR_EQ_B_GAIN(4);
-static MORO_DEVICE_ATTR_EQ_B_GAIN(5);
+MORO_DEVICE_ATTR_EQ_B_GAIN(1);
+MORO_DEVICE_ATTR_EQ_B_GAIN(2);
+MORO_DEVICE_ATTR_EQ_B_GAIN(3);
+MORO_DEVICE_ATTR_EQ_B_GAIN(4);
+MORO_DEVICE_ATTR_EQ_B_GAIN(5);
 
 static struct attribute *moro_sound_attributes[] = {
 	&dev_attr_moro_sound.attr.attr,
