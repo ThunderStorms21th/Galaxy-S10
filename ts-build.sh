@@ -5,9 +5,9 @@
 
 LOG=compile_build.log
 RDIR=$(pwd)
-export K_VERSION="v1.0"
+export K_VERSION="v1.1"
 export K_NAME="ThundeRStormS-Kernel"
-export K_BASE="CTG4"
+export K_BASE="DTH7"
 
 export BUILD_CROSS_COMPILE=/home/nalas/kernel/AiO-S10-TS/toolchain/gcc-cfp/gcc-cfp-jopp-only/aarch64-linux-android-4.9/bin/aarch64-linux-android-
 export CROSS_COMPILE=$BUILD_CROSS_COMPILE
@@ -17,7 +17,7 @@ DTBDIR=$OUTDIR/dtb
 DTBTOOL=$RDIR/tools/dtb
 DTCTOOL=$RDIR/scripts/dtc/dtc
 INCDIR=$RDIR/include
-PAGE_SIZE=4096
+PAGE_SIZE=2048
 DTB_PADDING=0
 
 # MAIN PROGRAM
@@ -28,25 +28,25 @@ MAIN()
 (
 	START_TIME=`date +%T`
     if [ $MODEL = "G970F" ]; then
-    ./build mkimg model=G970F name="$K_NAME-$K_BASE-OneUI-Q-$MODEL-$K_VERSION"
+    ./build mkimg model=G970F name="$K_NAME-$K_BASE-OneUI-Q-$MODEL-$K_VERSION" toolchain=arter97
     elif [ $MODEL = "G970N" ]; then
-    ./build mkimg model=G970N name="$K_NAME-$K_BASE-OneUI-Q-$MODEL-$K_VERSION"
+    ./build mkimg model=G970N name="$K_NAME-$K_BASE-OneUI-Q-$MODEL-$K_VERSION" toolchain=arter97
     elif [ $MODEL = "G973F" ]; then
-    ./build mkimg model=G973F name="$K_NAME-$K_BASE-OneUI-Q-$MODEL-$K_VERSION"
+    ./build mkimg model=G973F name="$K_NAME-$K_BASE-OneUI-Q-$MODEL-$K_VERSION" toolchain=arter97
     elif [ $MODEL = "G975F" ]; then
-    ./build mkimg model=G975F name="$K_NAME-$K_BASE-OneUI-Q-$MODEL-$K_VERSION"
+    ./build mkimg model=G975F name="$K_NAME-$K_BASE-OneUI-Q-$MODEL-$K_VERSION" toolchain=arter97
     elif [ $MODEL = "G977B" ]; then
-    ./build mkimg model=G977B name="$K_NAME-$K_BASE-OneUI-Q-$MODEL-$K_VERSION"
+    ./build mkimg model=G977B name="$K_NAME-$K_BASE-OneUI-Q-$MODEL-$K_VERSION" toolchain=arter97
     elif [ $MODEL = "N970F" ]; then
-    ./build mkimg model=N970F name="$K_NAME-$K_BASE-OneUI-Q-$MODEL-$K_VERSION"
+    ./build mkimg model=N970F name="$K_NAME-$K_BASE-OneUI-Q-$MODEL-$K_VERSION" toolchain=arter97
     elif [ $MODEL = "N971N" ]; then
-    ./build mkimg model=N971N name="$K_NAME-$K_BASE-OneUI-Q-$MODEL-$K_VERSION"
+    ./build mkimg model=N971N name="$K_NAME-$K_BASE-OneUI-Q-$MODEL-$K_VERSION" toolchain=arter97
     elif [ $MODEL = "N975F" ]; then
-    ./build mkimg model=N975F name="$K_NAME-$K_BASE-OneUI-Q-$MODEL-$K_VERSION"
+    ./build mkimg model=N975F name="$K_NAME-$K_BASE-OneUI-Q-$MODEL-$K_VERSION" toolchain=arter97
     elif [ $MODEL = "N976N" ]; then
-    ./build mkimg model=N976N name="$K_NAME-$K_BASE-OneUI-Q-$MODEL-$K_VERSION"
+    ./build mkimg model=N976N name="$K_NAME-$K_BASE-OneUI-Q-$MODEL-$K_VERSION" toolchain=arter97
     elif [ $MODEL = "N976B" ]; then
-    ./build mkimg model=N976B name="$K_NAME-$K_BASE-OneUI-Q-$MODEL-$K_VERSION"
+    ./build mkimg model=N976B name="$K_NAME-$K_BASE-OneUI-Q-$MODEL-$K_VERSION" toolchain=arter97
     fi
 
 	END_TIME=`date +%T`
@@ -85,7 +85,7 @@ RUN_PROGRAM()
     MAIN
     BUILD_DTBO
     BUILD_DTB
-    cp -f boot.img builds/$K_NAME-$K_BASE-OneUI-Q-$MODEL-$K_VERSION.img
+    cp -f boot-$MODEL.img builds/$K_NAME-$K_BASE-OneUI-Q-$MODEL-$K_VERSION.img
     cp -f /home/nalas/kernel/AiO-S10-TS/arch/arm64/boot/dts/samsung/dtbo.img builds/dtbo.img
     cp -f /home/nalas/kernel/AiO-S10-TS/arch/arm64/boot/dts/exynos/dtb.img builds/dtb.img
     BUILD_FLASHABLES
@@ -96,7 +96,7 @@ RUN_PROGRAM2()
     MAIN
     BUILD_DTBO
     BUILD_DTB
-    cp -f boot.img builds/$K_NAME-$K_BASE-OneUI-Q-$MODEL-$K_VERSION.img
+    cp -f boot-$MODEL.img builds/$K_NAME-$K_BASE-OneUI-Q-$MODEL-$K_VERSION.img
     cp -f /home/nalas/kernel/AiO-S10-TS/arch/arm64/boot/dts/samsung/dtbo.img builds/dtbo.img
     cp -f /home/nalas/kernel/AiO-S10-TS/arch/arm64/boot/dts/exynos/dtb.img builds/dtb.img
 }
@@ -119,13 +119,13 @@ BUILD_DTB()
     # python tools/dtb/mkdtimg -s 2048 -o "$OUTDIR/dtb.img" -d "$DTCTOOL" "$DTSDIR"
     # python $RDIR/tools/dtb/mkdtimg create "$OUTDIR/dt.img" --page_size=$PAGE_SIZE "$DTSDIR/*dtb"
 
-    # python tools/dtbo/mkdtimg -d "$DTSDIR/*.dtb" -s 4096 -c -o "$OUTDIR/dt.img"
+    # python tools/dtbo/mkdtimg -d "$DTSDIR/*.dtb" -s 2048 -c -o "$OUTDIR/dt.img"
 
-    # python tools/dtbo/mkdtimg.py -c -d /home/nalas/kernel/AiO-S10-TS/arch/arm64/boot/dts/exynos/dtb.img -s 4096 -o /home/nalas/kernel/AiO-S10-TS/arch/arm64/boot/dts/exynos/*.dtb
-    # $RDIR/tools/dtbtool -s 4096 -o "$OUTDIR/dtb.img" -p "$DTCTOOL" "$DTSDIR"
-    # $RDIR/tools/dtbtool2 -s 4096 -o "$OUTDIR/dtb.img" -p "$DTCTOOL" "$DTSDIR"
+    # python tools/dtbo/mkdtimg.py -c -d /home/nalas/kernel/AiO-S10-TS/arch/arm64/boot/dts/exynos/dtb.img -s 2048 -o /home/nalas/kernel/AiO-S10-TS/arch/arm64/boot/dts/exynos/*.dtb
+    # $RDIR/tools/dtbtool -s 2048 -o "$OUTDIR/dtb.img" -p "$DTCTOOL" "$DTSDIR"
+    # $RDIR/tools/dtbtool2 -s 2048 -o "$OUTDIR/dtb.img" -p "$DTCTOOL" "$DTSDIR"
 
-    python tools/dtbo/mkdtboimg.py create /home/nalas/kernel/AiO-S10-TS/arch/arm64/boot/dts/exynos/dtb.img /home/nalas/kernel/AiO-S10-TS/arch/arm64/boot/dts/exynos/*.dtb
+    # python tools/dtbo/mkdtboimg.py create /home/nalas/kernel/AiO-S10-TS/arch/arm64/boot/dts/exynos/dtb.img /home/nalas/kernel/AiO-S10-TS/arch/arm64/boot/dts/exynos/*.dtb
 
 	#echo "Generating dtb.img."
 	# $RDIR/tools/dtbtool2 -o "$OUTDIR/dtb.img" -p "$DTCTOOL" "$DTSDIR/" -s $PAGE_SIZE
