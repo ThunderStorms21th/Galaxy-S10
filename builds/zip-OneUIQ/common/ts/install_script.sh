@@ -87,7 +87,7 @@ if [ $SYSTEM_ROOT == true ]; then
 fi
 
 set_progress 0.10
-show_progress 0.49 -4000
+show_progress 0.40 -4000
 
 ## VARIABLES
 SDK="$(file_getprop /system/build.prop ro.build.version.sdk)"
@@ -123,8 +123,8 @@ if [ $MODEL == $MODEL7 ]; then MODEL_DESC=$MODEL7_DESC; fi
 if [ $MODEL == $MODEL8 ]; then MODEL_DESC=$MODEL8_DESC; fi
 if [ $MODEL == $MODEL9 ]; then MODEL_DESC=$MODEL9_DESC; fi
 if [ $MODEL == $MODEL10 ]; then MODEL_DESC=$MODEL10_DESC; fi
-BASE="CTG4"
-VERSION="v1.0"
+BASE="DTH7"
+VERSION="v1.1"
 
 ## FLASH KERNEL
 ui_print " "
@@ -137,7 +137,7 @@ dd of=/dev/block/platform/13d60000.ufs/by-name/boot if=/data/tmp/ts/ThundeRStorm
 ## RUN INITIAL SCRIPT IMPLEMENTATOR
 sh /data/tmp/ts/initial_settings.sh
 	
-set_progress 0.49
+set_progress 0.40
 
 #======================================
 # OPTIONS

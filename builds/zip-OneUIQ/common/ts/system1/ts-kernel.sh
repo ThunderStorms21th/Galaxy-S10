@@ -6,24 +6,29 @@
 TS_DIR="/data/.tskernel"
 LOG="$TS_DIR/tskernel.log"
 
-sleep 90
+sleep 5
 
 rm -f $LOG
 
-# Create morokernel folder
-if [ ! -d $TS_DIR ]; then
-	mkdir -p $TS_DIR;
-fi
+    # Create ThunderStormS and init.d folder
+    if [ ! -d $TS_DIR ]; then
+	    mkdir -p $TS_DIR;
+    fi
+
+    # Create init.d folder
+    mkdir -p /vendor/etc/init.d;
+	chown -R root.root /vendor/etc/init.d;
+	chmod 755 /vendor/etc/init.d;
 
 	echo $(date) "TS-Kernel LOG" >> $LOG;
 	echo " " >> $LOG;
 
 	# SafetyNet
 	# SELinux (0 / 640 = Permissive, 1 / 644 = Enforcing)
-	echo "## -- SafetyNet permissions" >> $LOG;
-	chmod 644 /sys/fs/selinux/enforce;
-	chmod 440 /sys/fs/selinux/policy;
-	echo " " >> $LOG;
+	# echo "## -- SafetyNet permissions" >> $LOG;
+	# chmod 644 /sys/fs/selinux/enforce;
+	# chmod 440 /sys/fs/selinux/policy;
+	# echo " " >> $LOG;
 
 	# deepsleep fix
 	echo "## -- DeepSleep Fix" >> $LOG;
@@ -35,7 +40,7 @@ fi
 	echo " " >> $LOG;
 
 	## ThunderStormS kill Google and Media servers script
-	sleep 2
+	sleep 1
 
 	# Google play services wakelock fix
 	echo "## -- GooglePlay wakelock fix $( date +"%d-%m-%Y %H:%M:%S" )" >> $LOG;
@@ -72,26 +77,26 @@ fi
     # CPU set at max/min freq
     # Little CPU
     echo "ts_schedutil" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor
-    echo "241000" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq
+    echo "442000" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq
     echo "1950000" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq
     echo "3000" > /sys/devices/system/cpu/cpu0/cpufreq/ts_schedutil/down_rate_limit_us
-    echo "5000" > /sys/devices/system/cpu/cpu0/cpufreq/ts_schedutil/up_rate_limit_us
-    echo "1" > /sys/devices/system/cpu/cpu0/cpufreq/ts_schedutil/iowait_boost_enable
+    echo "4000" > /sys/devices/system/cpu/cpu0/cpufreq/ts_schedutil/up_rate_limit_us
+    echo "0" > /sys/devices/system/cpu/cpu0/cpufreq/ts_schedutil/iowait_boost_enable
 
     # Midle CPU
     echo "ts_schedutil" > /sys/devices/system/cpu/cpu4/cpufreq/scaling_governor
     echo "507000" > /sys/devices/system/cpu/cpu4/cpufreq/scaling_min_freq
     echo "2314000" > /sys/devices/system/cpu/cpu4/cpufreq/scaling_max_freq
-    echo "4000" > /sys/devices/system/cpu/cpu4/cpufreq/ts_schedutil/down_rate_limit_us
-    echo "7000" > /sys/devices/system/cpu/cpu4/cpufreq/ts_schedutil/up_rate_limit_us
-    echo "1" > /sys/devices/system/cpu/cpu4/cpufreq/ts_schedutil/iowait_boost_enable
+    echo "3000" > /sys/devices/system/cpu/cpu4/cpufreq/ts_schedutil/down_rate_limit_us
+    echo "6000" > /sys/devices/system/cpu/cpu4/cpufreq/ts_schedutil/up_rate_limit_us
+    echo "0" > /sys/devices/system/cpu/cpu4/cpufreq/ts_schedutil/iowait_boost_enable
 
     # BIG CPU
     echo "ts_schedutil" > /sys/devices/system/cpu/cpu6/cpufreq/scaling_governor
     echo "52000" > /sys/devices/system/cpu/cpu6/cpufreq/scaling_min_freq
     echo "2730000" > /sys/devices/system/cpu/cpu6/cpufreq/scaling_max_freq
     echo "3000" > /sys/devices/system/cpu/cpu6/cpufreq/ts_schedutil/down_rate_limit_us
-    echo "9000" > /sys/devices/system/cpu/cpu6/cpufreq/ts_schedutil/up_rate_limit_us
+    echo "6000" > /sys/devices/system/cpu/cpu6/cpufreq/ts_schedutil/up_rate_limit_us
     echo "0" > /sys/devices/system/cpu/cpu6/cpufreq/ts_schedutil/iowait_boost_enable
 
     # Wakelock settigs
@@ -112,18 +117,21 @@ fi
     echo "64" > /proc/sys/kernel/random/read_wakeup_threshold
 
     # VM
-    echo "80" > /proc/sys/vm/vfs_cache_pressure
-    echo "140" > /proc/sys/vm/swappiness
+    echo "90" > /proc/sys/vm/vfs_cache_pressure
+    echo "100" > /proc/sys/vm/swappiness
     echo "800" > /proc/sys/vm/dirty_writeback_centisecs
     echo "800" > /proc/sys/vm/dirty_expire_centisecs
 
     # ZRAM
-    swapoff /dev/block/zram0 > /dev/null 2>&1
-    echo "1" > /sys/block/zram0/reset
-    echo "1073741824" > /sys/block/zram0/disksize
-    chmod 644 /dev/block/zram0
-    mkswap /dev/block/zram0 > /dev/null 2>&1
-    swapon /dev/block/zram0 > /dev/null 2>&1
+    # swapoff /dev/block/zram0 > /dev/null 2>&1
+    # echo "1" > /sys/block/zram0/reset
+    # echo "1073741824" > /sys/block/zram0/disksize  # 1,0 GB
+    # echo "1610612736" > /sys/block/zram0/disksize  # 1,5 GB
+    # echo "2147483648" > /sys/block/zram0/disksize  # 2,0 GB
+    # echo "3221225472" > /sys/block/zram0/disksize  # 3,0 GB
+    # chmod 644 /dev/block/zram0
+    # mkswap /dev/block/zram0 > /dev/null 2>&1
+    # swapon /dev/block/zram0 > /dev/null 2>&1
 
     # GPU set at max/min freq
     # echo "702000" > /sys/kernel/gpu/gpu_max_clock
