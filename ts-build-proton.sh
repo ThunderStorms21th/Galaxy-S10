@@ -83,22 +83,22 @@ BUILD_FLASHABLES()
 RUN_PROGRAM()
 {
     MAIN
-    BUILD_DTBO
-    BUILD_DTB
+    # BUILD_DTBO
+    # BUILD_DTB
     cp -f boot-$MODEL.img builds/$K_NAME-$K_BASE-OneUI-Q-$MODEL-$K_VERSION.img
-    cp -f /home/nalas/kernel/AiO-S10-TS/arch/arm64/boot/dts/samsung/dtbo.img builds/dtbo.img
-    cp -f /home/nalas/kernel/AiO-S10-TS/arch/arm64/boot/dts/exynos/dtb.img builds/dtb.img
-    BUILD_FLASHABLES
+    # cp -f /home/nalas/kernel/AiO-S10-TS/arch/arm64/boot/dts/samsung/dtbo.img builds/dtbo.img
+    # cp -f /home/nalas/kernel/AiO-S10-TS/arch/arm64/boot/dts/exynos/dtb.img builds/dtb.img
+    # BUILD_FLASHABLES
 }
 
 RUN_PROGRAM2()
 {
     MAIN
-    BUILD_DTBO
-    BUILD_DTB
+    # BUILD_DTBO
+    # BUILD_DTB
     cp -f boot-$MODEL.img builds/$K_NAME-$K_BASE-OneUI-Q-$MODEL-$K_VERSION.img
-    cp -f /home/nalas/kernel/AiO-S10-TS/arch/arm64/boot/dts/samsung/dtbo.img builds/dtbo.img
-    cp -f /home/nalas/kernel/AiO-S10-TS/arch/arm64/boot/dts/exynos/dtb.img builds/dtb.img
+    # cp -f /home/nalas/kernel/AiO-S10-TS/arch/arm64/boot/dts/samsung/dtbo.img builds/dtbo.img
+    # cp -f /home/nalas/kernel/AiO-S10-TS/arch/arm64/boot/dts/exynos/dtb.img builds/dtb.img
 }
 
 BUILD_DTBO()
@@ -279,6 +279,6 @@ elif [ $prompt = "11" ]; then
     RUN_PROGRAM2
     MODEL=N976B
     echo "Compiling SM-N976B ..."
-    RUN_PROGRAM
+    RUN_PROGRAM2
     BUILD_FLASHABLES
 fi
