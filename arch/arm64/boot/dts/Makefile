@@ -16,8 +16,16 @@ ifdef CONFIG_MODEL_G975F
 include arch/arm64/boot/dts/G975F.mk
 endif
 
+ifdef CONFIG_MODEL_G975N
+include arch/arm64/boot/dts/G975N.mk
+endif
+
 ifdef CONFIG_MODEL_G977B
 include arch/arm64/boot/dts/G977B.mk
+endif
+
+ifdef CONFIG_MODEL_G977N
+include arch/arm64/boot/dts/G977N.mk
 endif
 
 ifdef CONFIG_MODEL_N970F

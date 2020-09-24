@@ -35,8 +35,12 @@ MAIN()
     ./build mkimg model=G973F name="$K_NAME-$K_BASE-OneUI-Q-$MODEL-$K_VERSION" toolchain=arter97
     elif [ $MODEL = "G975F" ]; then
     ./build mkimg model=G975F name="$K_NAME-$K_BASE-OneUI-Q-$MODEL-$K_VERSION" toolchain=arter97
+    elif [ $MODEL = "G975N" ]; then
+    ./build mkimg model=G975N name="$K_NAME-$K_BASE-OneUI-Q-$MODEL-$K_VERSION" toolchain=arter97
     elif [ $MODEL = "G977B" ]; then
     ./build mkimg model=G977B name="$K_NAME-$K_BASE-OneUI-Q-$MODEL-$K_VERSION" toolchain=arter97
+    elif [ $MODEL = "G977N" ]; then
+    ./build mkimg model=G977N name="$K_NAME-$K_BASE-OneUI-Q-$MODEL-$K_VERSION" toolchain=arter97
     elif [ $MODEL = "N970F" ]; then
     ./build mkimg model=N970F name="$K_NAME-$K_BASE-OneUI-Q-$MODEL-$K_VERSION" toolchain=arter97
     elif [ $MODEL = "N971N" ]; then
@@ -153,8 +157,8 @@ echo "-----------------------------------------"
 echo "(1) SM-G970F"
 echo "(2) SM-G970N"
 echo "(3) SM-G973F"
-echo "(4) SM-G975F"
-echo "(5) SM-G977B"
+echo "(4) SM-G975F/N"
+echo "(5) SM-G977B/N"
 echo "(6) SM-N970F"
 echo "(7) SM-N971N"
 echo "(8) SM-N975F"
@@ -197,12 +201,26 @@ elif [ $prompt = "4" ]; then
     echo "SM-G975F Selected"
     RUN_PROGRAM
     BUILD_FLASHABLES
+    MODEL=G975N
+    ZIP_DATE=`date +%Y%m%d`
+    ZIP_NAME=$K_NAME-$MODEL-OneUIQ-$K_VERSION-ARTER97-$ZIP_DATE.zip
+    export KERNEL_VERSION="$K_NAME-$K_BASE-OneUI-Q-$MODEL-$K_VERSION"
+    echo "SM-G975N Selected"
+    RUN_PROGRAM
+    BUILD_FLASHABLES
 elif [ $prompt = "5" ]; then
     MODEL=G977B
     ZIP_DATE=`date +%Y%m%d`
     ZIP_NAME=$K_NAME-$MODEL-OneUIQ-$K_VERSION-ARTER97-$ZIP_DATE.zip
     export KERNEL_VERSION="$K_NAME-$K_BASE-OneUI-Q-$MODEL-$K_VERSION"
     echo "SM-G977B Selected"
+    RUN_PROGRAM
+    BUILD_FLASHABLES
+    MODEL=G977N
+    ZIP_DATE=`date +%Y%m%d`
+    ZIP_NAME=$K_NAME-$MODEL-OneUIQ-$K_VERSION-ARTER97-$ZIP_DATE.zip
+    export KERNEL_VERSION="$K_NAME-$K_BASE-OneUI-Q-$MODEL-$K_VERSION"
+    echo "SM-G977N Selected"
     RUN_PROGRAM
     BUILD_FLASHABLES
 elif [ $prompt = "6" ]; then
@@ -259,6 +277,9 @@ elif [ $prompt = "11" ]; then
     MODEL=G975F
     echo "Compiling SM-G975F ..."
     RUN_PROGRAM2
+    MODEL=G975N
+    echo "Compiling SM-G975N ..."
+    RUN_PROGRAM2
     MODEL=N970F
     echo "Compiling SM-N970F ..."
     RUN_PROGRAM2
@@ -276,6 +297,9 @@ elif [ $prompt = "11" ]; then
     RUN_PROGRAM2
     MODEL=G977B
     echo "Compiling SM-G977B ..."
+    RUN_PROGRAM2
+    MODEL=G977N
+    echo "Compiling SM-G977N ..."
     RUN_PROGRAM2
     MODEL=N976B
     echo "Compiling SM-N976B ..."
