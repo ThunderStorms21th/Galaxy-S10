@@ -9,8 +9,8 @@ export K_VERSION="v1.1"
 export K_NAME="ThundeRStormS-Kernel"
 export K_BASE="DTH7"
 
-export BUILD_CROSS_COMPILE=/home/nalas/kernel/AiO-S10-TS/toolchain/gcc-cfp/gcc-cfp-jopp-only/aarch64-linux-android-4.9/bin/aarch64-linux-android-
-export CROSS_COMPILE=$BUILD_CROSS_COMPILE
+# export BUILD_CROSS_COMPILE=/home/nalas/kernel/AiO-S10-TS/toolchain/gcc-cfp/gcc-cfp-jopp-only/aarch64-linux-android-4.9/bin/aarch64-linux-android-
+# export CROSS_COMPILE=$BUILD_CROSS_COMPILE
 OUTDIR=$RDIR/arch/arm64/boot
 DTSDIR=$RDIR/arch/arm64/boot/dts/exynos
 DTBDIR=$OUTDIR/dtb
@@ -200,7 +200,6 @@ elif [ $prompt = "4" ]; then
     export KERNEL_VERSION="$K_NAME-$K_BASE-OneUI-Q-$MODEL-$K_VERSION"
     echo "SM-G975F Selected"
     RUN_PROGRAM
-    BUILD_FLASHABLES
     MODEL=G975N
     ZIP_DATE=`date +%Y%m%d`
     ZIP_NAME=$K_NAME-$MODEL-OneUIQ-$K_VERSION-ARTER97-$ZIP_DATE.zip
@@ -215,7 +214,6 @@ elif [ $prompt = "5" ]; then
     export KERNEL_VERSION="$K_NAME-$K_BASE-OneUI-Q-$MODEL-$K_VERSION"
     echo "SM-G977B Selected"
     RUN_PROGRAM
-    BUILD_FLASHABLES
     MODEL=G977N
     ZIP_DATE=`date +%Y%m%d`
     ZIP_NAME=$K_NAME-$MODEL-OneUIQ-$K_VERSION-ARTER97-$ZIP_DATE.zip
@@ -271,6 +269,9 @@ elif [ $prompt = "11" ]; then
     MODEL=G970F
     echo "Compiling SM-G970F ..."
     RUN_PROGRAM2
+    MODEL=G970N
+    echo "Compiling SM-G970N ..."
+    RUN_PROGRAM2
     MODEL=G973F
     echo "Compiling SM-G973F ..."
     RUN_PROGRAM2
@@ -280,26 +281,23 @@ elif [ $prompt = "11" ]; then
     MODEL=G975N
     echo "Compiling SM-G975N ..."
     RUN_PROGRAM2
+    MODEL=G977B
+    echo "Compiling SM-G977B ..."
+    RUN_PROGRAM2
+    MODEL=G977N
+    echo "Compiling SM-G977N ..."
+    RUN_PROGRAM2
     MODEL=N970F
     echo "Compiling SM-N970F ..."
     RUN_PROGRAM2
     MODEL=N975F
     echo "Compiling SM-N975F ..."
     RUN_PROGRAM2
-    MODEL=G970N
-    echo "Compiling SM-G970N ..."
-    RUN_PROGRAM2
     MODEL=N971N
     echo "Compiling SM-N971N ..."
     RUN_PROGRAM2
     MODEL=N976N
     echo "Compiling SM-N976N ..."
-    RUN_PROGRAM2
-    MODEL=G977B
-    echo "Compiling SM-G977B ..."
-    RUN_PROGRAM2
-    MODEL=G977N
-    echo "Compiling SM-G977N ..."
     RUN_PROGRAM2
     MODEL=N976B
     echo "Compiling SM-N976B ..."
