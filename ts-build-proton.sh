@@ -28,29 +28,29 @@ MAIN()
 (
 	START_TIME=`date +%T`
     if [ $MODEL = "G970F" ]; then
-    ./build mkimg model=G970F name="$K_NAME-$K_BASE-OneUI-Q-$MODEL-$K_VERSION" toolchain=proton
+    ./build mkimg model=G970F name="$K_NAME-$K_BASE-OneUI-Q-$MODEL-$K_VERSION" toolchain=proton +dtb
     elif [ $MODEL = "G970N" ]; then
-    ./build mkimg model=G970N name="$K_NAME-$K_BASE-OneUI-Q-$MODEL-$K_VERSION" toolchain=proton
+    ./build mkimg model=G970N name="$K_NAME-$K_BASE-OneUI-Q-$MODEL-$K_VERSION" toolchain=proton +dtb
     elif [ $MODEL = "G973F" ]; then
-    ./build mkimg model=G973F name="$K_NAME-$K_BASE-OneUI-Q-$MODEL-$K_VERSION" toolchain=proton
+    ./build mkimg model=G973F name="$K_NAME-$K_BASE-OneUI-Q-$MODEL-$K_VERSION" toolchain=proton +dtb
     elif [ $MODEL = "G975F" ]; then
-    ./build mkimg model=G975F name="$K_NAME-$K_BASE-OneUI-Q-$MODEL-$K_VERSION" toolchain=proton
+    ./build mkimg model=G975F name="$K_NAME-$K_BASE-OneUI-Q-$MODEL-$K_VERSION" toolchain=proton +dtb
     elif [ $MODEL = "G975N" ]; then
-    ./build mkimg model=G975N name="$K_NAME-$K_BASE-OneUI-Q-$MODEL-$K_VERSION" toolchain=proton
+    ./build mkimg model=G975N name="$K_NAME-$K_BASE-OneUI-Q-$MODEL-$K_VERSION" toolchain=proton +dtb
     elif [ $MODEL = "G977B" ]; then
-    ./build mkimg model=G977B name="$K_NAME-$K_BASE-OneUI-Q-$MODEL-$K_VERSION" toolchain=proton
+    ./build mkimg model=G977B name="$K_NAME-$K_BASE-OneUI-Q-$MODEL-$K_VERSION" toolchain=proton +dtb
     elif [ $MODEL = "G977N" ]; then
-    ./build mkimg model=G977N name="$K_NAME-$K_BASE-OneUI-Q-$MODEL-$K_VERSION" toolchain=proton
+    ./build mkimg model=G977N name="$K_NAME-$K_BASE-OneUI-Q-$MODEL-$K_VERSION" toolchain=proton +dtb
     elif [ $MODEL = "N970F" ]; then
-    ./build mkimg model=N970F name="$K_NAME-$K_BASE-OneUI-Q-$MODEL-$K_VERSION" toolchain=proton
+    ./build mkimg model=N970F name="$K_NAME-$K_BASE-OneUI-Q-$MODEL-$K_VERSION" toolchain=proton +dtb
     elif [ $MODEL = "N971N" ]; then
-    ./build mkimg model=N971N name="$K_NAME-$K_BASE-OneUI-Q-$MODEL-$K_VERSION" toolchain=proton
+    ./build mkimg model=N971N name="$K_NAME-$K_BASE-OneUI-Q-$MODEL-$K_VERSION" toolchain=proton +dtb
     elif [ $MODEL = "N975F" ]; then
-    ./build mkimg model=N975F name="$K_NAME-$K_BASE-OneUI-Q-$MODEL-$K_VERSION" toolchain=proton
+    ./build mkimg model=N975F name="$K_NAME-$K_BASE-OneUI-Q-$MODEL-$K_VERSION" toolchain=proton +dtb
     elif [ $MODEL = "N976N" ]; then
-    ./build mkimg model=N976N name="$K_NAME-$K_BASE-OneUI-Q-$MODEL-$K_VERSION" toolchain=proton
+    ./build mkimg model=N976N name="$K_NAME-$K_BASE-OneUI-Q-$MODEL-$K_VERSION" toolchain=proton +dtb
     elif [ $MODEL = "N976B" ]; then
-    ./build mkimg model=N976B name="$K_NAME-$K_BASE-OneUI-Q-$MODEL-$K_VERSION" toolchain=proton
+    ./build mkimg model=N976B name="$K_NAME-$K_BASE-OneUI-Q-$MODEL-$K_VERSION" toolchain=proton +dtb
     fi
 
 	END_TIME=`date +%T`
@@ -90,9 +90,8 @@ RUN_PROGRAM()
     # BUILD_DTBO
     # BUILD_DTB
     cp -f boot-$MODEL.img builds/$K_NAME-$K_BASE-OneUI-Q-$MODEL-$K_VERSION.img
-    # cp -f /home/nalas/kernel/AiO-S10-TS/arch/arm64/boot/dts/samsung/dtbo.img builds/dtbo.img
-    # cp -f /home/nalas/kernel/AiO-S10-TS/arch/arm64/boot/dts/exynos/dtb.img builds/dtb.img
-    # BUILD_FLASHABLES
+    cp -f $MODEL-dtb.img builds/dtb-dtbo/$MODEL-dtb.img
+    cp -f $MODEL-dtbo.img builds/dtb-dtbo/$MODEL-dtbo.img
 }
 
 RUN_PROGRAM2()
@@ -101,8 +100,8 @@ RUN_PROGRAM2()
     # BUILD_DTBO
     # BUILD_DTB
     cp -f boot-$MODEL.img builds/$K_NAME-$K_BASE-OneUI-Q-$MODEL-$K_VERSION.img
-    # cp -f /home/nalas/kernel/AiO-S10-TS/arch/arm64/boot/dts/samsung/dtbo.img builds/dtbo.img
-    # cp -f /home/nalas/kernel/AiO-S10-TS/arch/arm64/boot/dts/exynos/dtb.img builds/dtb.img
+    cp -f $MODEL-dtb.img builds/dtb-dtbo/$MODEL-dtb.img
+    cp -f $MODEL-dtbo.img builds/dtb-dtbo/$MODEL-dtbo.img
 }
 
 BUILD_DTBO()
@@ -113,27 +112,17 @@ python tools/dtbo/mkdtboimg.py create /home/nalas/kernel/AiO-S10-TS/arch/arm64/b
 BUILD_DTB()
 {
 	echo "Processing dts files."
+for dts in $DTSFILES; do
+	echo "=> Processing: ${dts}.dts"
+	"${CROSS_COMPILE}cpp" -nostdinc -undef -x assembler-with-cpp -I "$INCDIR" "$DTSDIR/${dts}.dts" > "$DTBDIR/${dts}.dts"
+	echo "=> Generating: ${dts}.dtb"
+	$DTCTOOL -p $DTB_PADDING -i "$DTSDIR" -O dtb -o "$DTBDIR/${dts}.dtb" "$DTBDIR/${dts}.dts"
+	# dtc -p $DTB_PADDING -i "$DTSDIR" -O dtb -o "$DTBDIR/${dts}.dtb" "$DTBDIR/${dts}.dts"
+done
+
 	echo "Generating dtb.img."
-    # cd /home/nalas/kernel/AiO-S10-TS/tools/dtb/
-    # python tools/dtb/dtbTool -s 4096 -o "$OUTDIR/dtb.img" -p "$DTCTOOL" "$DTSDIR"
-    # python tools/dtb/dtbTool -s 4096 -o "$OUTDIR/dtb.img" -d "$DTCTOOL" "$DTSDIR"
+tools/dtbo/mkdtboimg.py create /home/nalas/kernel/AiO-S10-TS/arch/arm64/boot/dtb/exynos9820.img --id=0 --rev=0 --custom1=0xff000000 arch/arm64/boot/dts/exynos/exynos9820.dtb
 
-    make $RDIR/arch/arm64/boot/dts/exynos/exynos9820.dtb
-
-    # python tools/dtb/mkdtimg -s 2048 -o "$OUTDIR/dtb.img" -d "$DTCTOOL" "$DTSDIR"
-    # python $RDIR/tools/dtb/mkdtimg create "$OUTDIR/dt.img" --page_size=$PAGE_SIZE "$DTSDIR/*dtb"
-
-    # python tools/dtbo/mkdtimg -d "$DTSDIR/*.dtb" -s 2048 -c -o "$OUTDIR/dt.img"
-
-    # python tools/dtbo/mkdtimg.py -c -d /home/nalas/kernel/AiO-S10-TS/arch/arm64/boot/dts/exynos/dtb.img -s 2048 -o /home/nalas/kernel/AiO-S10-TS/arch/arm64/boot/dts/exynos/*.dtb
-    # $RDIR/tools/dtbtool -s 2048 -o "$OUTDIR/dtb.img" -p "$DTCTOOL" "$DTSDIR"
-    # $RDIR/tools/dtbtool2 -s 2048 -o "$OUTDIR/dtb.img" -p "$DTCTOOL" "$DTSDIR"
-
-    # python tools/dtbo/mkdtboimg.py create /home/nalas/kernel/AiO-S10-TS/arch/arm64/boot/dts/exynos/dtb.img /home/nalas/kernel/AiO-S10-TS/arch/arm64/boot/dts/exynos/*.dtb
-
-	#echo "Generating dtb.img."
-	# $RDIR/tools/dtbtool2 -o "$OUTDIR/dtb.img" -p "$DTCTOOL" "$DTSDIR/" -s $PAGE_SIZE
-	# $RDIR/tools/dtbtool2 -o "$OUTDIR/dtb.img" -d "$DTSBDIR/" -s $PAGE_SIZE
 	echo "Done."
 }
 
@@ -269,9 +258,6 @@ elif [ $prompt = "11" ]; then
     MODEL=G970F
     echo "Compiling SM-G970F ..."
     RUN_PROGRAM2
-    MODEL=G970N
-    echo "Compiling SM-G970N ..."
-    RUN_PROGRAM2
     MODEL=G973F
     echo "Compiling SM-G973F ..."
     RUN_PROGRAM2
@@ -281,11 +267,14 @@ elif [ $prompt = "11" ]; then
     MODEL=G975N
     echo "Compiling SM-G975N ..."
     RUN_PROGRAM2
-    MODEL=G977B
-    echo "Compiling SM-G977B ..."
+    MODEL=G970N
+    echo "Compiling SM-G970N ..."
     RUN_PROGRAM2
     MODEL=G977N
     echo "Compiling SM-G977N ..."
+    RUN_PROGRAM2
+    MODEL=G977B
+    echo "Compiling SM-G977B ..."
     RUN_PROGRAM2
     MODEL=N970F
     echo "Compiling SM-N970F ..."
