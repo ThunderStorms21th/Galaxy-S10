@@ -7,13 +7,14 @@ ThunderStorms kernel is based on Cruel Kernel - big thanks and credits to
 Cruel Kernel Team.
 
 Based on samsung sources and android common tree.
-Supported devices: G970F, G970N, G973F, G975F, G977B, N970F, N975F,
-N971N, N976B, N976N.
+Supported devices:
+G970F, G970N, G973F, G975F, G975F G977B, G977N,
+N970F, N975F, N971N, N976B, N976N.
 
 ## Credits
 
 - CruelKernel
-- @evdenis - for kernel source and updates from Samsung source
+- @evdenis - for kernel source and updates from Samsung source, toolchains
 - NZNewbie - for adding fiops scheduler
 - ExtremeGrief - for overall improvements, porting maple scheduler
 - thehacker911 - overall improvements and advices
@@ -114,6 +115,15 @@ $ ./build :flash
 # Or in a single command (compilation with flashing)
 # ./build flash name="ThunderStorms" model=G973F
 ```
+----------------------------------------------------------------------------------------
+# Available toolchains:
+
+- default - standard toolchain from samsung's kernel archives for S10/Note10 models (clang6/gcc4.9)
+- samsung - samsung's toolchain from S20 sources archive (clang8/gcc-4.9)
+- proton  - bleeding-edge clang 12 (https://github.com/kdrag0n/proton-clang)
+- arter97 - stable gcc 10.2.0 (https://github.com/arter97/arm64-gcc)
+- arm     - arm's gcc 9.2-2019.12 (https://developer.arm.com/tools-and-software/open-source-software/developer-tools/gnu-toolchain/gnu-a/downloads)
+- system  - gcc cross compiler installed in your system
 
 ----------------------------------------------------------------------------------------
 # WHAT IS LINUX KERNEL:
