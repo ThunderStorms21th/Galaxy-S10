@@ -41,8 +41,8 @@ toolchain = {
         'CC': 'toolchain/arter97/bin/aarch64-elf-gcc'
     },
     'arm': {
-        'CROSS_COMPILE': 'toolchain/bin/aarch64-none-elf-',
-        'CC': 'aarch64-none-elf-gcc'
+        'CROSS_COMPILE': 'toolchain/arm/bin/aarch64-none-elf-',
+        'CC': 'toolchain/arm/bin/aarch64-none-elf-gcc'
     },
     'system': {
         'CROSS_COMPILE': 'aarch64-linux-gnu-',
