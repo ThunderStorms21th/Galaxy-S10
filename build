@@ -376,7 +376,8 @@ def make_config(configs, model):
     if 'name' in configs:
         config_name(configs['name'], objtree)
 
-    config_model(model, objtree)
+    if configs['kernel']['dtb']['enabled']: 
+        config_model(model, objtree)
 
 def update_magisk(version):
     cmd = ['usr/magisk/update_magisk.sh']
