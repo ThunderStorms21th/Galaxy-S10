@@ -388,20 +388,20 @@ def update_magisk(version):
         print('Magisk Version: ' + fh.readline())
 
 def switch_toolchain(compiler):
-    if compiler == 'system':
-        return
-
-    cc = toolchain[compiler]['CC']
-    if not tool_exists(cc) and not os.path.isfile(cc):
-        ret = run(['git', 'submodule', 'foreach', 'git', 'rev-parse', '--verify', '--quiet', compiler],
-                    stdout=DEVNULL, stderr=DEVNULL)
-        if ret.returncode != 0:
-            try:
-                run(['git', 'submodule', 'foreach', 'git', 'branch', compiler, 'origin/' + compiler],
-                    check=True, stdout=DEVNULL, stderr=DEVNULL)
-            except CalledProcessError:
-                fatal("Can't checkout to toolchain: " + compiler)
-        run(['git', 'submodule', 'foreach', 'git', 'checkout', compiler], check=True)
+    cc = os.path.abspath(get_toolchain_cc(compiler))
+    if cc.startswith(os.path.realpath('toolchain')):
+        branch = run(['git', 'submodule', 'foreach', 'git', 'rev-parse', '--abbrev-ref', 'HEAD'],
+                     stdout=PIPE).stdout.decode('utf-8').splitlines()[1]
+        if ((not tool_exists(cc)) or compiler != branch) and not os.path.isabs(cc):
+            ret = run(['git', 'submodule', 'foreach', 'git', 'rev-parse', '--verify', '--quiet', compiler],
+                        stdout=DEVNULL, stderr=DEVNULL)
+            if ret.returncode != 0:
+                try:
+                    run(['git', 'submodule', 'foreach', 'git', 'branch', compiler, 'origin/' + compiler],
+                        check=True, stdout=DEVNULL, stderr=DEVNULL)
+                except CalledProcessError:
+                    fatal("Can't checkout to toolchain: " + compiler)
+            run(['git', 'submodule', 'foreach', 'git', 'checkout', compiler], check=True)
 
 def build(compiler, objtree='.'):
     env = {}
