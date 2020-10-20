@@ -263,7 +263,7 @@
 					dev = "/dev/block/platform/13d60000.ufs/by-name/system";
 					type = "ext4";
 					mnt_flags = "ro";
-					fsmgr_flags = "wait, avb";
+					fsmgr_flags = "wait";
 					status = "disabled";
 				};
 				vendor {
@@ -271,7 +271,7 @@
 					dev = "/dev/block/platform/13d60000.ufs/by-name/vendor";
 					type = "ext4";
 					mnt_flags = "ro";
-					fsmgr_flags = "wait,verify,avb";
+					fsmgr_flags = "wait";
 					status = "okay";
 				};
 				product {
@@ -279,7 +279,7 @@
 					dev = "/dev/block/platform/13d60000.ufs/by-name/product";
 					type = "ext4";
 					mnt_flags = "ro";
-					fsmgr_flags = "wait,verify,avb";
+					fsmgr_flags = "wait";
 					status = "okay";
 				};
 			};
@@ -5000,8 +5000,8 @@
 			shared-cpus = "0-3";
 
 			boost_table = < 160 949000 123 1300000 100 >;
-			up_rate_limit_table = < 4 >;
-			down_rate_limit_table = < 4 >;
+			// up_rate_limit_table = < 4 >;
+			// down_rate_limit_table = < 4 >;
 			st_table = < 5 >;
 		};
 		domain@1 {
@@ -5009,8 +5009,8 @@
 			shared-cpus = "4-5";
 
 			boost_table = < 160 962000 123 1222000 100 >;
-			up_rate_limit_table = < 4 >;
-			down_rate_limit_table = < 4 >;
+			// up_rate_limit_table = < 4 >;
+			// down_rate_limit_table = < 4 >;
 			st_table = < 5 >;
 		};
 		domain@2 {
@@ -5018,8 +5018,8 @@
 			shared-cpus = "6-7";
 
 			boost_table = < 160 936000 123 1378000 100 >;
-			up_rate_limit_table = < 4 >;
-			down_rate_limit_table = < 4 >;
+			// up_rate_limit_table = < 4 >;
+			// down_rate_limit_table = < 4 >;
 			st_table = < 5 >;
 		};
 	};
@@ -5224,8 +5224,8 @@
 			cal-id = <ACPM_DVFS_CPUCL0>;
 			dm-type = <DM_CPU_CL0>;
 
-			max-freq = <1950000>;
-			min-freq = <442000>;
+			max-freq = <2002000>;
+			min-freq = <182000>;
 
 			/* PM QoS Class ID*/
 			pm_qos-min-class = <3>;
@@ -5238,7 +5238,8 @@
 					const-type = <CONSTRAINT_MIN>;
 					dm-type = <DM_MIF>;
 					/*  cpu     mif  */
-					table = < 1950000  0
+					table = < 2002000  0
+						1950000  0
 						1846000  0
 						1742000  0
 						1586000  0
@@ -5250,7 +5251,10 @@
 						806000  0
 						650000  0
 						546000  0
-						442000       0
+						442000  0
+						351000  0
+						247000  0
+						182000  0
 						>;
 				};
 			};
@@ -5263,7 +5267,7 @@
 			dm-type = <DM_CPU_CL1>;
 
 			max-freq = <2400000>;
-			min-freq = <507000>;
+			min-freq = <377000>;
 
 			/* PM QoS Class ID*/
 			pm_qos-min-class = <5>;
@@ -5293,6 +5297,8 @@
 						845000       0
 						754000       0
 						650000       0
+						507000       0
+						377000       0
 						>;
 				};
 				ank-perf {
@@ -5316,6 +5322,8 @@
 						845000        0
 						754000        0
 						650000        0
+						507000        0
+						377000        0
 						>;
 				};
 			};
@@ -5328,7 +5336,7 @@
 			dm-type = <DM_CPU_CL2>;
 			need-awake;
 
-			max-freq = <2080000>;
+			max-freq = <2808000>;
 			min-freq = <520000>;
 
 			/* PM QoS Class ID*/
@@ -5367,6 +5375,8 @@
 						728000       0
 						624000       0
 						520000	     0
+						416000	     0
+						312000	     0
 						>;
 				};
 				mif-skew {
