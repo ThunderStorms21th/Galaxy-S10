@@ -2,8 +2,8 @@
 <b>KERNEL INFORMATION:</b>
 
 	NAME	: <b><#selectbg_g>ThundeRStormS-Kernel-OneUI Q</#></b>	
-	VERSION	: <b><#selectbg_g>v1.1</#></b>
-	DATE	: <b><#selectbg_g>15/09/2020</#></b>
+	VERSION	: <b><#selectbg_g>v1.2</#></b>
+	DATE	: <b><#selectbg_g>05/11/2020</#></b>
 	AUTHOR	: <b><#selectbg_g>ThundeRStormS Team</#></b>
 
 <#53a6f4><b>        Only For Galaxy S10/N10 | OneUI Q Roms |</b></#>
@@ -11,6 +11,26 @@
 
 <b>CHANGELOG:</b>
 
+--------------------------------------------------------------------------
+<u><b><#selectbg_g>ThunderStorms-Kernel-Q-v1.2 : 05.11.2020</#></b></u>
+<*>Samsung source : DTI8 </*>
+<*>Samsung os patch level: 2020-09 </*>
+<*>Re-added Freqvar Tune - but unblocked time_rate by user </*>
+<*>Optimizations in Linux source </*>
+<*>Support CIFS and NTFS </*>
+<*>Support Underclock for Little CPU to 187MHz </*>
+   Only if DTB/DTBO img will be flashed - another TS zip file
+<*>Added ThunderTweaks - 4 profiles </*>
+<*>Support Init.d scripts: /vendor/etc/init.d </*>
+<*>Added app blocker : feravolt, FDE, NFS, LKT, Lspeed </*>
+<*>Battery settings: store, charging and unstable power detection </*>
+<*>Added Frandom support - is 10x faster then Linux Urandom </*>
+<*>ThunderTweaks v1.0.7.2 </*>
+<*>Magisk 21.0 Offcial build in kernel - thx to CruelKernel Team</*>
+<*>Compiled via Clang 6.0.1, arter97, Sasmung S20 and proton toolchain</*>
+<*>Optimized for battery life </*>
+<*>Rest like in realease 1.1</*>
+--------------------------------------------------------------------------
 --------------------------------------------------------------------------
 <u><b><#selectbg_g>ThunderStorms-Kernel-Q-v1.1 : 15.09.2020</#></b></u>
 <*>Samsung source : DTH7 </*>

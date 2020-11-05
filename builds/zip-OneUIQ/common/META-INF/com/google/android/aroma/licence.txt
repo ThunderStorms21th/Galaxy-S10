@@ -19,6 +19,7 @@
 
     INSTALLATION:
     - backup Your DATA partition
+    - do not use TWRP patched by Magisk
     - install ThundeRStormS kernel via Aroma Installer
     - reboot and enjoy.
 

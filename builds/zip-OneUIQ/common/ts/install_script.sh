@@ -1,6 +1,6 @@
 #!/sbin/sh
 #
-# TSKernel Flash script 1.0
+# TSKernel Flash script 1.1
 #
 # Credit also goes to @djb77
 # @lyapota, @Tkkg1994, @osm0sis
@@ -95,24 +95,28 @@ BL=`getprop ro.bootloader`
 MODEL=${BL:0:5}
 MODEL1=G975F
 MODEL1_DESC="G975F"
-MODEL2=G973F
-MODEL2_DESC="G973F"
-MODEL3=G970F
-MODEL3_DESC="G970F"
-MODEL4=G970N
-MODEL4_DESC="G970N"
-MODEL5=G977B
-MODEL5_DESC="G977B"
-MODEL6=N970F
-MODEL6_DESC="N970F"
-MODEL7=N975N
-MODEL7_DESC="N975N"
-MODEL8=N976N
-MODEL8_DESC="N976N"
-MODEL9=N971N
-MODEL9_DESC="G971N"
-MODEL10=N976B
-MODEL10_DESC="G976B"
+MODEL2=G975N
+MODEL2_DESC="G975N"
+MODEL3=G973F
+MODEL3_DESC="G973F"
+MODEL4=G970F
+MODEL4_DESC="G970F"
+MODEL5=G970N
+MODEL5_DESC="G970N"
+MODEL6=G977B
+MODEL6_DESC="G977B"
+MODEL7=G977N
+MODEL7_DESC="G977N"
+MODEL8=N970F
+MODEL8_DESC="N970F"
+MODEL9=N975N
+MODEL9_DESC="N975N"
+MODEL10=N976N
+MODEL10_DESC="N976N"
+MODEL11=N971N
+MODEL11_DESC="G971N"
+MODEL12=N976B
+MODEL12_DESC="G976B"
 if [ $MODEL == $MODEL1 ]; then MODEL_DESC=$MODEL1_DESC; fi
 if [ $MODEL == $MODEL2 ]; then MODEL_DESC=$MODEL2_DESC; fi
 if [ $MODEL == $MODEL3 ]; then MODEL_DESC=$MODEL3_DESC; fi
@@ -123,8 +127,10 @@ if [ $MODEL == $MODEL7 ]; then MODEL_DESC=$MODEL7_DESC; fi
 if [ $MODEL == $MODEL8 ]; then MODEL_DESC=$MODEL8_DESC; fi
 if [ $MODEL == $MODEL9 ]; then MODEL_DESC=$MODEL9_DESC; fi
 if [ $MODEL == $MODEL10 ]; then MODEL_DESC=$MODEL10_DESC; fi
-BASE="DTH7"
-VERSION="v1.1"
+if [ $MODEL == $MODEL11 ]; then MODEL_DESC=$MODEL11_DESC; fi
+if [ $MODEL == $MODEL12 ]; then MODEL_DESC=$MODEL12_DESC; fi
+BASE="DTI8"
+VERSION="v1.2"
 
 ## FLASH KERNEL
 ui_print " "
@@ -163,6 +169,17 @@ if [ "$(file_getprop /tmp/aroma/menu.prop chk3)" == 1 ]; then
 	cp -rf /data/tmp/ts/ttweaks/*.apk /data/media/0/ThunderTweaks
 	cp -rf /data/tmp/ts/ttweaks/*.apk /sdcard/ThunderTweaks
 fi
+
+## THUNDERTWEAKS PROFILES
+if [ "$(file_getprop /tmp/aroma/menu.prop chk4)" == 1 ]; then
+	ui_print " "
+	ui_print "@Install ThunderTweaks Profiles..."
+	mkdir -p /data/media/0/ThunderTweaks/profiles 2>/dev/null;
+	mkdir -p /sdcard/ThunderTweaks/profiles 2>/dev/null;
+	cp -rf /data/tmp/ts/ttweaks-profiles/. /data/media/0/ThunderTweaks/profiles/
+	cp -rf /data/tmp/ts/ttweaks-profiles/. /sdcard/ThunderTweaks/profiles/
+fi
+
 
 set_progress 0.50
 

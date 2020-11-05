@@ -86,6 +86,8 @@ menu.1desc=Recommended - You have to do this.
 menu.group2=Other options
 menu.3=ThunderTweaks
 menu.3desc=Application for kernel management modified by XDA@nalas. Copy this app to Your Internal SDcard/ThunderTweaks folder. You can manually install it.
+menu.4=ThunderTweaks (TS) json Profiles
+menu.4desc=Simple way for the management predefined profiles copied to sdcard/ThunderTweaks/profiles. You have to Import files via ThunderTweaks app.
 
 # Confirm
 confirm.1=CONFIRM

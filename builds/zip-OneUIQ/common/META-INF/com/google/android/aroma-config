@@ -96,7 +96,8 @@ form(
 	"group1",     "<b><~menu.group1></b>",  "",                     	"group",
 	  "opt1",     "<b><~menu.1></b>",       "<~menu.1desc>",         	"select.selected",
 	"group2",     "<b><~menu.group2></b>",  "",                     	"group",
-	  "chk3",     "<b><~menu.3></b>",       "<~menu.3desc>",		"check.checked"
+	  "chk3",     "<b><~menu.3></b>",       "<~menu.3desc>",		"check.checked",
+	  "chk4",     "<b><~menu.4></b>",       "<~menu.4desc>",		"check.checked"
 );
 
 
