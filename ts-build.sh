@@ -5,9 +5,9 @@
 
 LOG=compile_build.log
 RDIR=$(pwd)
-export K_VERSION="v1.1"
+export K_VERSION="v1.2"
 export K_NAME="ThundeRStormS-Kernel"
-export K_BASE="DTH7"
+export K_BASE="DTI8"
 
 # export BUILD_CROSS_COMPILE=/home/nalas/kernel/AiO-S10-TS/toolchain/gcc-cfp/gcc-cfp-jopp-only/aarch64-linux-android-4.9/bin/aarch64-linux-android-
 # export CROSS_COMPILE=$BUILD_CROSS_COMPILE
@@ -57,7 +57,7 @@ MAIN()
 
 	END_TIME=`date +%T`
 	echo "Start compile time is $START_TIME"
-	echo "Start compile time is $END_TIME"
+	echo "End compile time is $END_TIME"
 	echo ""
 	echo "Your flasheable release can be found in the builds folder with name :"
 	echo "$K_NAME-$K_BASE-OneUI-Q-$MODEL-$K_VERSION-`date +%Y-%m-%d`.img"
