@@ -144,7 +144,7 @@
 				battery,chg_high_temp = <460>;
 				battery,chg_high_temp_recovery = <440>;
 				battery,chg_input_limit_current = <1000>;
-				battery,chg_charging_limit_current = <1700>;
+				battery,chg_charging_limit_current = <2500>;    /* org 1700 = 17W */
 				battery,dchg_input_limit_current = <1000>;
 				battery,dchg_charging_limit_current = <2000>;
 

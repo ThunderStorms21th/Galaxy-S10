@@ -930,7 +930,7 @@
 				battery,chg_high_temp = <0x1cc>;
 				battery,chg_high_temp_recovery = <0x1b8>;
 				battery,chg_input_limit_current = <0x3e8>;
-				battery,chg_charging_limit_current = <0x4e2>;
+				battery,chg_charging_limit_current = <0x5dc>; /* 0x4e2 */
 				battery,wpc_temp_control_source = <0x1>;
 				battery,wpc_high_temp = <0x17c>;
 				battery,wpc_high_temp_recovery = <0x168>;

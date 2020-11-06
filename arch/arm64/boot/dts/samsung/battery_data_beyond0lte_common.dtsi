@@ -121,7 +121,7 @@
 				battery,chg_high_temp = <460>;
 				battery,chg_high_temp_recovery = <440>;
 				battery,chg_input_limit_current = <1000>;
-				battery,chg_charging_limit_current = <1250>;
+				battery,chg_charging_limit_current = <1500>;    /* org 1250 = 12,5W */
 
 				battery,wpc_temp_control_source = <1>; /* TEMP_CONTROL_SOURCE_BAT_THM = WPC_THM */
 				battery,wpc_high_temp = <380>;
