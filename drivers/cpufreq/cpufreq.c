@@ -705,6 +705,13 @@ static ssize_t store_##file_name					\
 	if (ret != 1)							\
 		return -EINVAL;						\
 									\
+	cpufreq_verify_within_cpu_limits(&new_policy);			\
+	if (new_policy.min > new_policy.user_policy.max			\
+	    || new_policy.max < new_policy.user_policy.min)		\
+		return -EINVAL;						\
+									\
+	policy->user_policy.object = new_policy.object;			\
+									\
 	temp = new_policy.object;					\
 	ret = cpufreq_set_policy(policy, &new_policy);		\
 	if (!ret)							\
