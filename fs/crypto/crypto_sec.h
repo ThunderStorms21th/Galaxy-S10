@@ -19,11 +19,11 @@
 #define _FSCRYPTO_SEC_H
 
 #include <crypto/sha.h>
-#ifdef CONFIG_CRYPTO_FIPS
+// #ifdef CONFIG_CRYPTO_FIPS
 #include <crypto/rng.h>
 #include "fscrypt_private.h"
 
-#endif /* CONFIG CRYPTO_FIPS */
+// #endif /* CONFIG CRYPTO_FIPS */
 
 /*
  * CONSTANT USED BY OUT OF CRYPTO_ODE
