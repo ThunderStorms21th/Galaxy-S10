@@ -15,6 +15,9 @@ toolchain = {
         'CLANG_TRIPLE': 'toolchain/default/clang/host/linux-x86/clang-4639204-cfp-jopp/bin/aarch64-linux-gnu-',
         'CC': 'toolchain/default/clang/host/linux-x86/clang-4639204-cfp-jopp/bin/clang'
     },
+    'cruel': {
+        'CROSS_COMPILE': 'toolchain/cruel/bin/aarch64-cruel-elf-'
+    },
     'samsung': {
         'CROSS_COMPILE': 'toolchain/samsung/gcc-cfp/gcc-cfp-jopp-only/aarch64-linux-android-4.9/bin/aarch64-linux-android-',
         'CLANG_TRIPLE': 'toolchain/samsung/clang/host/linux-x86/clang-r349610-jopp/bin/aarch64-linux-gnu-',
