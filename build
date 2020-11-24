@@ -63,6 +63,9 @@ models = {
     'G973F': {
         'config': 'exynos9820-beyond1lte_defconfig'
     },
+    'G973N': {
+        'config': 'exynos9820-beyond1lteks_defconfig'
+    },
     'G975F': {
         'config': 'exynos9820-beyond2lte_defconfig'
     },
