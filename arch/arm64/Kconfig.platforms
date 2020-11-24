@@ -336,6 +336,8 @@ choice
 		bool "G970N"
 	config MODEL_G973F
 		bool "G973F"
+	config MODEL_G973N
+		bool "G973N"
 	config MODEL_G975F
 		bool "G975F"
 	config MODEL_G975N
