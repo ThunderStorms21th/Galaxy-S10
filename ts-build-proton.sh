@@ -33,6 +33,8 @@ MAIN()
     ./build mkimg model=G970N name="$K_NAME-$K_BASE-OneUI-Q-$MODEL-$K_VERSION" toolchain=proton +dtb
     elif [ $MODEL = "G973F" ]; then
     ./build mkimg model=G973F name="$K_NAME-$K_BASE-OneUI-Q-$MODEL-$K_VERSION" toolchain=proton +dtb
+    elif [ $MODEL = "G973N" ]; then
+    ./build mkimg model=G973N name="$K_NAME-$K_BASE-OneUI-Q-$MODEL-$K_VERSION" toolchain=proton +dtb
     elif [ $MODEL = "G975F" ]; then
     ./build mkimg model=G975F name="$K_NAME-$K_BASE-OneUI-Q-$MODEL-$K_VERSION" toolchain=proton +dtb
     elif [ $MODEL = "G975N" ]; then
@@ -145,7 +147,7 @@ echo "|   S10 / N10 family for OneUI Q ROMs   |"
 echo "-----------------------------------------"
 echo "(1) SM-G970F"
 echo "(2) SM-G970N"
-echo "(3) SM-G973F"
+echo "(3) SM-G973F/N"
 echo "(4) SM-G975F/N"
 echo "(5) SM-G977B/N"
 echo "(6) SM-N970F"
@@ -180,6 +182,12 @@ elif [ $prompt = "3" ]; then
     ZIP_NAME=$K_NAME-$MODEL-OneUIQ-$K_VERSION-PROTON-$ZIP_DATE.zip
     export KERNEL_VERSION="$K_NAME-$K_BASE-OneUI-Q-$MODEL-$K_VERSION"
     echo "SM-G973F Selected"
+    RUN_PROGRAM
+    MODEL=G973N
+    ZIP_DATE=`date +%Y%m%d`
+    ZIP_NAME=$K_NAME-$MODEL-OneUIQ-$K_VERSION-ARTER97-$ZIP_DATE.zip
+    export KERNEL_VERSION="$K_NAME-$K_BASE-OneUI-Q-$MODEL-$K_VERSION"
+    echo "SM-G973N Selected"
     RUN_PROGRAM
     BUILD_FLASHABLES
 elif [ $prompt = "4" ]; then
@@ -269,6 +277,9 @@ elif [ $prompt = "11" ]; then
     RUN_PROGRAM2
     MODEL=G970N
     echo "Compiling SM-G970N ..."
+    RUN_PROGRAM2
+    MODEL=G973N
+    echo "Compiling SM-G973N ..."
     RUN_PROGRAM2
     MODEL=G977N
     echo "Compiling SM-G977N ..."
