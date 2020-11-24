@@ -71,6 +71,10 @@ if is_substring("SM-G973F", file_getprop("/data/tmp/ts/device_model", "androidbo
 	package_extract_file("/data/tmp/ts/ThundeRStormS-Kernel-DTI8-OneUI-Q-G973F-v1.2.img", "/dev/block/platform/13d60000.ufs/by-name/boot");
 	ui_print("@Flashing Kernel SM-G973F");
 endif;
+if is_substring("SM-G973N", file_getprop("/data/tmp/ts/device_model", "androidboot.em.model")) then
+	package_extract_file("/data/tmp/ts/ThundeRStormS-Kernel-DTI8-OneUI-Q-G973N-v1.2.img", "/dev/block/platform/13d60000.ufs/by-name/boot");
+	ui_print("@Flashing Kernel SM-G973N");
+endif;
 if is_substring("SM-G977B", file_getprop("data/tmp/ts/device_model", "androidboot.em.model")) then
 	package_extract_file("/data/tmp/ts/ThundeRStormS-Kernel-DTI8-OneUI-Q-G977B-v1.2.img", "/dev/block/platform/13d60000.ufs/by-name/boot");
 	ui_print("@Flashing Kernel SM-G977B");
