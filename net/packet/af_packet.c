@@ -4665,7 +4665,6 @@ static int __init packet_init(void)
 	rc = register_netdevice_notifier(&packet_netdev_notifier);
 	if (rc)
 		goto out_pernet;
-
 	return 0;
 
 out_pernet:
