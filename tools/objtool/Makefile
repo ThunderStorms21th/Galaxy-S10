@@ -16,6 +16,7 @@ HOSTAR	?= ar
 HOSTCC	?= gcc
 HOSTLD	?= ld
 endif
+
 AR	 = $(HOSTAR)
 CC	 = $(HOSTCC)
 LD	 = $(HOSTLD)
