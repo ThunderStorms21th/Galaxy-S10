@@ -1222,6 +1222,12 @@ static void igmpv3_del_delrec(struct in_device *in_dev, struct ip_mc_list *im)
 		if (im->sfmode == MCAST_INCLUDE) {
 			swap(im->tomb, pmc->tomb);
 			swap(im->sources, pmc->sources);
+			im->tomb = pmc->tomb;
+			pmc->tomb = NULL;
+
+			im->sources = pmc->sources;
+			pmc->sources = NULL;
+
 			for (psf = im->sources; psf; psf = psf->sf_next)
 				psf->sf_crcount = im->crcount;
 		}
