@@ -1428,7 +1428,6 @@ int tcp_fragment(struct sock *sk, struct sk_buff *skb, u32 len,
 	if (nsize < 0)
 		nsize = 0;
 
-<<<<<<< HEAD
 	/* tcp_sendmsg() can overshoot sk_wmem_queued by one full size skb.
 	 * We need some allowance to not penalize applications setting small
 	 * SO_SNDBUF values.
@@ -1438,9 +1437,6 @@ int tcp_fragment(struct sock *sk, struct sk_buff *skb, u32 len,
 	if (unlikely((sk->sk_wmem_queued >> 1) > limit &&
 		     skb != tcp_rtx_queue_head(sk) &&
 		     skb != tcp_rtx_queue_tail(sk))) {
-=======
-	if (unlikely((sk->sk_wmem_queued >> 1) > sk->sk_sndbuf)) {
->>>>>>> bcc59d2c451220b3274bd19e808c0051532cb35e
 		NET_INC_STATS(sock_net(sk), LINUX_MIB_TCPWQUEUETOOBIG);
 		return -ENOMEM;
 	}
