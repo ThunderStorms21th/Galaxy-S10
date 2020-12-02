@@ -609,7 +609,6 @@ static int selinux_is_sblabel_mnt(struct super_block *sb)
 		/* Special handling. Genfs but also in-core setxattr handler */
 		!strcmp(sb->s_type->name, "sysfs") ||
 		!strcmp(sb->s_type->name, "pstore") ||
-		!strcmp(sb->s_type->name, "binder") ||
 		!strcmp(sb->s_type->name, "debugfs") ||
 		!strcmp(sb->s_type->name, "tracefs") ||
 		!strcmp(sb->s_type->name, "rootfs") ||
