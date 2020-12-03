@@ -947,7 +947,7 @@
 				battery,chg_high_temp = <0x1cc>;
 				battery,chg_high_temp_recovery = <0x1b8>;
 				battery,chg_input_limit_current = <0x3e8>;
-				battery,chg_charging_limit_current = <0x9c4>; /* 0x6a4 */
+				battery,chg_charging_limit_current = <0x6a4>;
 				battery,dchg_input_limit_current = <0x3e8>;
 				battery,dchg_charging_limit_current = <0x7d0>;
 				battery,wpc_temp_control_source = <0x1>;
