@@ -47,7 +47,7 @@ static int em_debug_cpus_show(struct seq_file *s, void *unused)
 
 	return 0;
 }
-DEFINE_SHOW_ATTRIBUTE(em_debug_cpus);
+// DEFINE_SHOW_ATTRIBUTE(em_debug_cpus);
 
 static void em_debug_create_pd(struct em_perf_domain *pd, int cpu)
 {
