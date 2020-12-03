@@ -5,9 +5,9 @@
 
 LOG=compile_build.log
 RDIR=$(pwd)
-export K_VERSION="v1.2"
+export K_VERSION="v1.3"
 export K_NAME="ThundeRStormS-Kernel"
-export K_BASE="DTI8"
+export K_BASE="DTJA"
 
 export BUILD_CROSS_COMPILE=/home/nalas/kernel/AiO-S10-TS/toolchain/gcc-cfp/gcc-cfp-jopp-only/aarch64-linux-android-4.9/bin/aarch64-linux-android-
 export CROSS_COMPILE=$BUILD_CROSS_COMPILE
@@ -179,13 +179,13 @@ elif [ $prompt = "2" ]; then
 elif [ $prompt = "3" ]; then
     MODEL=G973F
     ZIP_DATE=`date +%Y%m%d`
-    ZIP_NAME=$K_NAME-$MODEL-OneUIQ-$K_VERSION-PROTON-$ZIP_DATE.zip
+    # ZIP_NAME=$K_NAME-$MODEL-OneUIQ-$K_VERSION-PROTON-$ZIP_DATE.zip
     export KERNEL_VERSION="$K_NAME-$K_BASE-OneUI-Q-$MODEL-$K_VERSION"
     echo "SM-G973F Selected"
     RUN_PROGRAM
     MODEL=G973N
     ZIP_DATE=`date +%Y%m%d`
-    ZIP_NAME=$K_NAME-$MODEL-OneUIQ-$K_VERSION-ARTER97-$ZIP_DATE.zip
+    ZIP_NAME=$K_NAME-$MODEL-F-OneUIQ-$K_VERSION-PROTON-$ZIP_DATE.zip
     export KERNEL_VERSION="$K_NAME-$K_BASE-OneUI-Q-$MODEL-$K_VERSION"
     echo "SM-G973N Selected"
     RUN_PROGRAM
@@ -193,13 +193,13 @@ elif [ $prompt = "3" ]; then
 elif [ $prompt = "4" ]; then
     MODEL=G975F
     ZIP_DATE=`date +%Y%m%d`
-    ZIP_NAME=$K_NAME-$MODEL-OneUIQ-$K_VERSION-PROTON-$ZIP_DATE.zip
+    # ZIP_NAME=$K_NAME-$MODEL-F-OneUIQ-$K_VERSION-PROTON-$ZIP_DATE.zip
     export KERNEL_VERSION="$K_NAME-$K_BASE-OneUI-Q-$MODEL-$K_VERSION"
     echo "SM-G975F Selected"
     RUN_PROGRAM
     MODEL=G975N
     ZIP_DATE=`date +%Y%m%d`
-    ZIP_NAME=$K_NAME-$MODEL-OneUIQ-$K_VERSION-PROTON-$ZIP_DATE.zip
+    ZIP_NAME=$K_NAME-$MODEL-F-OneUIQ-$K_VERSION-PROTON-$ZIP_DATE.zip
     export KERNEL_VERSION="$K_NAME-$K_BASE-OneUI-Q-$MODEL-$K_VERSION"
     echo "SM-G975N Selected"
     RUN_PROGRAM
@@ -207,13 +207,13 @@ elif [ $prompt = "4" ]; then
 elif [ $prompt = "5" ]; then
     MODEL=G977B
     ZIP_DATE=`date +%Y%m%d`
-    ZIP_NAME=$K_NAME-$MODEL-OneUIQ-$K_VERSION-PROTON-$ZIP_DATE.zip
+    # ZIP_NAME=$K_NAME-$MODEL-OneUIQ-$K_VERSION-PROTON-$ZIP_DATE.zip
     export KERNEL_VERSION="$K_NAME-$K_BASE-OneUI-Q-$MODEL-$K_VERSION"
     echo "SM-G977B Selected"
     RUN_PROGRAM
     MODEL=G977N
     ZIP_DATE=`date +%Y%m%d`
-    ZIP_NAME=$K_NAME-$MODEL-OneUIQ-$K_VERSION-PROTON-$ZIP_DATE.zip
+    ZIP_NAME=$K_NAME-$MODEL-F-OneUIQ-$K_VERSION-PROTON-$ZIP_DATE.zip
     export KERNEL_VERSION="$K_NAME-$K_BASE-OneUI-Q-$MODEL-$K_VERSION"
     echo "SM-G977N Selected"
     RUN_PROGRAM
