@@ -2,8 +2,8 @@
 <b>KERNEL INFORMATION:</b>
 
 	NAME	: <b><#selectbg_g>ThundeRStormS-Kernel-OneUI Q</#></b>	
-	VERSION	: <b><#selectbg_g>v1.2</#></b>
-	DATE	: <b><#selectbg_g>05/11/2020</#></b>
+	VERSION	: <b><#selectbg_g>v1.3</#></b>
+	DATE	: <b><#selectbg_g>01/12/2020</#></b>
 	AUTHOR	: <b><#selectbg_g>ThundeRStormS Team</#></b>
 
 <#53a6f4><b>        Only For Galaxy S10/N10 | OneUI Q Roms |</b></#>
@@ -11,6 +11,31 @@
 
 <b>CHANGELOG:</b>
 
+--------------------------------------------------------------------------
+<u><b><#selectbg_g>ThunderStorms-Kernel-Q-v1.3 : 01.12.2020</#></b></u>
+<*>Samsung source : DTJ4/DTJA </*>
+<*>Linux source : upstreamed to 4.14.133 </*>
+<*>Samsung os patch level: 2020-11 </*>
+<*>Added support for SM-G973N device </*>
+<*>Disabled Freqvar Tune - but unblocked time_rate by user </*>
+<*>Optimizations in Linux source </*>
+<*>Support CIFS and NTFS </*>
+<*>Support Underclock for Little CPU to 187MHz </*>
+   Only if DTB/DTBO img will be flashed - another TS zip file
+<*>Support Underclock for GPU to 100MHz </*>
+   Only if DTB/DTBO img will be flashed - another TS zip file
+<*>Added ThunderTweaks - 4 profiles </*>
+<*>Support FlatMem </*>
+<*>Enabled by default WQ_POWER_EFFICIENT</*>
+<*>Disabled some debuggers</*>
+<*>Support Battery settings</*>
+<*>Support Init.d scripts: /vendor/etc/init.d </*>
+<*>ThunderTweaks v1.0.7.2 </*>
+<*>Magisk 21.1 Offcial build in kernel - thx to CruelKernel Team </*>
+<*>Compiled via Clang 6.0.1, arter97, Cruel, Sasmung S20 and proton</*>
+<*>Optimized for battery life </*>
+<*>Rest like in realease 1.2 </*>
+--------------------------------------------------------------------------
 --------------------------------------------------------------------------
 <u><b><#selectbg_g>ThunderStorms-Kernel-Q-v1.2 : 05.11.2020</#></b></u>
 <*>Samsung source : DTI8 </*>

@@ -80,7 +80,7 @@ mkdir -p -m 777 /data/.tskernel 2>/dev/null
 
 set_progress 0.01
 
-ui_print "@Mount partitions"
+ui_print "@ThundeRStormS - Mount partitions"
 ui_print "-- Mount /system RW"
 if [ $SYSTEM_ROOT == true ]; then
 	ui_print "-- Device is system-as-root"
@@ -115,9 +115,11 @@ MODEL9_DESC="N975N"
 MODEL10=N976N
 MODEL10_DESC="N976N"
 MODEL11=N971N
-MODEL11_DESC="G971N"
+MODEL11_DESC="N971N"
 MODEL12=N976B
-MODEL12_DESC="G976B"
+MODEL12_DESC="N976B"
+MODEL13=G973N
+MODEL13_DESC="G973N"
 if [ $MODEL == $MODEL1 ]; then MODEL_DESC=$MODEL1_DESC; fi
 if [ $MODEL == $MODEL2 ]; then MODEL_DESC=$MODEL2_DESC; fi
 if [ $MODEL == $MODEL3 ]; then MODEL_DESC=$MODEL3_DESC; fi
@@ -130,10 +132,12 @@ if [ $MODEL == $MODEL9 ]; then MODEL_DESC=$MODEL9_DESC; fi
 if [ $MODEL == $MODEL10 ]; then MODEL_DESC=$MODEL10_DESC; fi
 if [ $MODEL == $MODEL11 ]; then MODEL_DESC=$MODEL11_DESC; fi
 if [ $MODEL == $MODEL12 ]; then MODEL_DESC=$MODEL12_DESC; fi
+if [ $MODEL == $MODEL13 ]; then MODEL_DESC=$MODEL13_DESC; fi
 
 ## FLASH DeviceTree Blobs
 ui_print " "
-ui_print "@-- Extracting ThundeRStormS dtb/dtbo..."
+ui_print "@ThundeRStormS - Installing Device Tree Blobs..."
+ui_print "-- Extracting ThundeRStormS dtb/dtbo..."
 cd /data/tmp/ts
 dd if=/data/tmp/ts/$MODEL_DESC-dtb.img of=$dtb bs=4096
 dd if=/data/tmp/ts/$MODEL_DESC-dtbo.img of=$dtbo bs=4096
@@ -149,7 +153,7 @@ show_progress 0.100 -1000
 ## THUNDERTWEAKS
 if [ "$(file_getprop /tmp/aroma/menu.prop chk3)" == 1 ]; then
 	ui_print " "
-	ui_print "@Installing ThunderTweaks App..."
+	ui_print "@ThundeRStormS - Installing ThunderTweaks App..."
 	sh /data/tmp/ts/ts_clean.sh com.moro.mtweaks -as
     sh /data/tmp/ts/ts_clean.sh com.thunder.thundertweaks -as
     sh /data/tmp/ts/ts_clean.sh com.hades.hKtweaks -as

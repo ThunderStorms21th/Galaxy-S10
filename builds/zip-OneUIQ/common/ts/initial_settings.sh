@@ -9,7 +9,25 @@ rm -f /system_root/sbin/init.spectrum.sh
 rm -f /system_root/init.services.rc
 rm -f /system_root/init.ts.rc
 rm -f /system_root/init.ts.sh
+rm -f /system_root/init.custom.sh
 rm -f /system_root/sbin/spa
+
+# Remove imported services
+if ! grep -q init.rc /system_root/init.rc; then
+  sed -i '/import \/init.moro.rc/d' /system_root/init.rc
+  sed -i '/import \/init.spectrum.rc/d' /system_root/init.rc
+  sed -i '/import \/init.ts.rc/d' /system_root/init.rc
+  sed -i '/import \/init.services.rc/d' /system_root/init.rc
+  sed -i '/import \/init.custom.rc/d' /system_root/init.rc
+  sed -i '/init.moro.rc/d' /system_root/init.rc
+  sed -i '/init.spectrum.rc/d' /system_root/init.rc
+  sed -i '/init.ts.rc/d' /system_root/init.rc
+  sed -i '/init.services.rc/d' /system_root/init.rc
+  sed -i '/init.custom.rc/d' /system_root/init.rc
+  sed '/init.custom.rc/d' /system_root/init.rc
+  sed -i '/import \/init.custom.rc/d' /system_root/init.rc
+  sed '/import \/init.custom.rc/d' /system_root/init.rc
+fi
 
 # Copy kernel files
 cp /data/tmp/ts/system1/init.rc /system_root
@@ -26,6 +44,9 @@ chmod 755 /system_root/sbin/ts-kernel.sh
 # chmod 755 /system_root/init.spectrum.rc
 # chmod 755 /system_root/sbin/spa
 # chmod 755 /system_root/sbin/init.spectrum.sh
+
+# Import init.ts.rc to init.rc
+sed -i '/import \/prism\/etc\/init\/init.rc/a import \/init.custom.rc' /system_root/init.rc
 
 # Make init.d folder
 mkdir /system_root/vendor/etc/init.d

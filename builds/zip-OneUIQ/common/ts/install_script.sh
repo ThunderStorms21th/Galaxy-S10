@@ -1,6 +1,6 @@
 #!/sbin/sh
 #
-# TSKernel Flash script 1.1
+# ThundeRStormS - Flash script 1.1
 #
 # Credit also goes to @djb77
 # @lyapota, @Tkkg1994, @osm0sis
@@ -79,7 +79,7 @@ mkdir -p -m 777 /data/.tskernel 2>/dev/null
 
 set_progress 0.01
 
-ui_print "@Mount partitions"
+ui_print "@ThundeRStormS - Mount partitions"
 ui_print "-- Mount /system RW"
 if [ $SYSTEM_ROOT == true ]; then
 	ui_print "-- Device is system-as-root"
@@ -87,7 +87,7 @@ if [ $SYSTEM_ROOT == true ]; then
 fi
 
 set_progress 0.10
-show_progress 0.40 -4000
+show_progress 0.40 -2000
 
 ## VARIABLES
 SDK="$(file_getprop /system/build.prop ro.build.version.sdk)"
@@ -132,11 +132,12 @@ if [ $MODEL == $MODEL10 ]; then MODEL_DESC=$MODEL10_DESC; fi
 if [ $MODEL == $MODEL11 ]; then MODEL_DESC=$MODEL11_DESC; fi
 if [ $MODEL == $MODEL12 ]; then MODEL_DESC=$MODEL12_DESC; fi
 if [ $MODEL == $MODEL13 ]; then MODEL_DESC=$MODEL13_DESC; fi
-BASE="DTI8"
-VERSION="v1.2"
+BASE="DTJA"
+VERSION="v1.3"
 
 ## FLASH KERNEL
 ui_print " "
+ui_print "@ThundeRStormS - Flashing the kernel"
 ui_print "-- Extracting ThundeRStormS kernel"
 cd /data/tmp/ts
 $BB tar -Jxf kernel.tar.xz ThundeRStormS-Kernel-$BASE-OneUI-Q-$MODEL_DESC-$VERSION.img
@@ -152,11 +153,10 @@ set_progress 0.40
 # OPTIONS
 #======================================
 
-
 ## THUNDERTWEAKS
 if [ "$(file_getprop /tmp/aroma/menu.prop chk3)" == 1 ]; then
 	ui_print " "
-	ui_print "@Installing ThunderTweaks App..."
+	ui_print "@ThundeRStormS - Installing ThunderTweaks App..."
 	sh /data/tmp/ts/ts_clean.sh com.moro.mtweaks -as
     sh /data/tmp/ts/ts_clean.sh com.thunder.thundertweaks -as
     sh /data/tmp/ts/ts_clean.sh com.hades.hKtweaks -as
@@ -176,14 +176,12 @@ fi
 ## THUNDERTWEAKS PROFILES
 if [ "$(file_getprop /tmp/aroma/menu.prop chk4)" == 1 ]; then
 	ui_print " "
-	ui_print "@Install ThunderTweaks Profiles..."
+	ui_print "@ThundeRStormS - Install ThunderTweaks Profiles..."
 	mkdir -p /data/media/0/ThunderTweaks/profiles 2>/dev/null;
 	mkdir -p /sdcard/ThunderTweaks/profiles 2>/dev/null;
 	cp -rf /data/tmp/ts/ttweaks-profiles/. /data/media/0/ThunderTweaks/profiles/
 	cp -rf /data/tmp/ts/ttweaks-profiles/. /sdcard/ThunderTweaks/profiles/
 fi
 
-
 set_progress 0.50
-
 

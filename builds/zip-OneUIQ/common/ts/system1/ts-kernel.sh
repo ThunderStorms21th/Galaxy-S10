@@ -33,10 +33,18 @@ rm -f $LOG
 	# deepsleep fix
 	echo "## -- DeepSleep Fix" >> $LOG;
 
+    dmesg -n 1 -C
 	echo "N" > /sys/kernel/debug/debug_enabled
 	echo "N" > /sys/kernel/debug/seclog/seclog_debug
 	echo "0" > /sys/kernel/debug/tracing/tracing_on
 	echo "0" > /sys/module/lowmemorykiller/parameters/debug_level
+    echo "0" > /sys/module/alarm_dev/parameters/debug_mask
+    echo "0" > /sys/module/binder/parameters/debug_mask
+    echo "0" > /sys/module/binder_alloc/parameters/debug_mask
+    echo "0" > /sys/module/powersuspend/parameters/debug_mask
+    echo "0" > /sys/module/xt_qtaguid/parameters/debug_mask
+    echo "0" > /sys/module/lowmemorykiller/parameters/debug_level
+    echo "0" > /sys/module/kernel/parameters/initcall_debug
 
     debug="/sys/module/*" 2>/dev/null
     for i in \$debug
@@ -130,15 +138,15 @@ rm -f $LOG
     echo "1" > /sys/module/sec_nfc/parameters/wl_nfc
 
     # Entropy
-    echo "256" > /proc/sys/kernel/random/write_wakeup_threshold
-    echo "128" > /proc/sys/kernel/random/read_wakeup_threshold
+    echo "512" > /proc/sys/kernel/random/write_wakeup_threshold
+    echo "64" > /proc/sys/kernel/random/read_wakeup_threshold
 
     # VM
     echo "90" > /proc/sys/vm/vfs_cache_pressure
-    echo "100" > /proc/sys/vm/swappiness
+    echo "80" > /proc/sys/vm/swappiness
     echo "800" > /proc/sys/vm/dirty_writeback_centisecs
     echo "1000" > /proc/sys/vm/dirty_expire_centisecs
-    echo "70" > /proc/sys/vm/overcommit_ratio
+    echo "50" > /proc/sys/vm/overcommit_ratio
 
     # Battery
     echo "1700" > /sys/devices/platform/battery/wc_input
@@ -163,15 +171,15 @@ rm -f $LOG
 
     # GPU set at max/min freq
     echo "702000" > /sys/kernel/gpu/gpu_max_clock
-    echo "156000" > /sys/kernel/gpu/gpu_min_clock
+    echo "100000" > /sys/kernel/gpu/gpu_min_clock
     echo "coarse_demand" > /sys/devices/platform/18500000.mali/power_policy
     echo "1" > /sys/devices/platform/18500000.mali/dvfs_governor
-    echo "433000" > /sys/devices/platform/18500000.mali/highspeed_clock
-    echo "80" > /sys/devices/platform/18500000.mali/highspeed_load
-    echo "0" > /sys/devices/platform/18500000.mali/highspeed_delay
+    echo "325000" > /sys/devices/platform/18500000.mali/highspeed_clock
+    echo "90" > /sys/devices/platform/18500000.mali/highspeed_load
+    echo "1" > /sys/devices/platform/18500000.mali/highspeed_delay
 
    # Misc settings : bbr, cubic or westwood
-   echo "westwood" > /proc/sys/net/ipv4/tcp_congestion_control
+   echo "cubic" > /proc/sys/net/ipv4/tcp_congestion_control
    echo "N" > /sys/module/mmc_core/parameters/use_spi_crc
    echo "1" > /sys/module/sync/parameters/fsync_enabled
    echo "0" > /sys/kernel/sched/gentle_fair_sleepers
