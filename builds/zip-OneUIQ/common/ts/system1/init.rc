@@ -12,7 +12,6 @@ import /init.usb.configfs.rc
 import /init.${ro.zygote}.rc
 import /init.container.rc
 import /prism/etc/init/init.rc
-import /init.custom.rc
 
 # Cgroups are mounted right before early-init using list from /etc/cgroups.json
 on early-init
