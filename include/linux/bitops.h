@@ -5,6 +5,7 @@
 #include <linux/bits.h>
 
 #define BITS_TO_LONGS(nr)	DIV_ROUND_UP(nr, BITS_PER_BYTE * sizeof(long))
+#define BITS_PER_TYPE(type)	(sizeof(type) * BITS_PER_BYTE)
 
 extern unsigned int __sw_hweight8(unsigned int w);
 extern unsigned int __sw_hweight16(unsigned int w);
