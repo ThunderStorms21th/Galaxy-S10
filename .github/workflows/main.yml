@@ -72,6 +72,7 @@ jobs:
     - name: Avoid Double Zipping in Installer
       if: env.INSTALLER == 'yes'
       run: |
+<<<<<<< HEAD
         mkdir -p installer && cd installer
         unzip ../CruelKernel.zip
     - name: Upload Kernel Zip
@@ -88,6 +89,31 @@ jobs:
         name: CruelKernel-${{ matrix.model }}
         path: '*.img'
         if-no-files-found: error
+=======
+        ./build config                   \
+                model=${{ matrix.model}} \
+                name="CRUEL-V3.4"        \
+                +magisk                  \
+                +nohardening             \
+                +ttl                     \
+                +wireguard               \
+                +cifs                    \
+                +sdfat                   \
+                +ntfs                    \
+                +morosound               \
+                +boeffla_wl_blocker      \
+                +ts_config               \
+        2>&1 | tee config.info
+    - name: Kernel Build
+      run: ./build :build
+    - name: Create boot.img
+      run: ./build :mkimg
+    - name: Upload Kernel
+      uses: actions/upload-artifact@v2
+      with:
+        name: ThunderStormsKernel-${{ matrix.model }}
+        path: boot.img
+>>>>>>> d5398c96d8c5... ThunderStorms : upload readme.md and other files
     - name: Upload Kernel Info
       uses: actions/upload-artifact@v2
       with:
