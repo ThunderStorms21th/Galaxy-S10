@@ -7,6 +7,51 @@ import json
 from copy import deepcopy
 from datetime import datetime
 from subprocess import CalledProcessError, run, DEVNULL, PIPE
+from shutil import which
+
+toolchain = {
+    'default': {
+        'CROSS_COMPILE': 'toolchain/default/gcc-cfp/gcc-cfp-jopp-only/aarch64-linux-android-4.9/bin/aarch64-linux-android-',
+        'CLANG_TRIPLE': 'toolchain/default/clang/host/linux-x86/clang-4639204-cfp-jopp/bin/aarch64-linux-gnu-',
+        'CC': 'toolchain/default/clang/host/linux-x86/clang-4639204-cfp-jopp/bin/clang'
+    },
+    'cruel': {
+        'CROSS_COMPILE': 'toolchain/cruel/bin/aarch64-cruel-elf-'
+    },
+    'samsung': {
+        'CROSS_COMPILE': 'toolchain/samsung/gcc-cfp/gcc-cfp-jopp-only/aarch64-linux-android-4.9/bin/aarch64-linux-android-',
+        'CLANG_TRIPLE': 'toolchain/samsung/clang/host/linux-x86/clang-r349610-jopp/bin/aarch64-linux-gnu-',
+        'CC': 'toolchain/samsung/clang/host/linux-x86/clang-r349610-jopp/bin/clang'
+    },
+    'proton': {
+        'CROSS_COMPILE': 'toolchain/proton/bin/aarch64-linux-gnu-',
+        'CROSS_COMPILE_ARM32': 'toolchain/proton/bin/arm-linux-gnueabi-',
+        'CC': 'toolchain/proton/bin/clang',
+        'LD': 'toolchain/proton/bin/ld.lld',
+        'AR': 'toolchain/proton/bin/llvm-ar',
+        'NM': 'toolchain/proton/bin/llvm-nm',
+        'OBJCOPY': 'toolchain/proton/bin/llvm-objcopy',
+        'OBJDUMP': 'toolchain/proton/bin/llvm-objdump',
+        'READELF': 'toolchain/proton/bin/llvm-readelf',
+        'OBJSIZE': 'toolchain/proton/bin/llvm-size',
+        'STRIP': 'toolchain/proton/bin/llvm-strip',
+        'LDGOLD': 'toolchain/proton/bin/aarch64-linux-gnu-ld.gold',
+        'LLVM_AR': 'toolchain/proton/bin/llvm-ar',
+        'LLVM_DIS': 'toolchain/proton/bin/llvm-dis'
+    },
+    'arter97': {
+        'CROSS_COMPILE': 'toolchain/arter97/bin/aarch64-elf-',
+        'CC': 'toolchain/arter97/bin/aarch64-elf-gcc'
+    },
+    'arm': {
+        'CROSS_COMPILE': 'toolchain/arm/bin/aarch64-none-elf-',
+        'CC': 'toolchain/arm/bin/aarch64-none-elf-gcc'
+    },
+    'system': {
+        'CROSS_COMPILE': 'aarch64-linux-gnu-',
+        'CC': 'aarch64-linux-gnu-gcc'
+    }
+}
 
 models = {
     'G970F': {
@@ -18,11 +63,20 @@ models = {
     'G973F': {
         'config': 'exynos9820-beyond1lte_defconfig'
     },
+    'G973N': {
+        'config': 'exynos9820-beyond1lteks_defconfig'
+    },
     'G975F': {
+        'config': 'exynos9820-beyond2lte_defconfig'
+    },
+    'G975N': {
         'config': 'exynos9820-beyond2lte_defconfig'
     },
     'G977B': {
         'config': 'exynos9820-beyondx_defconfig'
+    },
+    'G977N': {
+        'config': 'exynos9820-beyondxks_defconfig'
     },
     'N970F': {
         'config': 'exynos9820-d1_defconfig'
@@ -42,16 +96,59 @@ models = {
 }
 
 
-def tool_exists(name):
-    """Check whether `name` is on PATH and marked as executable."""
+def get_toolchain_cc(compiler):
+    cc = ''
+    if 'CC' in toolchain[compiler]:
+        cc = toolchain[compiler]['CC']
+    else:
+        cc = toolchain[compiler]['CROSS_COMPILE'] + 'gcc'
+    return cc
 
-    from shutil import which
+def mount_tmpfs(target):
+    ret = run(['mountpoint', '-q', '--', target])
+    if ret.returncode != 0:
+        meminfo = dict((i.split()[0].rstrip(':'),int(i.split()[1])) for i in open('/proc/meminfo').readlines())
+        mem_gib =  int(meminfo['MemAvailable'] / 1024 ** 2)
+        if mem_gib >= 5:
+            ret = run(['sudo', '--non-interactive',
+                       'mount', '-t', 'tmpfs', '-o', 'rw,size=3G', 'none', target])
+            if ret.returncode != 0:
+                print("BUILD: error mounting tmpfs on " + target, file=stderr)
+            else:
+                print("BUILD: tmpfs is mounted on " + target)
+        else:
+            print("BUILD: will not mount tmpfs on " + target + " size " + str(mem_gib) + "G < 5G")
+    else:
+        print(target + " is already used as mountpoint", file=stderr)
+
+def umount_tmpfs(target):
+    ret = run(['mountpoint', '-q', '--', target])
+    if ret.returncode == 0:
+        ret = run(['sudo', '--non-interactive', 'umount', target], check=False)
+        if ret.returncode != 0:
+            print("BUILD: error unmounting " + target, file=stderr)
+        else:
+            print("BUILD: " + target + " unmounted")
+
+def remove_file(filename):
+    try:
+        os.remove(filename)
+    except FileNotFoundError:
+        pass
+
+def mkdir(dirname):
+    try:
+        os.mkdir(dirname)
+    except FileExistsError:
+        pass
+
+def tool_exists(name):
     return which(name) is not None
 
 def get_cores_num():
     return len(os.sched_getaffinity(0))
 
-def setup_environ(**env):
+def set_env(**env):
     for key, value in env.items():
         if key not in os.environ:
             os.environ[key] = value
@@ -65,36 +162,38 @@ def fatal(*args, **kwargs):
 def print_usage():
     msg = f"""
 Usage: {argv[0]} <stage> model=<model> name=<name> [+-]<conf1> [+-]<conf2> ...
-
 <stage>: required argument
-Where <stage> can be one of: config, build, mkimg, flash
-:build, :mkimg, :flash. Each next stage will run all
+Where <stage> can be one of: config, build, mkimg, flash, pack
+(:build, :mkimg, :flash, :pack). Each next stage will run all
 previous stages first. Prefix ':' means skip all previous
 stages.
-
 model=<model> required phone model name
 Supported models: {list(models.keys())}
-
+Use model=all to build all available kernels.
 name=<name>: optional custom kernel name
 Use this switch if you want to change the name in
 your kernel.
-
+toolchain=<compiler>: optional toolchain switch
+Supported compilers: {list(toolchain.keys())}
+By default the kernel is build with default toolchain.
 os_patch_level=<date>: use patch date (YYYY-MM)
 instead of default one from build.mkbootimg.<model>
 file. For example: os_patch_level="2020-02"
-
+O=dir will perform out of tree kernel build in dir.
+The script will try to mount tmpfs in dir if there
+is enough available memory.
 [+-]<conf>: optional list of configuration switches.
 Use prefix '+' to enable the configuration.
 Use prefix '-' to disable the configuration.
 You can see full list of switches and default ones in
-kernel/configs/cruel*.conf directory.
+kernel/configs/ts*.conf directory.
 """
     print(msg)
 
 def parse_stage():
     stages = []
-    modes = ['config', 'build', 'mkimg', 'flash']
-    omodes = [':build', ':mkimg', ':flash']
+    modes = ['config', 'build', 'mkimg', 'flash', 'pack']
+    omodes = [':build', ':mkimg', ':flash', ':pack']
     all_modes = modes + omodes
 
     try:
@@ -114,18 +213,20 @@ def parse_stage():
 
 def find_configs():
     configs = { 'kernel': {}, 'order': [] }
-    prefix_len = len('cruel')
+    prefix_len = len('ts')
     suffix_len = len('.conf')
-    files = [f for f in os.listdir('kernel/configs/') if re.match('^cruel[+-]?.*\.conf$', f)]
+    files = [f for f in os.listdir('kernel/configs/') if re.match('^ts[+-]?.*\.conf$', f)]
     for f in files:
-        if f == 'cruel.conf':
+        if f == 'ts_config.conf':
             continue
         name = f[prefix_len+1:]
         name = name[:-suffix_len]
         enabled = True if f[prefix_len:prefix_len+1] == '+' else False
-        configs['kernel'][name] = { 'path':  'kernel/configs/' + f, 'enabled': enabled, 'default': enabled }
-        if name == 'magisk':
-            configs['kernel'][name]['canary'] = False
+        configs['kernel'][name] = {
+            'path': 'kernel/configs/' + f,
+            'enabled': enabled,
+            'default': enabled
+        }
         if enabled:
             configs['order'].append(name)
     return configs
@@ -139,6 +240,19 @@ def load_config(file):
     with open(file, 'r') as fh:
         return json.load(fh)
 
+def switch_config(opt, enable, configs):
+    if opt in configs['kernel']:
+        configs['kernel'][opt]['enabled'] = enable
+    else:
+        fatal("Unknown config '{}'.".format(opt))
+
+    if enable:
+        if not opt in configs['order']:
+            configs['order'].append(opt)
+    else:
+        if opt in configs['order']:
+            configs['order'].remove(opt)
+
 def parse_args():
     configs = find_configs()
 
@@ -146,67 +260,77 @@ def parse_args():
         if arg.find('=') != -1:
             (key, value) = arg.split('=', 1)
 
-            if key not in ['name', 'model', 'os_patch_level']:
-                print_usage()
+            enable = None
+            if key[0] == '-' or key[0] == '+':
+                enable = True if key[0] == '+' else False
+                key = key[1:]
+
+            if key not in [ 'name',
+                            'model',
+                            'os_patch_level',
+                            'toolchain',
+                            'magisk',
+                            'O' ]:
                 fatal('Unknown config {}.'.format(key))
 
-            configs[key] = value
+            if enable == None:
+                if key == 'model':
+                    if value == 'all':
+                        value = list(models.keys())
+                    else:
+                        value = value.split(',')
+                configs[key] = value
+            else:
+                switch_config(key, enable, configs)
+
             if not value:
-                print_usage()
                 fatal('Please, use {}="<name>".'.format(key))
-            if key == 'model':
-                if value not in models:
-                    fatal('Unknown device model: ' + configs['model'])
-            if key == 'os_patch_level':
+            elif key == 'model':
+                for m in value:
+                    if m not in models:
+                        fatal('Unknown device model: ' + value)
+            elif key == 'O':
+                mkdir(value)
+                mount_tmpfs(value)
+            elif key == 'os_patch_level':
                 try:
                     datetime.strptime(value, '%Y-%m')
                 except Exception:
-                    print_usage()
                     fatal('Please, use os_patch_level="YYYY-MM". For example: os_patch_level="2020-02"')
+            elif key == 'toolchain':
+                if value not in toolchain:
+                    fatal('Unknown toolchain: ' + value)
+            elif key == 'magisk':
+                if value != 'canary' and not re.match('^v\d+\.\d+', value):
+                    fatal('Unknown magisk version: ' + value + ' (example: canary, v20.4, v19.4, ...)')
+                configs['kernel']['magisk']['version'] = value
         else:
             switch = arg[0:1]
             enable = True if switch == '+' else False
             opt = arg[1:]
             if switch not in ['+', '-']:
-                print_usage()
                 fatal("Unknown switch '{0}'. Please, use '+{0}'/'-{0}' to enable/disable option.".format(arg))
+            switch_config(opt, enable, configs)
 
-            if opt == 'magisk+canary':
-                opt = 'magisk'
-                configs['kernel'][opt]['enabled'] = enable
-                configs['kernel'][opt]['canary'] = True
-            elif opt == 'magisk-canary':
-                opt = 'magisk'
-                configs['kernel'][opt]['enabled'] = enable
-                configs['kernel'][opt]['canary'] = False
-            elif opt == 'magisk':
-                configs['kernel'][opt]['enabled'] = enable
-                configs['kernel'][opt]['canary'] = False
-            elif opt in configs['kernel']:
-                configs['kernel'][opt]['enabled'] = enable
-            else:
-                print_usage()
-                fatal("Unknown config '{}'.".format(opt))
-
-            if enable:
-                if not opt in configs['order']:
-                    configs['order'].append(opt)
-            else:
-                if opt in configs['order']:
-                    configs['order'].remove(opt)
     if 'model' not in configs:
         print_usage()
         fatal('Please, use model="<model>". For example: model="G973F"')
 
     return configs
 
-def config_info(configs):
+def setup_env(configs, model):
+    set_env(ARCH='arm64', ANDROID_MAJOR_VERSION='q')
+    if configs['kernel']['fake_config']['enabled']:
+        defconfig = 'arch/arm64/configs/' + models[model]['config']
+        set_env(KCONFIG_BUILTINCONFIG=defconfig)
+
+def config_info(configs, model):
     if 'name' in configs:
         print('Name: ' + configs['name'])
     else:
-        print('Name: CRUEL')
+        print('Name: THUNDERSTROM')
 
-    print('Model: ' + configs['model'])
+    print('Model: ' + model)
 
     conf_msg = []
     kernel_configs = configs['kernel']
@@ -223,7 +347,7 @@ def config_info(configs):
     if 'os_patch_level' in configs:
         print('OS Patch Level: ' + configs['os_patch_level'])
     else:
-        with open('build.mkbootimg.' + configs['model'], 'r') as fh:
+        with open('arch/arm64/boot/ts/build.mkbootimg.' + model, 'r') as fh:
             for line in fh:
                 (arg, val) = line.split('=', 1)
                 val = val.rstrip()
@@ -231,44 +355,80 @@ def config_info(configs):
                     print('OS Patch Level: ' + val)
                     break
 
-def config_name(name):
-    run(['scripts/config', '--set-str', 'LOCALVERSION', '-' + name])
-
-def config_model(model):
+def config_name(name, configdir='.'):
     run(['scripts/config',
+        '--file', configdir + '/.config',
+        '--set-str', 'LOCALVERSION', '-' + name])
+
+def config_model(model, configdir='.'):
+    run(['scripts/config',
+        '--file', configdir + '/.config',
         '--disable', 'CONFIG_MODEL_NONE',
         '--enable', 'CONFIG_MODEL_' + model])
 
-def make_config(configs):
-    list = ['scripts/kconfig/merge_config.sh',
-        'arch/arm64/configs/' + models[configs['model']]['config'],
-        'kernel/configs/cruel.conf']
+def make_config(configs, model):
+    objtree = configs.get('O', '.')
+    args = ['scripts/kconfig/merge_config.sh', '-O', objtree,
+            'arch/arm64/configs/' + models[model]['config'],
+            'kernel/configs/ts_config.conf']
 
     kernel_configs = configs['kernel']
     for key in configs['order']:
         if kernel_configs[key]['enabled']:
-            list.append(kernel_configs[key]['path'])
-    else:
-        print('Configuration: basic')
+            args.append(kernel_configs[key]['path'])
 
-    run(list)
+    run(args)
 
     if 'name' in configs:
-        config_name(configs['name'])
+        config_name(configs['name'], objtree)
 
-    if 'model' in configs:
-        config_model(configs['model'])
+    if configs['kernel']['dtb']['enabled']: 
+        config_model(model, objtree)
 
-def update_magisk(canary):
+def update_magisk(version):
     cmd = ['usr/magisk/update_magisk.sh']
-    if canary:
-        cmd.append('--canary')
+    if version:
+        cmd.append(version)
     run(cmd, check=True)
     with open('usr/magisk/magisk_version', 'r') as fh:
         print('Magisk Version: ' + fh.readline())
 
-def build():
-    run(['make', '-j', str(get_cores_num())], check=True)
+def switch_toolchain(compiler):
+    cc = os.path.abspath(get_toolchain_cc(compiler))
+    if cc.startswith(os.path.realpath('toolchain')):
+        branch = run(['git', 'submodule', 'foreach', 'git', 'rev-parse', '--abbrev-ref', 'HEAD'],
+                     stdout=PIPE).stdout.decode('utf-8').splitlines()[1]
+        if ((not tool_exists(cc)) or compiler != branch) and not os.path.isabs(cc):
+            ret = run(['git', 'submodule', 'foreach', 'git', 'rev-parse', '--verify', '--quiet', compiler],
+                        stdout=DEVNULL, stderr=DEVNULL)
+            if ret.returncode != 0:
+                try:
+                    run(['git', 'submodule', 'foreach', 'git', 'branch', compiler, 'origin/' + compiler],
+                        check=True, stdout=DEVNULL, stderr=DEVNULL)
+                except CalledProcessError:
+                    fatal("Can't checkout to toolchain: " + compiler)
+            run(['git', 'submodule', 'foreach', 'git', 'checkout', compiler], check=True)
+
+def build(compiler, objtree='.'):
+    env = {}
+
+    if compiler == 'system':
+        env = toolchain[compiler]
+    else:
+        env = { k: os.path.abspath(v) for k, v in toolchain[compiler].items() }
+
+    if objtree != '.':
+        env['O'] = objtree
+
+    if tool_exists('pigz'):
+        env['KGZIP']='pigz'
+    if tool_exists('pbzip2'):
+        env['KBZIP2']='pbzip2'
+
+    run(['make',
+            '-j', str(get_cores_num()),
+            *{ k + '=' + v for k, v in env.items() }
+        ], check=True)
 
 def mkbootimg(os_patch_level, config, output, **files):
     if tool_exists('mkbootimg'):
@@ -290,8 +450,18 @@ def mkbootimg(os_patch_level, config, output, **files):
         args.extend(['--output', output])
 
         run(args, check=True)
+
+        with open(output, 'ab') as img:
+            img.write('SEANDROIDENFORCE'.encode('ascii'))
     else:
         fatal("Please, install 'mkbootimg'.")
+
+def mkdtboimg(objtree, config, output):
+    if tool_exists('mkdtboimg'):
+        print("Preparing {}...".format(output))
+        run(['mkdtboimg', 'cfg_create', '--dtb-dir=' + objtree, output, config], check=True)
+    else:
+        fatal("Please, install 'mkdtboimg'.")
 
 def mkvbmeta(output):
     if tool_exists('avbtool'):
@@ -320,8 +490,11 @@ def heimdall_wait_for_device():
 def heimdall_in_download_mode():
     return run(['heimdall', 'detect'], stdout=DEVNULL, stderr=DEVNULL).returncode == 0
 
-def heimdall_flash_boot(boot):
-    run(['heimdall', 'flash', '--BOOT', boot], check=True)
+def heimdall_flash_images(imgs):
+    args = ['heimdall', 'flash']
+    for partition, image in imgs.items():
+        args.extend(['--' + partition.upper(), image])
+    run(args, check=True)
 
 def adb_reboot_download():
     run(['adb', 'reboot', 'download'])
@@ -342,7 +515,7 @@ def adb_check_su():
     except CalledProcessError:
         return False
 
-def flash(boot):
+def flash(**imgs):
     if tool_exists('adb'):
         is_root = False
         try:
@@ -353,9 +526,15 @@ def flash(boot):
             pass
 
         if is_root:
-            run(['adb', 'push', 'boot.img', '/data/local/tmp'], check=True)
-            run(['adb', 'shell', "su -c 'dd if=/data/local/tmp/boot.img of=/dev/block/by-name/boot'"], check=True)
-            run(['adb', 'shell', 'rm', '-f', '/data/local/tmp/boot.img'])
+            for part, img in imgs.items():
+                run(['adb', 'push',
+                    img, '/data/local/tmp'],
+                    check=True)
+                run(['adb', 'shell',
+                    "su -c 'dd if=/data/local/tmp/" + img +
+                             " of=/dev/block/by-name/" + part + "'"],
+                    check=True)
+                run(['adb', 'shell', 'rm', '-f', '/data/local/tmp/' + img])
             adb_reboot()
             adb_wait_for_device()
             adb_get_kernel_version()
@@ -364,7 +543,7 @@ def flash(boot):
                 adb_wait_for_device()
                 adb_reboot_download()
             heimdall_wait_for_device()
-            heimdall_flash_boot(boot)
+            heimdall_flash_images(imgs)
             adb_wait_for_device()
             adb_get_kernel_version()
         else:
@@ -372,40 +551,96 @@ def flash(boot):
     else:
         fatal("Please, install 'adb'")
 
-if __name__ == "__main__":
+def pack(images):
+    if tool_exists('xz'):
+        print('Preparing TSKernel.tar.xz ...')
+        set_env(XZ_OPT='-9')
+        run(['tar', '-cJf', 'TSKernel.tar.xz', *images], check=True)
+    else:
+        fatal("Please, install 'xz'.")
+
+if __name__ == '__main__':
     configs = {}
     stages = parse_stage()
+    device_models = None
+    single_model = True
+    objtree = '.'
 
     if 'config' in stages:
-        if os.path.exists('config.json'):
-            os.remove('config.json')
+        remove_file('config.json')
+
         configs = parse_args()
         save_config('config.json', configs)
-        config_info(configs)
-        stages.remove('config')
+
+        objtree = configs.get('O', '.')
+        remove_file(objtree + '/.config')
+
+        device_models = configs['model']
+        if len(device_models) == 1:
+            model = device_models[0]
+            config_info(configs, model)
+            setup_env(configs, model)
+            make_config(configs, model)
     else:
         configs = load_config('config.json')
+        device_models = configs['model']
+        objtree = configs.get('O', '.')
 
+    if len(device_models) > 1:
+        single_model = False
+        if len(stages) == 1 and (stages[0] == 'mkimg' or stages[0] == 'flash'):
+            fatal("Please, don't use :mkimg with multiple models")
+
+    compiler = configs.get('toolchain', 'default')
     if 'build' in stages:
-        setup_environ(ARCH='arm64', ANDROID_MAJOR_VERSION='q')
-        print('Build date: ' + datetime.utcnow().strftime('%Y-%m-%d %H:%M UTC'))
+        print('Toolchain: ' + compiler)
+        switch_toolchain(compiler)
 
-        if configs['kernel']['fake_config']['enabled']:
-                defconfig = 'arch/arm64/configs/' + models[configs['model']]['config']
-                setup_environ(KCONFIG_BUILTINCONFIG=defconfig)
+    for model in device_models:
+        if 'build' in stages:
+            print('Build date: ' + datetime.utcnow().strftime('%Y-%m-%d %H:%M UTC'))
+            config_info(configs, model)
+            setup_env(configs, model)
+            if not os.path.exists(objtree + '/.config'):
+                make_config(configs, model)
 
-        make_config(configs)
+            if configs['kernel']['magisk']['enabled']:
+                update_magisk(configs['kernel']['magisk'].get('version'))
+            build(compiler, objtree)
+            if not single_model:
+                os.remove(objtree + '/.config')
 
-        if configs['kernel']['magisk']['enabled']:
-            update_magisk(configs['kernel']['magisk']['canary'])
+        if 'mkimg' in stages:
+            os_patch_level = ''
+            if 'os_patch_level' in configs:
+                os_patch_level = configs['os_patch_level']
+            mkbootimg(os_patch_level,
+                      'arch/arm64/boot/ts/build.mkbootimg.' + model,
+                      'boot-' + model + '.img',
+                      kernel = objtree + '/arch/arm64/boot/Image')
+            if configs['kernel']['dtb']['enabled']:
+                mkdtboimg(objtree, 'arch/arm64/boot/ts/dtb.' + model,  model + '-dtb.img')
+                mkdtboimg(objtree, 'arch/arm64/boot/ts/dtbo.' + model, model + '-dtbo.img')
+            #mkvbmeta('vbmeta.img')
+            #mkaptar(boot_img, 'vbmeta.img')
 
-        build()
+    if single_model and 'flash' in stages:
+        model = device_models[0]
+        if configs['kernel']['dtb']['enabled']:
+            flash(boot = 'boot-' + model + '.img',
+                  dtb  = model + '-dtb.img',
+                  dtbo = model + '-dtbo.img')
+        else:
+            flash(boot = 'boot-' + model + '.img')
+
+    if 'pack' in stages:
+        images = []
+        for m in device_models:
+            images.append('boot-' + m + '.img')
+            if configs['kernel']['dtb']['enabled']:
+                images.extend([ 'boot-' + m + '-dtb.img',
+                                m + '-dtbo.img' ])
+        pack(images)
+
     if 'mkimg' in stages:
-        os_patch_level = ''
-        if 'os_patch_level' in configs:
-            os_patch_level = configs['os_patch_level']
-        mkbootimg(os_patch_level, 'build.mkbootimg.' + configs['model'], 'boot.img', kernel='arch/arm64/boot/Image')
-        #mkvbmeta('vbmeta.img')
-        #mkaptar('boot.img', 'vbmeta.img')
-    if 'flash' in stages:
-        flash('boot.img')
+        umount_tmpfs(objtree)
