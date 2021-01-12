@@ -445,7 +445,6 @@ static inline void cpufreq_resume(void) {}
 /* Policy Notifiers  */
 #define CPUFREQ_ADJUST			(0)
 #define CPUFREQ_NOTIFY			(1)
-#define CPUFREQ_INCOMPATIBLE	(1)
 
 #ifdef CONFIG_CPU_FREQ
 int cpufreq_register_notifier(struct notifier_block *nb, unsigned int list);
@@ -561,8 +560,6 @@ static inline void cpufreq_policy_apply_limits(struct cpufreq_policy *policy)
 }
 #endif
 
-int cpufreq_update_freq(int cpu, unsigned int min, unsigned int max);
-
 /* Governor attribute set */
 struct gov_attr_set {
 	struct kobject kobj;
@@ -585,8 +582,6 @@ struct governor_attr {
 	ssize_t (*store)(struct gov_attr_set *attr_set, const char *buf,
 			 size_t count);
 };
-
-int cpufreq_update_freq(int cpu, unsigned int min, unsigned int max);
 
 static inline bool cpufreq_can_do_remote_dvfs(struct cpufreq_policy *policy)
 {
