@@ -92,10 +92,6 @@ struct sugov_cpu {
 	unsigned int iowait_boost_max;
 	u64 last_update;
 
-	/* The fields below are only needed when sharing a policy. */
-	unsigned long util_cfs;
-	unsigned long util_dl;
-
 #ifdef CONFIG_SCHED_KAIR_GLUE
 	/**
 	 * KAIR instance which should be referenced in percpu manner,
@@ -565,9 +561,6 @@ static unsigned int sugov_next_freq_shared(struct sugov_cpu *sg_cpu, u64 time)
 		if (delta_ns > TICK_NSEC && idle_cpu(j)) {
 			j_sg_cpu->iowait_boost = 0;
 			j_sg_cpu->iowait_boost_pending = false;
-			j_sg_cpu->util_cfs = 0;
-			if (j_sg_cpu->util_dl == 0)
-				continue;
 		}
 		if (j_sg_cpu->flags & SCHED_CPUFREQ_DL)
 			return policy->cpuinfo.max_freq;
