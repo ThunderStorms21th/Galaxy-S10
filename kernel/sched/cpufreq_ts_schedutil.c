@@ -38,6 +38,8 @@
 DECLARE_KAIRISTICS(cpufreq, 32, 25, 24, 25);
 #endif
 
+#define IOWAIT_BOOST_MIN	(SCHED_CAPACITY_SCALE / 8)
+
 unsigned long boosted_cpu_util(int cpu, unsigned long other_util);
 /* KTHREAD PRIOR - default 50 */
 // #define SUGOV_KTHREAD_PRIORITY	60
@@ -532,7 +534,7 @@ static void sugov_iowait_boost(struct sugov_cpu *sg_cpu, unsigned long *util,
 		sg_cpu->iowait_boost_pending = false;
 	} else {
 		sg_cpu->iowait_boost >>= 1;
-		if (sg_cpu->iowait_boost < sg_cpu->sg_policy->policy->min) {
+		if (sg_cpu->iowait_boost < sg_cpu->sg_policy->IOWAIT_BOOST_MIN) {
 			sg_cpu->iowait_boost = 0;
 			return;
 		}
