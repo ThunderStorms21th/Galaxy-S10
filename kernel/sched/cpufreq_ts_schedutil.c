@@ -38,8 +38,6 @@
 DECLARE_KAIRISTICS(cpufreq, 32, 25, 24, 25);
 #endif
 
-#define IOWAIT_BOOST_MIN	(SCHED_CAPACITY_SCALE / 8)
-
 unsigned long boosted_cpu_util(int cpu, unsigned long other_util);
 /* KTHREAD PRIOR - default 50 */
 // #define SUGOV_KTHREAD_PRIORITY	60
@@ -296,7 +294,7 @@ static bool sugov_update_next_freq(struct sugov_policy *sg_policy, u64 time,
 		return false;
 
 	if (sugov_up_down_rate_limit(sg_policy, time, next_freq))
-		return;
+		return false;
 
 	sg_policy->next_freq = next_freq;
 	sg_policy->last_freq_update_time = time;
@@ -307,6 +305,7 @@ static bool sugov_update_next_freq(struct sugov_policy *sg_policy, u64 time,
 static void sugov_fast_switch(struct sugov_policy *sg_policy, u64 time,
 			      unsigned int next_freq)
 {
+	struct cpufreq_policy *policy = sg_policy->policy;
 	next_freq = cpufreq_driver_fast_switch(policy, next_freq);
 	if (!next_freq)
 		return;
@@ -321,6 +320,7 @@ static void sugov_fast_switch(struct sugov_policy *sg_policy, u64 time,
 static void sugov_deferred_update(struct sugov_policy *sg_policy, u64 time,
 				  unsigned int next_freq)
 {
+    int cpu;
 	if (!sugov_update_next_freq(sg_policy, time, next_freq))
 		return;
 
@@ -536,7 +536,7 @@ static void sugov_iowait_boost(struct sugov_cpu *sg_cpu, unsigned long *util,
 		sg_cpu->iowait_boost_pending = false;
 	} else {
 		sg_cpu->iowait_boost >>= 1;
-		if (sg_cpu->iowait_boost < sg_cpu->sg_policy->IOWAIT_BOOST_MIN) {
+		if (sg_cpu->iowait_boost < sg_cpu->sg_policy->policy->min) {
 			sg_cpu->iowait_boost = 0;
 			return;
 		}
@@ -627,7 +627,7 @@ static void sugov_update_shared(struct update_util_data *hook, u64 time,
 
 		/* Restore cached freq as next_freq has changed */
 		sg_policy->cached_raw_freq = cached_freq;
-
+    }
 	/*
 	 * This code runs under rq->lock for the target CPU, so it won't run
 	 * concurrently on two different CPUs for the same target and it is not
