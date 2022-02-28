@@ -45,6 +45,19 @@ extern unsigned int get_cpu_max_capacity(unsigned int cpu, int sse);
 /* core */
 extern void init_ems(void);
 
+/*
+ * EMS Tune
+ */
+struct emstune_mode_request {
+	struct plist_node node;
+	bool active;
+	struct delayed_work work; /* for emstune_update_request_timeout */
+	char *func;
+	unsigned int line;
+};
+
+#define emstune_add_request(req)	do { } while(0);
+
 /* task util initialization */
 extern void exynos_init_entity_util_avg(struct sched_entity *se);
 

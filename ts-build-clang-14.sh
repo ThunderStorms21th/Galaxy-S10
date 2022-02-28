@@ -50,16 +50,16 @@ MAIN()
     #./build mkimg model=G975N name="$K_NAME-$K_BASE-$ANDROID-$MODEL-$K_VERSION" toolchain=clang-14 +magisk +dtb
     elif [ $MODEL = "G977B" ]; then
     ./build mkimg model=G977B name="$K_NAME-$K_BASE-$ANDROID-$MODEL-$K_VERSION" toolchain=clang-14 +magisk +dtb
-    #elif [ $MODEL = "G977N" ]; then
-    #./build mkimg model=G977N name="$K_NAME-$K_BASE-$ANDROID-$MODEL-$K_VERSION" toolchain=clang-14 +magisk +dtb
+    elif [ $MODEL = "G977N" ]; then
+    ./build mkimg model=G977N name="$K_NAME-$K_BASE-$ANDROID-$MODEL-$K_VERSION" toolchain=clang-14 +magisk +dtb
     elif [ $MODEL = "N970F" ]; then
     ./build mkimg model=N970F name="$K_NAME-$K_BASE-$ANDROID-$MODEL-$K_VERSION" toolchain=clang-14 +magisk +dtb
     #elif [ $MODEL = "N971N" ]; then
     #./build mkimg model=N971N name="$K_NAME-$K_BASE-$ANDROID-$MODEL-$K_VERSION" toolchain=clang-14 +magisk +dtb
     elif [ $MODEL = "N975F" ]; then
     ./build mkimg model=N975F name="$K_NAME-$K_BASE-$ANDROID-$MODEL-$K_VERSION" toolchain=clang-14 +magisk +dtb
-    #elif [ $MODEL = "N976N" ]; then
-    #./build mkimg model=N976N name="$K_NAME-$K_BASE-$ANDROID-$MODEL-$K_VERSION" toolchain=clang-14 +magisk +dtb
+    elif [ $MODEL = "N976N" ]; then
+    ./build mkimg model=N976N name="$K_NAME-$K_BASE-$ANDROID-$MODEL-$K_VERSION" toolchain=clang-14 +magisk +dtb
     elif [ $MODEL = "N976B" ]; then
     ./build mkimg model=N976B name="$K_NAME-$K_BASE-$ANDROID-$MODEL-$K_VERSION" toolchain=clang-14 +magisk +dtb
     fi
