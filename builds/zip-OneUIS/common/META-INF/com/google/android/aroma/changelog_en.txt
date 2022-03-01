@@ -2,8 +2,8 @@
 <b>KERNEL INFORMATION:</b>
 
 	NAME	: <b><#selectbg_g>ThundeRStormS-Kernel-OneUI R</#></b>	
-	VERSION	: <b><#selectbg_g>v4.0.1</#></b>
-	DATE	: <b><#selectbg_g>24/01/2022</#></b>
+	VERSION	: <b><#selectbg_g>v4.1</#></b>
+	DATE	: <b><#selectbg_g>01/03/2022</#></b>
 	AUTHOR	: <b><#selectbg_g>ThundeRStormS Team</#></b>
 
 <#53a6f4><b>        Only For Galaxy S10/N10 | OneUI S Roms |</b></#>
@@ -11,6 +11,23 @@
 
 <b>CHANGELOG:</b>
 
+--------------------------------------------------------------------------
+<u><b><#selectbg_g>ThunderStorms-Kernel-S-v4.1 : 01.03.2022</#></b></u>
+<*>Samsung source : GULB OneUI 4.0 </*>
+<*>Linux source : upstreamed to 4.14.264 </*>
+<*>Samsung os patch level: 2022-01 </*>
+<*>HZ tick set at 100HZ </*>
+<*>S10, S10+, N10 Zram set at 2,0GB </*>
+<*>Changed some initial settings</*>
+<*>Added MALI GPU drivers r36p0 ValHall</*>
+<*>Backported Game Misc Control from Samsung S20</*>
+<*>Support Init.d scripts: /vendor/etc/init.d </*>
+<*>ThunderTweaks v1.1.1.0 </*>
+<*>Magisk 24.1 Offcial build in kernel - thx to CruelKernel Team </*>
+   Thanks to Corsicanu for help with Zygisk support.
+<*>Compiled via Clang 14.01</*>
+<*>Rest like in realease 4.0.2 </*>
+-------------------------------------------------------------------------
 --------------------------------------------------------------------------
 <u><b><#selectbg_g>ThunderStorms-Kernel-S-v4.0.2 : 31.01.2022</#></b></u>
 <*>Samsung source : GULB OneUI 4.0 </*>

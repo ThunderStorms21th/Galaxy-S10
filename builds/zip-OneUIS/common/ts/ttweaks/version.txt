@@ -1,1 +1,2 @@
-ThunderTweaks v1.1.0.4
+ThunderTweaks v1.1.1.0
+

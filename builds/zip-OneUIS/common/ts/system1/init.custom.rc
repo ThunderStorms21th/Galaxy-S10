@@ -12,7 +12,6 @@ on property:sys.boot_completed=1
     stop secure_storage
     stop irisd
 
-
 service kernelinit /system/etc/init/hw/ts-kernel.sh
     # class late_start
     user root
@@ -21,9 +20,7 @@ service kernelinit /system/etc/init/hw/ts-kernel.sh
     oneshot
     disabled
 
-
 on init
-
     # EAS stune boosting interfaces
     chown system system /dev/stune/top-app/schedtune.boost
     chown system system /dev/stune/top-app/schedtune.prefer_idle
@@ -41,7 +38,6 @@ on init
     chown system system /dev/stune/schedtune.prefer_idle
     chown system system /dev/stune/schedtune.prefer_perf
     chown system system /dev/stune/cgroup.procs
-
     # CPUSET(9820/9825)
     chown system system /dev/cpuset/top-app/cpus
     chown system system /dev/cpuset/foreground/cpus
@@ -79,14 +75,12 @@ on init
     chown radio system /sys/kernel/ems/ontime/coregroup1/coverage_ratio
     chown radio system /sys/kernel/ems/lbt/overutil_ratio_level0
     chown radio system /sys/kernel/ems/lbt/overutil_ratio_level1
-
     chmod 664 /dev/cpuset/top-app/cpus
     chmod 664 /dev/cpuset/foreground/cpus
     chmod 664 /dev/cpuset/background/cpus
     chmod 664 /dev/cpuset/system-background/cpus
     chmod 664 /dev/cpuset/restricted/cpus
     chmod 664 /dev/cpuset/cpus
-
     chmod 0664 /dev/stune/top-app/schedtune.prefer_perf
     chmod 0664 /dev/stune/top-app/schedtune.prefer_idle
     chmod 0664 /dev/stune/top-app/schedtune.band
@@ -114,19 +108,17 @@ on init
     chmod 0664 /sys/kernel/ems/lbt/overutil_ratio_level0
     chmod 0664 /sys/kernel/ems/lbt/overutil_ratio_level1
 
-
 on boot
 
    write /sys/bus/workqueue/devices/writeback/cpumask 1
-
    # I/O sched settings
    write /sys/block/sda/queue/nr_requests 256
    write /sys/block/mmcblk0/queue/nr_requests 128
    write /sys/block/sda/queue/iostats 0
    write /sys/block/mmcblk0/queue/iostats 0
    # VM
-   write /proc/sys/vm/dirty_expire_centisecs 2000
-   write /proc/sys/vm/dirty_writeback_centisecs 2000
+   write /proc/sys/vm/dirty_expire_centisecs 3000
+   write /proc/sys/vm/dirty_writeback_centisecs 3000
    write /proc/sys/vm/vfs_cache_pressure 100
    # MISC
    write > /sys/module/mmc_core/parameters/use_spi_crc N
@@ -135,10 +127,10 @@ on boot
    write /sys/devices/virtual/misc/boeffla_wakelock_blocker/wakelock_blocker 'wlan_pm_wake;wlan_rx_wake;wlan_wake;wlan_ctrl_wake;wlan_txfl_wake;BT_bt_wake;BT_host_wake;nfc_wake_lock;rmnet0;nfc_wake_lock;bluetooth_timer;event0;GPSD;umts_ipc0;NETLINK;ssp_comm_wake_lock;epoll_system_server_file:[timerfd4_system_server];epoll_system_server_file:[timerfd7_system_server];epoll_InputReader_file:event1;epoll_system_server_file:[timerfd5_system_server];epoll_InputReader_file:event10;epoll_InputReader_file:event0;epoll_InputReader_epollfd;epoll_system_server_epollfd'
 
 ## Build.prop settings
-    # setprop hw3d.force 1
-    # setprop hw2d.force 1
-    # setprop debug.composition.type gpu
-    # setprop persist.sys.composition.type gpu
+    setprop hw3d.force 1
+    setprop hw2d.force 1
+    setprop debug.composition.type gpu
+    setprop persist.sys.composition.type gpu
     # setprop debug.egl.profiler 1
     # setprop debug.egl.hw 1
     # setprop debug.sf.hw 1
@@ -146,17 +138,21 @@ on boot
     # setprop hwui.render_dirty_regions false
     setprop debug.gr.numframebuffers 3
     setprop debug.egl.swapinterval -60
-    # setprop debug.gr.swapinterval 0
+    setprop debug.gr.swapinterval 0
     setprop ro.config.hw_power_saving 1
-    # setprop persist.sys.ui.hw 1
-    # setprop ro.sf.compbypass.enable 0
+    setprop persist.sys.ui.hw 1
+    setprop ro.sf.compbypass.enable 0
     setprop debug.performance.tuning 1
     # setprop hwui.disable_vsync true
-    # setprop debug.hwc.force_gpu 1
-    # setprop debug.hwc.nodirtyregion 1
-    # setprop debug.hwc.winupdate 1
-    # setprop vidc.debug.level 0
-    # setprop ro.product.gpu.driver 1
+    setprop debug.hwc.force_gpu 1
+    setprop debug.hwc.nodirtyregion 1
+    setprop debug.hwc.winupdate 1
+    setprop vidc.debug.level 0
+    setprop video.accelerate.hw 1
+    setprop debug.egl.buffcount 4
+    setrpop persist.sys.force_highendgfx true
+    setprop debug.hwui.renderer o
+    setprop ro.product.gpu.driver 1
     # setprop persist.sys.scrollingcache 3
     setprop ro.config.hw_quickpoweron true
     setprop ro.config.hw_power_saving 1
@@ -164,7 +160,6 @@ on boot
     setprop persist.radio.add_power_save 1
     setprop ro.ril.sensor.sleep.control 1
     setprop ro.config.nocheckin 1
-
 ## Disable logs and debugs
     setprop profiler.debugmonitor 0
     setprop profiler.launch 0
@@ -183,17 +178,17 @@ on boot
     setprop profiler.launch false
     setprop profiler.hung.dumpdobugreport false
     setprop libc.debug.malloc 0
-
 ## Decrease time for screen off/on durrign call
     setprop ro.telephony.call_ring.delay 0
     setprop ring.delay 0
     setprop ro.lge.proximity.delay 15
     setprop mot.proximity.delay 15
     setprop ro.mot.buttonlight.timeout 0
-
 ## VM
     write /proc/sys/vm/page-cluster 0
-
+    ## Native VM bridges    
+    setprop ro.enable.native.bridge.exec 1
+    setprop ro.enable.native.bridge.exec64 1
 ## Mobile Data Tweaks
     setprop ro.ril.hsxpa=5
     setprop ro.ril.hspa=36
@@ -218,18 +213,14 @@ on boot
     setprop ro.ril.enable.a53=1
     setprop ro.ril.enable.a54=1
     setprop ro.ril.enable.a55=1
-
 ## Signal Tweaks
     setprop persist.cust.tel.eons=1 
     setprop ro.config.hw_fast_dormancy=1
     setprop ro.config.combined_signal=true
     setprop telephony.lteOnCdmaDevice=1
-    setprop ro.telephony.default_network=33,33
-
 ## Support For IPV4 and IPV6
     setprop persist.telephony.support.ipv6=1
     setprop persist.telephony.support.ipv4=1
-
 ## DNS Tweaks
     setprop net.rmnet0.dns1=1.1.1.1
     setprop net.rmnet0.dns2=1.0.0.1
@@ -257,7 +248,6 @@ on boot
     setprop net.wlan0.dns2=1.0.0.1
     setprop net.eth0.dns1=1.1.1.1
     setprop net.eth0.dns2=1.0.0.1
-
 ## Internet Buffer Tweaks
     setprop net.tcp.buffersize.default=4096,87380,256960,4096,16384,256960
     setprop net.tcp.buffersize.wifi=4096,87380,256960,4096,16384,256960
@@ -271,7 +261,6 @@ on boot
     setprop net.tcp.buffersize.hspa=6144,87380,524288,6144,16384,262144
     setprop net.tcp.buffersize.hspap=4096,87380,1220608,4096,16384,393216
     setprop net.tcp.buffersize.hsupa=4096,87380,704512,4096,16384,262144
-
 ## Internet Tweaks
     setprop net.ipv4.icmp_echo_ignore_all=1
     setprop net.ipv4.icmp_ignore_bogus_error_responses=1
@@ -293,9 +282,19 @@ on boot
     setprop net.ipv4.tcp_max_tw_buckets=1440000
     setprop net.ipv4.tcp_tw_recycle=1
     setprop net.ipv4.tcp_tw_reuse=1
+## Game tweaks
+    setprop persist.sys.NV_FPSLIMIT 160
+    setprop persist.sys.NV_POWERMODE 1
+    setprop persist.sys.NV_PROFVER 15
+    setprop persist.sys.NV_STEREOCTRL 0
+    setprop persist.sys.NV_STEREOSEPCHG 0
+    setprop persist.sys.NV_STEREOSEP 20
+## FPS Lock
+    setprop ro.fps_enable 1
+    setprop ro.fps.capsmin 70
+    setprop ro.fps.capsmax 160
 
 #   stop logd
-
 on property:sys.boot_completed=1
       resetprop ro.build.selinux 1
 

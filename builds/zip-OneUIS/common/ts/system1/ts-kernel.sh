@@ -100,7 +100,7 @@ rm -f $LOG
     # CPU set at max/min freq
     # Little CPU
     echo "ts_schedutil" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor
-    echo "546000" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq
+    echo "650000" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq
     echo "1950000" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq
     echo "2000" > /sys/devices/system/cpu/cpu0/cpufreq/ts_schedutil/down_rate_limit_us
     echo "4000" > /sys/devices/system/cpu/cpu0/cpufreq/ts_schedutil/up_rate_limit_us
@@ -139,14 +139,14 @@ rm -f $LOG
     echo "1" > /sys/module/sec_nfc/parameters/wl_nfc
 
     # Entropy
-    echo "256" > /proc/sys/kernel/random/write_wakeup_threshold
+    echo "512" > /proc/sys/kernel/random/write_wakeup_threshold
     echo "64" > /proc/sys/kernel/random/read_wakeup_threshold
 
     # VM
     echo "100" > /proc/sys/vm/vfs_cache_pressure
     echo "140" > /proc/sys/vm/swappiness
-    echo "2000" > /proc/sys/vm/dirty_writeback_centisecs
-    echo "2000" > /proc/sys/vm/dirty_expire_centisecs
+    echo "3000" > /proc/sys/vm/dirty_writeback_centisecs
+    echo "3000" > /proc/sys/vm/dirty_expire_centisecs
     echo "50" > /proc/sys/vm/overcommit_ratio
     echo "25" > /proc/sys/vm/dirty_ratio
     echo "10" > /proc/sys/vm/dirty_background_ratio
@@ -179,8 +179,8 @@ rm -f $LOG
     # echo "100000" > /sys/kernel/gpu/gpu_min_clock
     # echo "coarse_demand" > /sys/devices/platform/18500000.mali/power_policy
     # echo "1" > /sys/devices/platform/18500000.mali/dvfs_governor
-    echo "260000" > /sys/devices/platform/18500000.mali/highspeed_clock
-    echo "90" > /sys/devices/platform/18500000.mali/highspeed_load
+    echo "433000" > /sys/devices/platform/18500000.mali/highspeed_clock
+    echo "94" > /sys/devices/platform/18500000.mali/highspeed_load
     echo "1" > /sys/devices/platform/18500000.mali/highspeed_delay
 
    # Misc settings : bbr2, bbr, cubic or westwood
@@ -203,6 +203,8 @@ rm -f $LOG
    echo "1" > /sys/block/mmcblk0/queue/rq_affinity
    echo "256" > /sys/block/sda/queue/nr_requests
    echo "128" > /sys/block/mmcblk0/queue/nr_requests
+   echo "24" > /sys/block/mmcblk0/queue/iosched/fifo_batch
+   echo "500" > /sys/block/sda/queue/iosched/target_latency
 
    #Devfreq
    # default 2093 MHz
@@ -213,7 +215,7 @@ rm -f $LOG
 
    ## Kernel Stune											DEFAULT VALUES
    # GLOBAL
-   echo "5" > /dev/stune/schedtune.boost					# 0
+   echo "6" > /dev/stune/schedtune.boost					# 0
    echo "0" > /dev/stune/schedtune.band					    # 0
    echo "0" > /dev/stune/schedtune.prefer_idle				# 0
    echo "0" > /dev/stune/schedtune.prefer_perf				# 0
@@ -221,7 +223,7 @@ rm -f $LOG
    echo "0" > /dev/stune/schedtune.ontime_en				# 0
    
    # TOP-APP
-   echo "20" > /dev/stune/top-app/schedtune.boost			# 20
+   echo "6" > /dev/stune/top-app/schedtune.boost			# 20
    echo "0" > /dev/stune/top-app/schedtune.band			    # 0
    echo "1" > /dev/stune/top-app/schedtune.prefer_idle		# 1
    echo "0" > /dev/stune/top-app/schedtune.prefer_perf		# 0
@@ -229,7 +231,7 @@ rm -f $LOG
    echo "1" > /dev/stune/top-app/schedtune.ontime_en		# 1
    
    # RT
-   echo "5" > /dev/stune/rt/schedtune.boost					# 0
+   echo "6" > /dev/stune/rt/schedtune.boost					# 0
    echo "0" > /dev/stune/rt/schedtune.band					# 0
    echo "0" > /dev/stune/rt/schedtune.prefer_idle			# 0
    echo "0" > /dev/stune/rt/schedtune.prefer_perf			# 0
@@ -290,15 +292,19 @@ rm -f $LOG
    echo "15" > sys/kernel/ems/frt/coregroup2/coverage_ratio_boost
 
    ## Kernel Scheduler
-   echo "4000000" > /proc/sys/kernel/sched_wakeup_granularity_ns
-   echo "10000000" > /proc/sys/kernel/sched_latency_ns
-   echo "950000" > /proc/sys/kernel/sched_min_granularity_ns
-   echo "1000000" > /proc/sys/kernel/sched_migration_cost_ns
-   echo "1000000" > /proc/sys/kernel/sched_rt_period_us
-   echo "15" > /proc/sys/kernel/perf_cpu_time_max_percent  #25
+   echo "## -- Kernel scheduler settings" >> $LOG;
+   echo "3000000" > /proc/sys/kernel/sched_wakeup_granularity_ns
+   #echo "10000000" > /proc/sys/kernel/sched_latency_ns
+   #echo "950000" > /proc/sys/kernel/sched_min_granularity_ns
+   #echo "1000000" > /proc/sys/kernel/sched_migration_cost_ns
+   #echo "1000000" > /proc/sys/kernel/sched_rt_period_us
+   echo "10" > /proc/sys/kernel/perf_cpu_time_max_percent  #25
    echo "30" > /proc/sys/kernel/sched_rr_timeslice_ms  #30
    echo "64" > /proc/sys/kernel/sched_nr_migrate
-   echo "0f" > /proc/irq/default_smp_affinity  #01
+   echo "1" > /sys/module/cpuidle/parameters/off  # 0
+   echo "performance" > /sys/module/pcie_aspm/parameters/policy
+   # policy - default performance powersave powersupersave
+   echo "ff" > /proc/irq/default_smp_affinity  #01
    echo "ff" > /sys/bus/workqueue/devices/writeback/cpumask   # f0
    echo "ff" > /sys/devices/virtual/workqueue/cpumask   # ff
    echo "0" > /dev/cpuset/sched_load_balance   # 0
@@ -354,7 +360,7 @@ rm -f $LOG
     # CPU set at max/min freq
     # Little CPU
     echo "ts_schedutil" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor
-    echo "546000" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq
+    echo "650000" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq
     echo "1950000" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq
     echo "2000" > /sys/devices/system/cpu/cpu0/cpufreq/ts_schedutil/down_rate_limit_us
     echo "4000" > /sys/devices/system/cpu/cpu0/cpufreq/ts_schedutil/up_rate_limit_us
@@ -389,18 +395,18 @@ rm -f $LOG
     echo "N" > /sys/module/wakeup/parameters/enable_wlan_rx_wake_wl
     echo "N" > /sys/module/wakeup/parameters/enable_wlan_wd_wake_wl
     echo "Y" > /sys/module/wakeup/parameters/enable_mmc0_detect_wl
-    echo "3" > /sys/module/sec_battery/parameters/wl_polling
+    echo "5" > /sys/module/sec_battery/parameters/wl_polling
     echo "1" > /sys/module/sec_nfc/parameters/wl_nfc
 
     # Entropy
-    echo "256" > /proc/sys/kernel/random/write_wakeup_threshold
+    echo "512" > /proc/sys/kernel/random/write_wakeup_threshold
     echo "64" > /proc/sys/kernel/random/read_wakeup_threshold
 
     # VM
     echo "100" > /proc/sys/vm/vfs_cache_pressure
     echo "100" > /proc/sys/vm/swappiness
-    echo "1000" > /proc/sys/vm/dirty_writeback_centisecs
-    echo "1000" > /proc/sys/vm/dirty_expire_centisecs
+    echo "3000" > /proc/sys/vm/dirty_writeback_centisecs
+    echo "3000" > /proc/sys/vm/dirty_expire_centisecs
     echo "50" > /proc/sys/vm/overcommit_ratio
     echo "25" > /proc/sys/vm/dirty_ratio
     echo "10" > /proc/sys/vm/dirty_background_ratio
@@ -437,8 +443,8 @@ rm -f $LOG
     # echo "100000" > /sys/kernel/gpu/gpu_min_clock
     # echo "coarse_demand" > /sys/devices/platform/18500000.mali/power_policy
     # echo "1" > /sys/devices/platform/18500000.mali/dvfs_governor
-    echo "260000" > /sys/devices/platform/18500000.mali/highspeed_clock
-    echo "95" > /sys/devices/platform/18500000.mali/highspeed_load
+    echo "433000" > /sys/devices/platform/18500000.mali/highspeed_clock
+    echo "94" > /sys/devices/platform/18500000.mali/highspeed_load
     echo "1" > /sys/devices/platform/18500000.mali/highspeed_delay
 
    # Misc settings : bbr2, bbr, cubic or westwood
@@ -461,6 +467,8 @@ rm -f $LOG
    echo "1" > /sys/block/mmcblk0/queue/rq_affinity
    echo "256" > /sys/block/sda/queue/nr_requests
    echo "128" > /sys/block/mmcblk0/queue/nr_requests
+   echo "24" > /sys/block/mmcblk0/queue/iosched/fifo_batch
+   echo "500" > /sys/block/sda/queue/iosched/target_latency
 
    #Devfreq
    # default 2093 MHz
@@ -471,7 +479,7 @@ rm -f $LOG
 
    ## Kernel Stune											DEFAULT VALUES
    # GLOBAL
-   echo "5" > /dev/stune/schedtune.boost					# 0
+   echo "6" > /dev/stune/schedtune.boost					# 0
    echo "0" > /dev/stune/schedtune.band					    # 0
    echo "0" > /dev/stune/schedtune.prefer_idle				# 0
    echo "0" > /dev/stune/schedtune.prefer_perf				# 0
@@ -479,7 +487,7 @@ rm -f $LOG
    echo "0" > /dev/stune/schedtune.ontime_en				# 0
    
    # TOP-APP
-   echo "20" > /dev/stune/top-app/schedtune.boost			# 20
+   echo "6" > /dev/stune/top-app/schedtune.boost			# 20
    echo "0" > /dev/stune/top-app/schedtune.band			    # 0
    echo "1" > /dev/stune/top-app/schedtune.prefer_idle		# 1
    echo "0" > /dev/stune/top-app/schedtune.prefer_perf		# 0
@@ -487,7 +495,7 @@ rm -f $LOG
    echo "1" > /dev/stune/top-app/schedtune.ontime_en		# 1
    
    # RT
-   echo "5" > /dev/stune/rt/schedtune.boost					# 0
+   echo "6" > /dev/stune/rt/schedtune.boost					# 0
    echo "0" > /dev/stune/rt/schedtune.band					# 0
    echo "0" > /dev/stune/rt/schedtune.prefer_idle			# 0
    echo "0" > /dev/stune/rt/schedtune.prefer_perf			# 0
@@ -548,15 +556,18 @@ rm -f $LOG
 
 
    ## Kernel Scheduler
-   echo "4000000" > /proc/sys/kernel/sched_wakeup_granularity_ns
-   echo "10000000" > /proc/sys/kernel/sched_latency_ns
-   echo "950000" > /proc/sys/kernel/sched_min_granularity_ns
-   echo "1000000" > /proc/sys/kernel/sched_migration_cost_ns
-   echo "1000000" > /proc/sys/kernel/sched_rt_period_us
-   echo "15" > /proc/sys/kernel/perf_cpu_time_max_percent  #25
+   echo "3000000" > /proc/sys/kernel/sched_wakeup_granularity_ns
+   #echo "10000000" > /proc/sys/kernel/sched_latency_ns
+   #echo "950000" > /proc/sys/kernel/sched_min_granularity_ns
+   #echo "1000000" > /proc/sys/kernel/sched_migration_cost_ns
+   #echo "1000000" > /proc/sys/kernel/sched_rt_period_us
+   echo "10" > /proc/sys/kernel/perf_cpu_time_max_percent  #25
    echo "30" > /proc/sys/kernel/sched_rr_timeslice_ms  #30
    echo "64" > /proc/sys/kernel/sched_nr_migrate
-   echo "0f" > /proc/irq/default_smp_affinity  #01
+   echo "1" > /sys/module/cpuidle/parameters/off  # 0
+   echo "performance" > /sys/module/pcie_aspm/parameters/policy
+   # policy - default performance powersave powersupersave
+   echo "ff" > /proc/irq/default_smp_affinity  #01
    echo "ff" > /sys/bus/workqueue/devices/writeback/cpumask   # f0
    echo "ff" > /sys/devices/virtual/workqueue/cpumask   # ff
    echo "0" > /dev/cpuset/sched_load_balance   # 0
