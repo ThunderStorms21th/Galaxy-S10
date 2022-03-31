@@ -2050,7 +2050,7 @@ unknown:
 					break;
 				interface = w_value & 0xFF;
 				if (interface >= MAX_CONFIG_INTERFACES ||
-				    !os_desc_cfg->interface[interface])
+				    !os_desc_cfg->next_interface_id)
 					break;
 				buf[6] = w_index;
 				if (w_length == 0x0A) {
