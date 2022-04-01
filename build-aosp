@@ -29,6 +29,12 @@ toolchain = {
         'CLANG_TRIPLE': 'toolchain/clang-11/clang/host/linux-x86/clang-r399163b/bin/aarch64-linux-gnu-',
         'CC': 'toolchain/clang-11/host/linux-x86/clang-r399163b/bin/clang'
     },
+    'clang-12': {
+        'CROSS_COMPILE': 'toolchain/samsung/gcc-cfp/gcc-cfp-jopp-only/aarch64-linux-android-4.9/bin/aarch64-linux-android-',
+        'CLANG_TRIPLE': 'toolchain/clang-12/clang/host/linux-x86/clang-r416183b/bin/aarch64-linux-gnu-',
+        # 'CC': 'toolchain/clang-12/host/linux-x86/clang-r416183b/bin/clang' # 12.05
+        'CC': 'toolchain/clang-12/host/linux-x86/clang-r416183c/bin/clang'  #12.06
+    },
     'proton': {
         'CROSS_COMPILE': 'toolchain/proton/bin/aarch64-linux-gnu-',
         'CROSS_COMPILE_ARM32': 'toolchain/proton/bin/arm-linux-gnueabi-',
@@ -399,21 +405,21 @@ def update_magisk(version):
     with open('usr/magisk/magisk_version', 'r') as fh:
         print('Magisk Version: ' + fh.readline())
 
-def switch_toolchain(compiler):
-    cc = os.path.abspath(get_toolchain_cc(compiler))
-    if cc.startswith(os.path.realpath('toolchain')):
-        branch = run(['git', 'submodule', 'foreach', 'git', 'rev-parse', '--abbrev-ref', 'HEAD'],
-                     stdout=PIPE).stdout.decode('utf-8').splitlines()[1]
-        if ((not tool_exists(cc)) or compiler != branch) and not os.path.isabs(cc):
-            ret = run(['git', 'submodule', 'foreach', 'git', 'rev-parse', '--verify', '--quiet', compiler],
-                        stdout=DEVNULL, stderr=DEVNULL)
-            if ret.returncode != 0:
-                try:
-                    run(['git', 'submodule', 'foreach', 'git', 'branch', compiler, 'origin/' + compiler],
-                        check=True, stdout=DEVNULL, stderr=DEVNULL)
-                except CalledProcessError:
-                    fatal("Can't checkout to toolchain: " + compiler)
-            run(['git', 'submodule', 'foreach', 'git', 'checkout', compiler], check=True)
+#def switch_toolchain(compiler):
+#    cc = os.path.abspath(get_toolchain_cc(compiler))
+#    if cc.startswith(os.path.realpath('toolchain')):
+#        branch = run(['git', 'submodule', 'foreach', 'git', 'rev-parse', '--abbrev-ref', 'HEAD'],
+#                     stdout=PIPE).stdout.decode('utf-8').splitlines()[1]
+#        if ((not tool_exists(cc)) or compiler != branch) and not os.path.isabs(cc):
+#            ret = run(['git', 'submodule', 'foreach', 'git', 'rev-parse', '--verify', '--quiet', compiler],
+#                        stdout=DEVNULL, stderr=DEVNULL)
+#            if ret.returncode != 0:
+#                try:
+#                    run(['git', 'submodule', 'foreach', 'git', 'branch', compiler, 'origin/' + compiler],
+#                        check=True, stdout=DEVNULL, stderr=DEVNULL)
+#                except CalledProcessError:
+#                    fatal("Can't checkout to toolchain: " + compiler)
+#            run(['git', 'submodule', 'foreach', 'git', 'checkout', compiler], check=True)
 
 def build(compiler, objtree='.'):
     env = {}
@@ -600,7 +606,7 @@ if __name__ == '__main__':
     compiler = configs.get('toolchain', 'default')
     if 'build' in stages:
         print('Toolchain: ' + compiler)
-        switch_toolchain(compiler)
+        #switch_toolchain(compiler)
 
     for model in device_models:
         if 'build' in stages:
