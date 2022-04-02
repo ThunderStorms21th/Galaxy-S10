@@ -5,9 +5,9 @@
 
 LOG=compile_build.log
 RDIR=$(pwd)
-export K_VERSION="v4.1"
+export K_VERSION="v4.2"
 export K_NAME="ThundeRStormS-Kernel"
-export K_BASE="GULB"
+export K_BASE="HVC6"
 export ANDROID_VERSION=110000
 export PLATFORM_VERSION=11
 export ANDROID_MAJOR_VERSION=r
@@ -33,21 +33,23 @@ MAIN()
 {
 (
     ## COPY BACK CAMERA FILES FOR OneUI 4.x
-	cp -rf /home/nalas/kernel/AiO-S10-TS/builds/camera-oneui4/. /home/nalas/kernel/AiO-S10-TS/drivers/media/platform/exynos/fimc-is2
+	# cp -rf /home/nalas/kernel/AiO-S10-TS/builds/camera-oneui4/. /home/nalas/kernel/AiO-S10-TS/drivers/media/platform/exynos/fimc-is2
+
+	rm $(pwd)/arch/arm64/configs/tmp_defconfig
 
 	START_TIME=`date +%T`
     if [ $MODEL = "G970F" ]; then
     ./build mkimg model=G970F name="$K_NAME-$K_BASE-$ANDROID-$MODEL-$K_VERSION" toolchain=clang-14 +magisk +dtb
-    #elif [ $MODEL = "G970N" ]; then
-    #./build mkimg model=G970N name="$K_NAME-$K_BASE-$ANDROID-$MODEL-$K_VERSION" toolchain=clang-14 +magisk +dtb
+    elif [ $MODEL = "G970N" ]; then
+    ./build mkimg model=G970N name="$K_NAME-$K_BASE-$ANDROID-$MODEL-$K_VERSION" toolchain=clang-14 +magisk +dtb
     elif [ $MODEL = "G973F" ]; then
     ./build mkimg model=G973F name="$K_NAME-$K_BASE-$ANDROID-$MODEL-$K_VERSION" toolchain=clang-14 +magisk +dtb
-    #elif [ $MODEL = "G973N" ]; then
-    #./build mkimg model=G973N name="$K_NAME-$K_BASE-$ANDROID-$MODEL-$K_VERSION" toolchain=clang-14 +magisk +dtb
+    elif [ $MODEL = "G973N" ]; then
+    ./build mkimg model=G973N name="$K_NAME-$K_BASE-$ANDROID-$MODEL-$K_VERSION" toolchain=clang-14 +magisk +dtb
     elif [ $MODEL = "G975F" ]; then
     ./build mkimg model=G975F name="$K_NAME-$K_BASE-$ANDROID-$MODEL-$K_VERSION" toolchain=clang-14 +magisk +dtb
-    #elif [ $MODEL = "G975N" ]; then
-    #./build mkimg model=G975N name="$K_NAME-$K_BASE-$ANDROID-$MODEL-$K_VERSION" toolchain=clang-14 +magisk +dtb
+    elif [ $MODEL = "G975N" ]; then
+    ./build mkimg model=G975N name="$K_NAME-$K_BASE-$ANDROID-$MODEL-$K_VERSION" toolchain=clang-14 +magisk +dtb
     elif [ $MODEL = "G977B" ]; then
     ./build mkimg model=G977B name="$K_NAME-$K_BASE-$ANDROID-$MODEL-$K_VERSION" toolchain=clang-14 +magisk +dtb
     elif [ $MODEL = "G977N" ]; then
@@ -222,7 +224,7 @@ elif [ $prompt = "5" ]; then
     RUN_PROGRAM
     MODEL=G977N
     ZIP_DATE=`date +%Y%m%d`
-    ZIP_NAME=$K_NAME-$MODEL-F-$ANDROID-$K_VERSION-CLANG14-$ZIP_DATE.zip
+    ZIP_NAME=$K_NAME-$MODEL-B-$ANDROID-$K_VERSION-CLANG14-$ZIP_DATE.zip
     export KERNEL_VERSION="$K_NAME-$K_BASE-$ANDROID-$MODEL-$K_VERSION"
     echo "SM-G977N Selected"
     RUN_PROGRAM
@@ -299,17 +301,18 @@ elif [ $prompt = "11" ]; then
     MODEL=N970F
     echo "Compiling SM-N970F ..."
     RUN_PROGRAM2
-    MODEL=N975F
-    echo "Compiling SM-N975F ..."
-    RUN_PROGRAM2
     MODEL=N971N
     echo "Compiling SM-N971N ..."
     RUN_PROGRAM2
-    MODEL=N976N
-    echo "Compiling SM-N976N ..."
+    MODEL=N975F
+    echo "Compiling SM-N975F ..."
     RUN_PROGRAM2
     MODEL=N976B
     echo "Compiling SM-N976B ..."
     RUN_PROGRAM2
+    MODEL=N976N
+    echo "Compiling SM-N976N ..."
+    RUN_PROGRAM2
     BUILD_FLASHABLES
 fi
+

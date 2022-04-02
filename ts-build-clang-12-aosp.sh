@@ -5,15 +5,15 @@
 
 LOG=compile_build.log
 RDIR=$(pwd)
-export K_VERSION="v3.1"
+export K_VERSION="v4.0"
 export K_NAME="ThundeRStormS-AOSP-Kernel"
-export K_BASE="FUJ2"
+export K_BASE="GULB"
 export ANDROID_VERSION=100000
 export PLATFORM_VERSION=10
 export ANDROID_MAJOR_VERSION=q
 export CURRENT_ANDROID_MAJOR_VERSION=q
 export BUILD_PLATFORM_VERSION=10
-ANDROID=AOSP-R
+ANDROID=AOSP-S
 
 # export BUILD_CROSS_COMPILE=/home/nalas/kernel/AiO-S10-TS/toolchain/gcc-cfp/gcc-cfp-jopp-only/aarch64-linux-android-4.9/bin/aarch64-linux-android-
 # export CROSS_COMPILE=$BUILD_CROSS_COMPILE
@@ -39,31 +39,31 @@ MAIN()
 
 
     if [ $MODEL = "G970F" ]; then
-    ./build-aosp mkimg model=G970F name="$K_NAME-$K_BASE-AOSP-$MODEL-$K_VERSION" toolchain=clang-12 +dtb
+    ./build-aosp mkimg model=G970F name="$K_NAME-$K_BASE-AOSP-$MODEL-$K_VERSION" toolchain=clang-12 +magisk=alpha +dtb
     elif [ $MODEL = "G970N" ]; then
-    ./build-aosp mkimg model=G970N name="$K_NAME-$K_BASE-AOSP-$MODEL-$K_VERSION" toolchain=clang-12 +dtb
+    ./build-aosp mkimg model=G970N name="$K_NAME-$K_BASE-AOSP-$MODEL-$K_VERSION" toolchain=clang-12 +magisk=alpha +dtb
     elif [ $MODEL = "G973F" ]; then
-    ./build-aosp mkimg model=G973F name="$K_NAME-$K_BASE-AOSP-$MODEL-$K_VERSION" toolchain=clang-12 +dtb
+    ./build-aosp mkimg model=G973F name="$K_NAME-$K_BASE-AOSP-$MODEL-$K_VERSION" toolchain=clang-12 +magisk=alpha +dtb
     elif [ $MODEL = "G973N" ]; then
-    ./build-aosp mkimg model=G973N name="$K_NAME-$K_BASE-AOSP-$MODEL-$K_VERSION" toolchain=clang-12 +dtb
+    ./build-aosp mkimg model=G973N name="$K_NAME-$K_BASE-AOSP-$MODEL-$K_VERSION" toolchain=clang-12 +magisk=alpha +dtb
     elif [ $MODEL = "G975F" ]; then
-    ./build-aosp mkimg model=G975F name="$K_NAME-$K_BASE-AOSP-$MODEL-$K_VERSION" toolchain=clang-12 +dtb
+    ./build-aosp mkimg model=G975F name="$K_NAME-$K_BASE-AOSP-$MODEL-$K_VERSION" toolchain=clang-12 +magisk=alpha +dtb
     elif [ $MODEL = "G975N" ]; then
-    ./build-aosp mkimg model=G975N name="$K_NAME-$K_BASE-AOSP-$MODEL-$K_VERSION" toolchain=clang-12 +dtb
+    ./build-aosp mkimg model=G975N name="$K_NAME-$K_BASE-AOSP-$MODEL-$K_VERSION" toolchain=clang-12 +magisk=alpha +dtb
     elif [ $MODEL = "G977B" ]; then
-    ./build-aosp mkimg model=G977B name="$K_NAME-$K_BASE-AOSP-$MODEL-$K_VERSION" toolchain=clang-12 +dtb
+    ./build-aosp mkimg model=G977B name="$K_NAME-$K_BASE-AOSP-$MODEL-$K_VERSION" toolchain=clang-12 +magisk=alpha +dtb
     elif [ $MODEL = "G977N" ]; then
-    ./build-aosp mkimg model=G977N name="$K_NAME-$K_BASE-AOSP-$MODEL-$K_VERSION" toolchain=clang-12 +dtb
+    ./build-aosp mkimg model=G977N name="$K_NAME-$K_BASE-AOSP-$MODEL-$K_VERSION" toolchain=clang-12 +magisk=alpha +dtb
     elif [ $MODEL = "N970F" ]; then
-    ./build-aosp mkimg model=N970F name="$K_NAME-$K_BASE-AOSP-$MODEL-$K_VERSION" toolchain=clang-12 +dtb
+    ./build-aosp mkimg model=N970F name="$K_NAME-$K_BASE-AOSP-$MODEL-$K_VERSION" toolchain=clang-12 +magisk=alpha +dtb
     elif [ $MODEL = "N971N" ]; then
-    ./build-aosp mkimg model=N971N name="$K_NAME-$K_BASE-AOSP-$MODEL-$K_VERSION" toolchain=clang-12 +dtb
+    ./build-aosp mkimg model=N971N name="$K_NAME-$K_BASE-AOSP-$MODEL-$K_VERSION" toolchain=clang-12 +magisk=alpha +dtb
     elif [ $MODEL = "N975F" ]; then
-    ./build-aosp mkimg model=N975F name="$K_NAME-$K_BASE-AOSP-$MODEL-$K_VERSION" toolchain=clang-12 +dtb
+    ./build-aosp mkimg model=N975F name="$K_NAME-$K_BASE-AOSP-$MODEL-$K_VERSION" toolchain=clang-12 +magisk=alpha +dtb
     elif [ $MODEL = "N976N" ]; then
-    ./build-aosp mkimg model=N976N name="$K_NAME-$K_BASE-AOSP-$MODEL-$K_VERSION" toolchain=clang-12 +dtb
+    ./build-aosp mkimg model=N976N name="$K_NAME-$K_BASE-AOSP-$MODEL-$K_VERSION" toolchain=clang-12 +magisk=alpha +dtb
     elif [ $MODEL = "N976B" ]; then
-    ./build-aosp mkimg model=N976B name="$K_NAME-$K_BASE-AOSP-$MODEL-$K_VERSION" toolchain=clang-12 +dtb
+    ./build-aosp mkimg model=N976B name="$K_NAME-$K_BASE-AOSP-$MODEL-$K_VERSION" toolchain=clang-12 +magisk=alpha +dtb
     fi
 
 	END_TIME=`date +%T`
@@ -318,4 +318,4 @@ elif [ $prompt = "11" ]; then
 fi
 
     ## COPY BACK CAMERA FILES FOR OneUI 3.x
-	cp -rf /home/nalas/kernel/AiO-S10-TS/builds/camera-oneui3/. /home/nalas/kernel/AiO-S10-TS/drivers/media/platform/exynos/fimc-is2
+	cp -rf /home/nalas/kernel/AiO-S10-TS/builds/camera-oneui4/. /home/nalas/kernel/AiO-S10-TS/drivers/media/platform/exynos/fimc-is2
