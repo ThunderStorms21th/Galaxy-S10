@@ -9,6 +9,23 @@
 #include <linux/tracepoint.h>
 #include <linux/binfmts.h>
 
+TRACE_EVENT(sched_set_boost,
+
+	TP_PROTO(int type),
+
+	TP_ARGS(type),
+
+	TP_STRUCT__entry(
+		__field(int, type			)
+	),
+
+	TP_fast_assign(
+		__entry->type = type;
+	),
+
+	TP_printk("type %d", __entry->type)
+);
+
 /*
  * Tracepoint for calling kthread_stop, performed to end a kthread:
  */

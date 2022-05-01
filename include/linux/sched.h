@@ -235,6 +235,12 @@ extern void io_schedule_finish(int token);
 extern long io_schedule_timeout(long timeout);
 extern void io_schedule(void);
 
+
+static inline int sched_set_boost(int enable)
+{
+	return -EINVAL;
+}
+
 /**
  * struct prev_cputime - snapshot of system and user cputime
  * @utime: time spent in user mode
