@@ -1,5 +1,5 @@
 #
-# Combo redriver devices
+# Combo redriver  devices
 #
 
 comment "Combo driver configs"
@@ -11,3 +11,4 @@ config COMBO_REDRIVER_PTN36502
 	help
 	  If you say yes here you will get support for
 	  the CCIC attached device status change notification.
+
