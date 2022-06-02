@@ -24,14 +24,6 @@
 static int wl_polling = 10;
 module_param(wl_polling, int, 0644);
 
-static unsigned int STORE_MODE_CHARGING_MAX = 80;
-static unsigned int STORE_MODE_CHARGING_MIN = 25;
-
-module_param_named(store_mode_max, STORE_MODE_CHARGING_MAX, uint, S_IWUSR | S_IRUGO);
-module_param_named(store_mode_min, STORE_MODE_CHARGING_MIN, uint, S_IWUSR | S_IRUGO);
-
-const char *charger_chip_name;
-
 bool sleep_mode = false;
 bool batt_boot_complete = false;
 
@@ -6158,7 +6150,13 @@ static int sec_bat_get_property(struct power_supply *psy,
 					return 0;
 				}
 			}
-
+#if defined(CONFIG_STORE_MODE)
+			if (battery->store_mode && !lpcharge &&
+			    !is_nocharge_type(battery->cable_type) &&
+			    battery->status == POWER_SUPPLY_STATUS_DISCHARGING) {
+				val->intval = POWER_SUPPLY_STATUS_CHARGING;
+			} else
+#endif
 				val->intval = battery->status;
 		}
 		break;
@@ -8484,14 +8482,7 @@ static int sec_battery_probe(struct platform_device *pdev)
 	battery->cable_type = SEC_BATTERY_CABLE_NONE;
 	battery->test_mode = 0;
 	battery->factory_mode = false;
-#if defined(CONFIG_STORE_MODE)
 	battery->store_mode = false;
-	value.intval = battery->store_mode;
-	psy_do_property(battery->pdata->charger_name, set,
-			POWER_SUPPLY_PROP_CONSTANT_CHARGE_CURRENT_MAX, value);
-#else
-	battery->store_mode = false;
-#endif
 	battery->is_hc_usb = false;
 	battery->is_sysovlo = false;
 	battery->is_vbatovlo = false;
