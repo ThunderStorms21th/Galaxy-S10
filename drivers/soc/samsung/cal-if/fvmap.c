@@ -402,10 +402,15 @@ ssize_t print_fvmap(char *buf)
 
 	fvmap_header = _map_base;
 
-	for (i = 0; i < 5; i++) { /* Limit Print */
+	for (i = 0; i < 7; i++) { /* Limit Print */
 		vclk = cmucal_get_node(ACPM_VCLK_TYPE | i);
 		if (vclk == NULL)
 			continue;
+		
+		/* Delete From Print */
+		if (strcmp(vclk->name, "dvfs_int") == 0)
+			continue;
+		
 		len += sprintf(buf + len, "dvfs_type : %s - id : %x\n",
 			vclk->name, fvmap_header[i].dvfs_type);
 		len += sprintf(buf + len, "  num_of_lv      : %d\n", fvmap_header[i].num_of_lv);
