@@ -6,6 +6,7 @@
 #include <linux/uaccess.h>
 #include <linux/kobject.h>
 #include <soc/samsung/cal-if.h>
+#include <linux/exynos-ucc.h>
 
 #include "fvmap.h"
 #include "cmucal.h"
