@@ -5,9 +5,9 @@
 
 LOG=compile_build.log
 RDIR=$(pwd)
-export K_VERSION="v4.2"
+export K_VERSION="v4.3"
 export K_NAME="ThundeRStormS-Kernel"
-export K_BASE="HVC6"
+export K_BASE="HVE1"
 export ANDROID_VERSION=110000
 export PLATFORM_VERSION=11
 export ANDROID_MAJOR_VERSION=r
@@ -35,7 +35,8 @@ MAIN()
     ## COPY BACK CAMERA FILES FOR OneUI 4.x
 	# cp -rf /home/nalas/kernel/AiO-S10-TS/builds/camera-oneui4/. /home/nalas/kernel/AiO-S10-TS/drivers/media/platform/exynos/fimc-is2
 
-	rm $(pwd)/arch/arm64/configs/tmp_defconfig
+	#rm $(pwd)/arch/arm64/configs/tmp_defconfig
+    #make clean
 
 	START_TIME=`date +%T`
     if [ $MODEL = "G970F" ]; then
@@ -283,8 +284,17 @@ elif [ $prompt = "11" ]; then
     MODEL=G975F
     echo "Compiling SM-G975F ..."
     RUN_PROGRAM2
-    MODEL=G975N
-    echo "Compiling SM-G975N ..."
+    MODEL=G977B
+    echo "Compiling SM-G977B ..."
+    RUN_PROGRAM2
+    MODEL=N970F
+    echo "Compiling SM-N970F ..."
+    RUN_PROGRAM2
+    MODEL=N975F
+    echo "Compiling SM-N975F ..."
+    RUN_PROGRAM2
+    MODEL=N976B
+    echo "Compiling SM-N976B ..."
     RUN_PROGRAM2
     MODEL=G970N
     echo "Compiling SM-G970N ..."
@@ -292,23 +302,14 @@ elif [ $prompt = "11" ]; then
     MODEL=G973N
     echo "Compiling SM-G973N ..."
     RUN_PROGRAM2
+    MODEL=G975N
+    echo "Compiling SM-G975N ..."
+    RUN_PROGRAM2
     MODEL=G977N
     echo "Compiling SM-G977N ..."
     RUN_PROGRAM2
-    MODEL=G977B
-    echo "Compiling SM-G977B ..."
-    RUN_PROGRAM2
-    MODEL=N970F
-    echo "Compiling SM-N970F ..."
-    RUN_PROGRAM2
     MODEL=N971N
     echo "Compiling SM-N971N ..."
-    RUN_PROGRAM2
-    MODEL=N975F
-    echo "Compiling SM-N975F ..."
-    RUN_PROGRAM2
-    MODEL=N976B
-    echo "Compiling SM-N976B ..."
     RUN_PROGRAM2
     MODEL=N976N
     echo "Compiling SM-N976N ..."
