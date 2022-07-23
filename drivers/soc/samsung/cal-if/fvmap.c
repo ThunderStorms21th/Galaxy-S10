@@ -605,8 +605,8 @@ static void fvmap_copy_from_sram(void)
 				volt_offset_percent);
 		}
 
-		old_param = sram_base + fvmap_header[i].o_tables;
-		new_param = map_base + fvmap_header[i].o_tables;
+		old_param = _sram_base + fvmap_header[i].o_tables;
+		new_param = _map_base + fvmap_header[i].o_tables;
 		for (j = 0; j < fvmap_header[i].num_of_lv; j++) {
 			for (k = 0; k < fvmap_header[i].num_of_members; k++) {
 				param_idx = fvmap_header[i].num_of_members * j + k;
