@@ -9889,7 +9889,7 @@
 			sibling-cpus = "0-3";
 			cal-id = <0xb040002>;
 			dm-type = <0x0>;
-			max-freq = <0x1dc130>;  // 0x1dc130
+			max-freq = <0x202290>;  // 0x1dc130
 			min-freq = <0x1fbd0>;
 			pm_qos-min-class = <0x3>;
 			pm_qos-max-class = <0x4>;
