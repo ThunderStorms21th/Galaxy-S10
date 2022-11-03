@@ -51,3 +51,4 @@ endif
 ifdef CONFIG_MODEL_N976N
 include arch/arm64/boot/dts/N976N.mk
 endif
+

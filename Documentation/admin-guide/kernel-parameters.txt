@@ -2467,7 +2467,7 @@
 				users who don't want to be surprised by SMT
 				getting disabled across kernel upgrades, or who
 				have other ways of avoiding SMT-based attacks.
-				Equivalent to: (default behavior)
+				This is the default behavior.
 
 			auto,nosmt
 				Mitigate all CPU vulnerabilities, disabling SMT
