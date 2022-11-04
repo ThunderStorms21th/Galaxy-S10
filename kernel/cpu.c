@@ -2830,6 +2830,8 @@ void __init boot_cpu_hotplug_init(void)
 	this_cpu_write(cpuhp_state.state, CPUHP_ONLINE);
 }
 
+enum cpu_mitigations cpu_mitigations __ro_after_init = CPU_MITIGATIONS_AUTO;
+
 static int __init mitigations_parse_cmdline(char *arg)
 {
 	if (!strcmp(arg, "off"))
@@ -2842,6 +2844,18 @@ static int __init mitigations_parse_cmdline(char *arg)
 	return 0;
 }
 early_param("mitigations", mitigations_parse_cmdline);
+
+/* mitigations=off */
+inline bool cpu_mitigations_off(void)
+{
+	return cpu_mitigations == CPU_MITIGATIONS_OFF;
+}
+
+/* mitigations=auto,nosmt */
+inline bool cpu_mitigations_auto_nosmt(void)
+{
+	return cpu_mitigations == CPU_MITIGATIONS_AUTO_NOSMT;
+}
 
 static ATOMIC_NOTIFIER_HEAD(idle_notifier);
 

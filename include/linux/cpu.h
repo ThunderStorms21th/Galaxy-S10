@@ -227,16 +227,4 @@ enum cpu_mitigations {
 
 extern enum cpu_mitigations cpu_mitigations;
 
-/* mitigations=off */
-static inline bool cpu_mitigations_off(void)
-{
-	return cpu_mitigations == CPU_MITIGATIONS_OFF;
-}
-
-/* mitigations=auto,nosmt */
-static inline bool cpu_mitigations_auto_nosmt(void)
-{
-	return cpu_mitigations == CPU_MITIGATIONS_AUTO_NOSMT;
-}
-
 #endif /* _LINUX_CPU_H_ */
