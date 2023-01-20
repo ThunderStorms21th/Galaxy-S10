@@ -3769,11 +3769,11 @@ static void lru_gen_shrink_lruvec(struct lruvec *lruvec, struct scan_control *sc
 
 		nr_to_scan = get_nr_to_scan(lruvec, sc, swappiness, reclaimed, &need_aging);
 		if (!nr_to_scan)
-			goto done;
+			break;
 
 		delta = evict_pages(lruvec, sc, swappiness);
 		if (!delta)
-			goto done;
+			break;
 
 		scanned += delta;
 		if (scanned >= nr_to_scan)
@@ -3786,9 +3786,6 @@ static void lru_gen_shrink_lruvec(struct lruvec *lruvec, struct scan_control *sc
 		sc->memcgs_need_aging = false;
 	if (!swapped)
 		sc->memcgs_need_swapping = false;
-done:
-	if (current_is_kswapd())
-		current->reclaim_state->mm_walk = NULL;
 
 	blk_finish_plug(&plug);
 }
