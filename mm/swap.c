@@ -510,7 +510,7 @@ void add_page_to_unevictable_list(struct page *page)
 	ClearPageActive(page);
 	SetPageUnevictable(page);
 	SetPageLRU(page);
-	add_page_to_lru_list(page, lruvec, LRU_UNEVICTABLE);
+	add_page_to_lru_list(page, lruvec);
 	spin_unlock_irq(&pgdat->lru_lock);
 }
 
