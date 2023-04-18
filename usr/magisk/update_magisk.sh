@@ -5,6 +5,7 @@ set -e
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 
 ver="$(cat "$DIR/magisk_version" 2>/dev/null || echo -n 'none')"
+
 if [ "x$1" = "xcanary" ]
 then
 	nver="canary"
@@ -21,6 +22,7 @@ else
 	fi
 	magisk_link="https://github.com/topjohnwu/Magisk/releases/download/${nver}/Magisk-${nver}.apk"
 fi
+
 if [ \( -n "$nver" \) -a \( "$nver" != "$ver" \) -o ! \( -f "$DIR/magiskinit" \) -o \( "$nver" = "canary" \) -o \( "$nver" = "alpha" \) ]
 then
 	echo "Updating Magisk from $ver to $nver"
@@ -37,6 +39,12 @@ then
 		mv -f "$DIR/lib/armeabi-v7a/libmagisk32.so" "$DIR/magisk32"
 		mv -f "$DIR/lib/armeabi-v7a/libmagisk64.so" "$DIR/magisk64"
 		xz --force --check=crc32 "$DIR/magisk32" "$DIR/magisk64"
+	elif unzip -o "$DIR/magisk.zip" lib/arm64-v8a/libmagiskinit.so lib/armeabi-v7a/libmagisk32.so lib/arm64-v8a/libmagisk64.so assets/stub.apk -d "$DIR"; then
+		mv -f "$DIR/lib/arm64-v8a/libmagiskinit.so" "$DIR/magiskinit"
+		mv -f "$DIR/lib/armeabi-v7a/libmagisk32.so" "$DIR/magisk32"
+		mv -f "$DIR/lib/arm64-v8a/libmagisk64.so" "$DIR/magisk64"
+		mv -f "$DIR/assets/stub.apk" "$DIR/stub"
+		xz --force --check=crc32 "$DIR/magisk32" "$DIR/magisk64" "$DIR/stub"
 	else
 		unzip -o "$DIR/magisk.zip" lib/arm64-v8a/libmagiskinit.so lib/armeabi-v7a/libmagisk32.so lib/arm64-v8a/libmagisk64.so -d "$DIR"
 		mv -f "$DIR/lib/arm64-v8a/libmagiskinit.so" "$DIR/magiskinit"
