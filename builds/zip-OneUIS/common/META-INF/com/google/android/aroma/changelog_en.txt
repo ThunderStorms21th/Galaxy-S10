@@ -2,8 +2,8 @@
 <b>KERNEL INFORMATION:</b>
 
 	NAME	: <b><#selectbg_g>ThundeRStormS-Kernel-OneUI R</#></b>	
-	VERSION	: <b><#selectbg_g>v4.2</#></b>
-	DATE	: <b><#selectbg_g>31/03/2022</#></b>
+	VERSION	: <b><#selectbg_g>v4.5</#></b>
+	DATE	: <b><#selectbg_g>08/04/2023</#></b>
 	AUTHOR	: <b><#selectbg_g>ThundeRStormS Team</#></b>
 
 <#53a6f4><b>        Only For Galaxy S10/N10 | OneUI S Roms |</b></#>
@@ -12,18 +12,66 @@
 <b>CHANGELOG:</b>
 
 --------------------------------------------------------------------------
-<u><b><#selectbg_g>ThunderStorms-Kernel-S-v4.2 : 31.03.2022</#></b></u>
-<*>Samsung source : HVC6 OneUI 4.1 </*>
+<u><b><#selectbg_g>ThunderStorms-Kernel-S-v4.5 : 08.04.2023</#></b></u>
+<*>Samsung source : HVJ5 OneUI 4.1 </*>
+<*>Linux source : upstreamed to 4.14.269 </*>
+<*>Samsung os patch level: 2022-03 </*>
+<*>Zram default </*>
+<*>Changed some initial settings</*>
+<*>Added some backported stuff from Multi LRU</*>
+<*>Support Init.d scripts: /vendor/etc/init.d </*>
+<*>ThunderTweaks v1.1.1.5 </*>
+<*>Magisk 26.1 Offcial build in kernel - thx to CruelKernel Team </*>
+   Thanks to Corsicanu for help with Zygisk support.
+<*>Compiled via Clang 14.01</*>
+<*>Rest like in realease 4.4 </*>
+--------------------------------------------------------------------------
+--------------------------------------------------------------------------
+<u><b><#selectbg_g>ThunderStorms-Kernel-S-v4.4 : 03.11.2022</#></b></u>
+<*>Samsung source : HVJ5 OneUI 4.1 </*>
+<*>Linux source : upstreamed to 4.14.269 </*>
+<*>Samsung os patch level: 2022-03 </*>
+<*>Zram default </*>
+<*>Changed some initial settings</*>
+<*>Support Init.d scripts: /vendor/etc/init.d </*>
+<*>ThunderTweaks v1.1.1.5 </*>
+<*>Magisk 25.2 Offcial build in kernel - thx to CruelKernel Team </*>
+   Thanks to Corsicanu for help with Zygisk support.
+<*>Compiled via Clang 14.01</*>
+<*>Rest like in realease 4.3 </*>
+--------------------------------------------------------------------------
+--------------------------------------------------------------------------
+<u><b><#selectbg_g>ThunderStorms-Kernel-S-v4.3 : 31.05.2022</#></b></u>
+<*>Samsung source : HVE1 OneUI 4.1 </*>
+<*>Linux source : upstreamed to 4.14.269 </*>
+<*>Samsung os patch level: 2022-03 </*>
+<*>HZ tick set at 250HZ </*>
+<*>Zram default </*>
+<*>Changed some initial settings</*>
+<*>Added CPU BOOST by Sultan K</*>
+<*>Removed Alternative Battery Store</*>
+<*>Fixed low charging for some users</*>
+<*>Support Init.d scripts: /vendor/etc/init.d </*>
+<*>ThunderTweaks v1.1.1.4 </*>
+<*> Added OC for little, mid and big CPU </*>
+<*>Magisk 25.2 Offcial build in kernel - thx to CruelKernel Team </*>
+   Thanks to Corsicanu for help with Zygisk support.
+<*>Compiled via Clang 14.01</*>
+<*>Rest like in realease 4.2 </*>
+--------------------------------------------------------------------------
+--------------------------------------------------------------------------
+<u><b><#selectbg_g>ThunderStorms-Kernel-S-v4.2 : 21.05.2022</#></b></u>
+<*>Samsung source : HVE1 OneUI 4.1 </*>
 <*>Linux source : upstreamed to 4.14.269 </*>
 <*>Samsung os patch level: 2022-03 </*>
 <*>HZ tick set at 100HZ </*>
-<*>S10, S10+, N10 Zram set at 2,0GB </*>
+<*>Zram default </*>
 <*>Changed some initial settings</*>
 <*>Added MALI GPU drivers r36p0 ValHall</*>
 <*>Backported Game Misc Control from Samsung S20</*>
 <*>Support Init.d scripts: /vendor/etc/init.d </*>
-<*>ThunderTweaks v1.1.1.0 </*>
-<*>Magisk 24.2 Offcial build in kernel - thx to CruelKernel Team </*>
+<*>ThunderTweaks v1.1.1.2 </*>
+<*>Magisk 24.3 Offcial build in kernel - thx to CruelKernel Team </*>
    Thanks to Corsicanu for help with Zygisk support.
 <*>Compiled via Clang 14.01</*>
 <*>Rest like in realease 4.1 </*>
